@@ -9,8 +9,10 @@ plugins {
 version = "1.0.0"
 
 dependencies {
+    implementation("org.projectlombok:lombok:1.18.16")
     compileOnly(paper())
     implementation("org.jetbrains:annotations:16.0.2")
+    implementation("com.dumbdogdiner:stickyapi:2.0.0")
 }
 
 spotless {

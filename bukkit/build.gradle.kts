@@ -19,6 +19,8 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(":api"))
 
+    implementation("org.projectlombok:lombok:1.18.16")
+
     implementation("com.dumbdogdiner:stickyapi:2.0.0")
 
     // server dependencies
