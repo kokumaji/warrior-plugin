@@ -19,11 +19,18 @@ allprojects {
 
         // Add paper repository here, as it's used in both API and Bukkit modules.
         papermc()
+
+        maven(url = "https://maven.pkg.github.com/DumbDogDiner/StickyAPI") {
+            credentials {
+                username = property("ghUser") as String
+                password = property("ghPass") as String
+            }
+        }
     }
 }
 
 subprojects {
-    group = "com.dumbdogdiner.myawesomeplugin"
+    group = "com.dumbdogdiner.warrior"
 
     apply(plugin = "java")
     apply(plugin = "kotlin")

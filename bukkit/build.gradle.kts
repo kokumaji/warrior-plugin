@@ -19,6 +19,8 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(":api"))
 
+    implementation("com.dumbdogdiner:stickyapi:2.0.0")
+
     // server dependencies
     compileOnly(paper())
 }
@@ -40,8 +42,8 @@ tasks {
     }
 
     spigot {
-        name = "myawesomeplugin"
-        authors = mutableListOf("Some soft boy <3")
+        name = "warrior"
+        authors = mutableListOf("Kokumaji")
         apiVersion = "1.16"
         softDepends = mutableListOf()
     }
