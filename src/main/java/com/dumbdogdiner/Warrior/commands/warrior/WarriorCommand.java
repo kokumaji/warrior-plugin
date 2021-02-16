@@ -6,7 +6,7 @@ import com.dumbdogdiner.Warrior.api.command.ExitStatus;
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
 import com.dumbdogdiner.Warrior.utils.DefaultMessages;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
-import com.dumbdogdiner.Warrior.utils.Translator;
+import com.dumbdogdiner.Warrior.api.translation.Translator;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

@@ -1,6 +1,7 @@
-package com.dumbdogdiner.Warrior.utils;
+package com.dumbdogdiner.Warrior.api.translation;
 
 import com.dumbdogdiner.Warrior.Warrior;
+import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

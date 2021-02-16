@@ -1,6 +1,7 @@
 package com.dumbdogdiner.Warrior.utils;
 
 import com.dumbdogdiner.Warrior.Warrior;
+import com.dumbdogdiner.Warrior.api.translation.Translator;
 
 public class DefaultMessages {
 

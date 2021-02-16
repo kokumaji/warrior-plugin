@@ -1,10 +1,8 @@
 package com.dumbdogdiner.Warrior.commands.warrior;
 
-import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class WarriorHelpCommand implements SubCommand {
 

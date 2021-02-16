@@ -1,11 +1,13 @@
 package com.dumbdogdiner.Warrior;
 
+import com.dumbdogdiner.Warrior.commands.DebugCommand;
+import com.dumbdogdiner.Warrior.commands.arena.ArenaCommand;
 import com.dumbdogdiner.Warrior.commands.warrior.WarriorAboutCommand;
 import com.dumbdogdiner.Warrior.commands.warrior.WarriorCommand;
 import com.dumbdogdiner.Warrior.commands.warrior.WarriorHelpCommand;
 import com.dumbdogdiner.Warrior.commands.warrior.WarriorReloadCommand;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
-import com.dumbdogdiner.Warrior.utils.Translator;
+import com.dumbdogdiner.Warrior.api.translation.Translator;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -14,7 +16,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
@@ -29,7 +30,7 @@ public class Warrior extends JavaPlugin {
     private CommandMap cMap;
 
     @Getter
-    private Translator translator;
+    private static Translator translator;
 
     public static Warrior getInstance() {
         return getPlugin(Warrior.class);
@@ -39,18 +40,20 @@ public class Warrior extends JavaPlugin {
     @Override
     public void onLoad() {
         saveDefaultConfig();
-        this.translator = new Translator(this, getConfig());
+        translator = new Translator(this, getConfig());
     }
 
     @Override
     public void onEnable() {
         System.out.println("Warrior loaded successfully!");
+        getCommand("debug").setExecutor(new DebugCommand());
         this.getCommandMap();
 
         cmds.add(new WarriorCommand("warrior", this)
                 .addSubCommand(new WarriorHelpCommand())
                 .addSubCommand(new WarriorAboutCommand())
                 .addSubCommand(new WarriorReloadCommand()));
+        cmds.add(new ArenaCommand("arena", this));
         cMap.registerAll(this.getName().toLowerCase(), cmds);
     }
 

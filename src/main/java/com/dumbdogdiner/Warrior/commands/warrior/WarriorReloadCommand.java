@@ -2,7 +2,7 @@ package com.dumbdogdiner.Warrior.commands.warrior;
 
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
-import com.dumbdogdiner.Warrior.utils.DefaultMessages;
+
 import org.bukkit.command.CommandSender;
 
 public class WarriorReloadCommand implements SubCommand {
@@ -25,7 +25,9 @@ public class WarriorReloadCommand implements SubCommand {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         Warrior.getInstance().reloadConfig();
-        sender.sendMessage(DefaultMessages.PLUGIN_RELOAD_SUCCESS);
+
+        String msg = Warrior.getInstance().getTranslator().translate("command-messages.reload-success", true);
+        sender.sendMessage(msg);
         return true;
     }
 }

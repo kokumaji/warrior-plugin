@@ -59,6 +59,8 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.10.9'
     compileOnly 'org.apache.logging.log4j:log4j-core:2.3'
 
+    compileOnly 'io.netty:netty-all:4.0.23.Final'
+
 }
 
 // vv Configuring the Gradle plugins below vv
@@ -76,5 +78,11 @@ spigot {
     description 'A KitPvP Plugin'
     authors 'Kokumaji'
     apiVersion '1.13'
+
+    commands {
+        debug {
+            usage '/debug'
+        }
+    }
 }
 
