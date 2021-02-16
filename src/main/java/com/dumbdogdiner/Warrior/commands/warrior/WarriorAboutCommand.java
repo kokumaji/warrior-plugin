@@ -9,12 +9,10 @@ import org.bukkit.entity.Player;
 public class WarriorAboutCommand implements SubCommand {
 
     private final String[] about = {
-            Warrior.getInstance().COMMAND_HEADER,
             " ",
             "&3&l" + Warrior.getInstance().getName() + " &7developed by &b" + String.join(", ", Warrior.getInstance().getDescription().getAuthors()),
             "&7Running version &b" + Warrior.getInstance().getDescription().getVersion(),
             " ",
-            "&8" + TranslationUtil.HL
     };
 
     @Override
@@ -35,7 +33,7 @@ public class WarriorAboutCommand implements SubCommand {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         if(args.length > 1) return false;
-        TranslationUtil.centerMessage((Player) sender, about);
+        sender.sendMessage(TranslationUtil.prettyMessage(about));
         return true;
     }
 

@@ -4,7 +4,9 @@ import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.command.AsyncCommand;
 import com.dumbdogdiner.Warrior.api.command.ExitStatus;
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
+import com.dumbdogdiner.Warrior.utils.DefaultMessages;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
+import com.dumbdogdiner.Warrior.utils.Translator;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -26,47 +28,33 @@ public class WarriorCommand extends AsyncCommand implements TabCompleter {
 
     @Override
     public void onPermissionError(CommandSender sender, String label, String[] args) {
-        String[] permissionMessage = {
-                Warrior.getInstance().COMMAND_HEADER,
-                " ",
-                "&cYou don't have the required permissions",
-                "&cto execute this command!",
-                " ",
-                "&8" + TranslationUtil.HL,
-                " "
-        };
-
         if(sender instanceof Player) {
             Player p = (Player) sender;
 
-            TranslationUtil.centerMessage(p, permissionMessage);
+            p.sendMessage(TranslationUtil.prettyMessage(DefaultMessages.COMMAND_PERM_ERROR));
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
         }
     }
 
     @Override
     public void onError(CommandSender sender, String label, String[] args) {
-        sender.sendMessage(TranslationUtil.translateColor("&cAn Error occurred while trying to execute this command. If this issue persists, please contact the plugin author!"));
+        sender.sendMessage(DefaultMessages.COMMAND_GENERAL_ERROR);
     }
 
     @Override
     public void onSyntaxError(CommandSender sender, String label, String[] args) {
         if(args.length > 1) return;
 
-        String[] syntaxMessage = {
-                Warrior.getInstance().COMMAND_HEADER,
-                " ",
-                "&cWrong Command Syntax!",
-                "&7Type /warrior help for commands!",
-                " ",
-                "&8" + TranslationUtil.HL,
-                " "
-        };
-
         if(sender instanceof Player) {
             Player p = (Player) sender;
+            Translator t = Warrior.getInstance().getTranslator();
+            String msg = t.applyPlaceholders(DefaultMessages.COMMAND_SYNTAX_ERROR, new HashMap<>() {
+                {
+                    put("HELP_CMD", "/warrior help");
+                }
+            });
 
-            TranslationUtil.centerMessage(p, syntaxMessage);
+            p.sendMessage(TranslationUtil.prettyMessage(msg));
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
         } else {
             sender.sendMessage(TranslationUtil.translateColor("&cWrong Command Syntax! &7Type /warrior help for commands!"));
@@ -78,12 +66,14 @@ public class WarriorCommand extends AsyncCommand implements TabCompleter {
     public ExitStatus executeCommand(CommandSender sender, String commandLabel, String[] args) {
         if(sender instanceof Player) {
             Player p = (Player) sender;
+            Translator t = Warrior.getInstance().getTranslator();
 
             if(!p.hasPermission(Objects.requireNonNull(getPermission()))) return ExitStatus.PERMISSION_ERROR;
 
             if(args.length == 0) {
                 SubCommand helpCmd = getSubCommands().get("help");
                 if(helpCmd != null) helpCmd.execute(sender, commandLabel, args);
+                return ExitStatus.EXECUTE_SUCCESS;
             } else {
                 String arg = args[0].toLowerCase();
                 if(getSubCommands().get(arg) != null) {
@@ -92,21 +82,22 @@ public class WarriorCommand extends AsyncCommand implements TabCompleter {
                     if(!p.hasPermission(cmd.getPermission())) return ExitStatus.PERMISSION_ERROR;
 
                     if(!cmd.execute(sender, commandLabel, args)) {
-                        String[] syntaxMessage = {
-                                Warrior.getInstance().COMMAND_HEADER,
-                                " ",
-                                "&cWrong Command Syntax!",
-                                "&7" + cmd.getSyntax(),
-                                " ",
-                                "&8" + TranslationUtil.HL,
-                                " "
-                        };
+                        String msg = t.applyPlaceholders(DefaultMessages.SUBCMD_SYNTAX, new HashMap<>() {
 
-                        TranslationUtil.centerMessage(p, syntaxMessage);
+                            {
+                                put("SUB_SYNTAX", cmd.getSyntax());
+                            }
+                        });
+
+                        p.sendMessage(TranslationUtil.prettyMessage(msg));
+
                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
                         return ExitStatus.SYNTAX_ERROR;
                     }
 
+                    return ExitStatus.EXECUTE_SUCCESS;
+
+                } else {
                     return ExitStatus.SYNTAX_ERROR;
                 }
             }

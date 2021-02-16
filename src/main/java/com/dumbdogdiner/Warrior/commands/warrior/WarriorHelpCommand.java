@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 public class WarriorHelpCommand implements SubCommand {
 
     private final String[] commands = {
-            Warrior.getInstance().COMMAND_HEADER,
             " ",
             "&b/warrior help &8- &7Displays this help message",
             " ",
@@ -17,7 +16,6 @@ public class WarriorHelpCommand implements SubCommand {
             " ",
             "&b/warrior reload &8- &7Reloads the plugin config",
             " ",
-            "&8" + TranslationUtil.HL
     };
 
     @Override
@@ -38,7 +36,7 @@ public class WarriorHelpCommand implements SubCommand {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         if(args.length > 1) return false;
-        TranslationUtil.centerMessage((Player) sender, commands);
+        sender.sendMessage(TranslationUtil.prettyMessage(commands));
         return true;
     }
 }

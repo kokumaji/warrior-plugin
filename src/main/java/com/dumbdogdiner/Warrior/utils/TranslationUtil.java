@@ -1,8 +1,12 @@
 package com.dumbdogdiner.Warrior.utils;
 
+import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.translation.DefaultFontInfo;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class TranslationUtil {
 
@@ -10,18 +14,25 @@ public class TranslationUtil {
 
     public static String HL(int length) {
         StringBuilder hl = new StringBuilder();
-        for(int i = 0; i < length; i++) {
-            hl.append(" ");
-        }
+        hl.append(" ".repeat(Math.max(0, length)));
 
         return "&m" + hl + "&r";
     }
     private final static int CENTER_CHAT_PX = 154;
     private final static int MAX_CHAT_PX = 250;
 
-    public static void centerMessage(Player player, String... messageArray) {
-        for (String message : messageArray) {
-            if (message == null || message.equals("")) player.sendMessage("");
+    public static String prettyMessage(String... args) {
+        if(args.length == 1 && args[0].contains("\n")) args = args[0].split("\n");
+
+        List<String> finalMsg = new ArrayList<>();
+        finalMsg.add(TranslationUtil.translateColor(Warrior.getInstance().COMMAND_HEADER));
+        finalMsg.addAll(Arrays.asList(args));
+        finalMsg.add("&8" + TranslationUtil.translateColor(HL));
+
+        return String.join("\n", centerStrings(finalMsg.toArray(String[]::new)));
+    }
+
+    public static String centerString(String message) {
             message = translateColor(message);
 
             int messagePxSize = 0;
@@ -32,7 +43,7 @@ public class TranslationUtil {
                 if (c == '§') {
                     previousCode = true;
                     continue;
-                } else if (previousCode == true) {
+                } else if (previousCode) {
                     previousCode = false;
                     if (c == 'l' || c == 'L') {
                         isBold = true;
@@ -54,8 +65,23 @@ public class TranslationUtil {
                 sb.append(" ");
                 compensated += spaceLength;
             }
-            player.sendMessage(sb.toString() + message);
+
+            return sb.toString() + message + ChatColor.RESET;
+
+    }
+
+
+    public static String[] centerStrings(String... messageArray) {
+        List<String> finalMsg = new ArrayList<>();
+        for(String s : messageArray) {
+            finalMsg.add(centerString(s));
         }
+
+        return finalMsg.toArray(String[]::new);
+    }
+
+    public static String getPrefix() {
+        return Warrior.getInstance().getConfig().getString("general-settings.plugin-prefix");
     }
 
     public static String translateColor(String str) {

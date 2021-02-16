@@ -1,0 +1,7 @@
+command-messages:
+  syntax-error: "&cInvalid Sub-Command!\n&7Type {HELP_CMD} for commands!"
+  subcmd-syntax: "&cWrong Command Syntax!\n&7Syntax &8>> &7{SUB_SYNTAX}"
+  permission-error: "&cYou don't have the required permissions\n&cto execute this command!"
+  general-error: "&cAn Error occurred while trying to execute this command. If this issue persists, please contact the plugin author!"
+
+  reload-success: "&7Successfully reloaded plugin config!"
