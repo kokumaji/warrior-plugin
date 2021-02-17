@@ -47,7 +47,7 @@ public class WarriorCommand extends AsyncCommand implements TabCompleter {
 
         if(sender instanceof Player) {
             Player p = (Player) sender;
-            Translator t = Warrior.getInstance().getTranslator();
+            Translator t = Warrior.getTranslator();
             String msg = t.applyPlaceholders(DefaultMessages.COMMAND_SYNTAX_ERROR, new HashMap<>() {
                 {
                     put("HELP_CMD", "/warrior help");
@@ -111,6 +111,15 @@ public class WarriorCommand extends AsyncCommand implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if(args.length == 1)
             return getSubCommands().values().stream().map(SubCommand::getAlias).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+
+        if(args.length > 1) {
+            SubCommand subCmd = getSubCommands().get(args[0]);
+
+            if(!(subCmd == null)) {
+                return subCmd.getArguments(sender, args);
+            }
+        }
+
         return new ArrayList<>();
     }
 

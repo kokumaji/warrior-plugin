@@ -3,6 +3,7 @@ package com.dumbdogdiner.Warrior.utils;
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.translation.DefaultFontInfo;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,10 +82,35 @@ public class TranslationUtil {
     }
 
     public static String getPrefix() {
-        return Warrior.getInstance().getConfig().getString("general-settings.plugin-prefix");
+        String prefix = Warrior.getInstance().getConfig().getString("general-settings.plugin-prefix");
+        if(!prefix.endsWith(" ")) prefix = prefix + " ";
+
+        return TranslationUtil.translateColor(prefix);
     }
 
     public static String translateColor(String str) {
         return ChatColor.translateAlternateColorCodes('&', str);
     }
+
+    public static String readableLocation(Location location, boolean showVar, boolean showWorld) {
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
+
+        String output;
+
+        if(showVar) {
+            output = String.format("X%d Y%2d Z%3d", x, y, z);
+        } else {
+            output = String.format("%d %2d %3d", x, y, z);
+        }
+
+        if(showWorld) {
+            output = String.format(output + ", World %s", location.getWorld().getName());
+        }
+
+        return output;
+
+    }
+
 }

@@ -5,3 +5,7 @@ command-messages:
   general-error: "&cAn Error occurred while trying to execute this command. If this issue persists, please contact the plugin author!"
 
   reload-success: "&7Successfully reloaded plugin config!"
+
+  arena-set-location: "&7Setting &b{TYPE} &7to &b{LOCATION}"
+  arena-create-success: "&7Successfully created Arena &b{ARENA}"
+  arena-already-exists: "&7Arena &b{ARENA} &7already exists!"

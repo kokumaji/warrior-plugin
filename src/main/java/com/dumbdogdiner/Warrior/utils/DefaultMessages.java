@@ -1,17 +1,16 @@
 package com.dumbdogdiner.Warrior.utils;
 
 import com.dumbdogdiner.Warrior.Warrior;
+import com.dumbdogdiner.Warrior.api.translation.Constants;
 import com.dumbdogdiner.Warrior.api.translation.Translator;
 
 public class DefaultMessages {
 
-    private static Translator TR = Warrior.getInstance().getTranslator();
+    public static String COMMAND_SYNTAX_ERROR = Warrior.getTranslator().translate(Constants.Lang.ERROR_SYNTAX, false);
+    public static String SUBCMD_SYNTAX = Warrior.getTranslator().translate(Constants.Lang.ERROR_SUBCMD, false);
+    public static String COMMAND_PERM_ERROR = Warrior.getTranslator().translate(Constants.Lang.ERROR_PERM, false);
+    public static String COMMAND_GENERAL_ERROR = Warrior.getTranslator().translate(Constants.Lang.ERROR_GENERAL, false);
 
-    public static String COMMAND_SYNTAX_ERROR = TR.translate("command-messages.syntax-error", false);
-    public static String SUBCMD_SYNTAX = TR.translate("command-messages.subcmd-syntax", false);
-    public static String COMMAND_PERM_ERROR = TR.translate("command-messages.permission-error", false);
-    public static String COMMAND_GENERAL_ERROR = TR.translate("command-messages.general-error", true);
-
-    public static String PLUGIN_RELOAD_SUCCESS = TR.translate("command-messages.reload-success", true);
+    //public static String PLUGIN_RELOAD_SUCCESS = Warrior.getTranslator().translate("command-messages.reload-success", true);
 
 }

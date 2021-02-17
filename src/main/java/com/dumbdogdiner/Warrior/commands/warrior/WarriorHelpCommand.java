@@ -4,6 +4,9 @@ import com.dumbdogdiner.Warrior.api.command.SubCommand;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WarriorHelpCommand implements SubCommand {
 
     private final String[] commands = {
@@ -36,5 +39,10 @@ public class WarriorHelpCommand implements SubCommand {
         if(args.length > 1) return false;
         sender.sendMessage(TranslationUtil.prettyMessage(commands));
         return true;
+    }
+
+    @Override
+    public List<String> getArguments(CommandSender sender, String[] arguments) {
+        return new ArrayList<>();
     }
 }
