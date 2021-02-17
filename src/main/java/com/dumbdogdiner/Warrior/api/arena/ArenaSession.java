@@ -2,6 +2,7 @@ package com.dumbdogdiner.Warrior.api.arena;
 
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.WarriorUser;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -24,7 +25,9 @@ public class ArenaSession {
     private WarriorUser sessionUser;
     private String arenaName;
 
-    private transient ItemStack[] inventoryCapture;
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private ItemStack[] inventoryCapture;
 
     private World world;
 
