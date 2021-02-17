@@ -2,9 +2,12 @@ package com.dumbdogdiner.Warrior.api.arena;
 
 import com.dumbdogdiner.Warrior.Warrior;
 
+import com.dumbdogdiner.Warrior.api.translation.Constants;
 import com.dumbdogdiner.Warrior.api.translation.Translator;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
+import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,44 +37,68 @@ public class ArenaBuilder {
         session.startSession(new Listener() {
             @EventHandler
             public void onClick(PlayerInteractEvent e) {
+                if(e.getHand() == EquipmentSlot.OFF_HAND) return;
+                if(e.getHand() == EquipmentSlot.OFF_HAND && e.getAction() == Action.RIGHT_CLICK_BLOCK) return;
                 if(e.getPlayer() != player) return;
 
-                EquipmentSlot eq = e.getHand();
-                ItemStack is = e.getItem();
+                Player pl = e.getPlayer();
+                Action action = e.getAction();
+                ItemStack item = e.getItem();
 
-                if(eq == null) return;
-                if(is == null) return;
+                if(item == null) return;
 
                 e.setCancelled(true);
 
-                if(e.getHand().equals(EquipmentSlot.OFF_HAND)) return;
+                boolean rightClick = action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK);
 
-                if(is.getType() == Material.BLAZE_ROD) {
-                    if(eq == EquipmentSlot.HAND) {
-                        if(e.getAction() == Action.RIGHT_CLICK_AIR) {
-                            session.setPos1(player.getLocation());
-                            player.sendMessage("set pos 1 to " + session.getPos1());
-                        }
-                        if(e.getAction() == Action.LEFT_CLICK_AIR) {
-                            session.setPos2(player.getLocation());
-                            player.sendMessage("set pos 2 to " + session.getPos2());
-                        }
+                if(item.getType() == Material.BLAZE_ROD) {
+                    if(rightClick) {
+                        session.setPos1(player.getLocation());
+                        String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_BUILDER_LOCATION, new HashMap<String, String>() {
+                            {
+                                put("LOCATION", TranslationUtil.readableLocation(player.getLocation(), true, false));
+                                put("TYPE", "Position 1");
+                            }
+                        });
+                        player.sendMessage(TranslationUtil.getPrefix() + msg);
                     }
-                } else if(is.getType() == Material.BLAZE_POWDER) {
-                    if(eq == EquipmentSlot.HAND) {
-                        if (e.getAction() == Action.RIGHT_CLICK_AIR) {
-                            session.setSpawn(player.getLocation());
-                            player.sendMessage("set spawn to " + player.getLocation());
-                        }
+                    if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {
+                        session.setPos2(player.getLocation());
+                        String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_BUILDER_LOCATION, new HashMap<String, String>() {
+                            {
+                                put("LOCATION", TranslationUtil.readableLocation(player.getLocation(), true, false));
+                                put("TYPE", "Position 2");
+                            }
+                        });
+                        player.sendMessage(TranslationUtil.getPrefix() + msg);
                     }
-                } else if(is.getType() == Material.LIME_DYE) {
+                } else if(item.getType() == Material.NETHER_STAR) {
+                    if (rightClick) {
+                        session.setSpawn(player.getLocation());
+                        String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_BUILDER_LOCATION, new HashMap<String, String>() {
+                            {
+                                put("LOCATION", TranslationUtil.readableLocation(player.getLocation(), true, false));
+                                put("TYPE", "Spawn");
+                            }
+                        });
+                        player.sendMessage(TranslationUtil.getPrefix() + msg);
+                    }
+                } else if(item.getType() == Material.LIME_DYE) {
                     unregisterAll();
                     sessions.remove(world);
 
                     Region region = new Region(session.getPos1(), session.getPos2());
                     ArenaManager.registerArena(new Arena(session.getArenaName(), region, session.getSpawn()));
 
-                    player.sendMessage("session builder complete");
+                    String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_CREATE_SUCCESS, new HashMap<String, String>() {
+                        {
+                            put("ARENA", session.getArenaName());
+                        }
+                    });
+
+                    player.sendMessage(TranslationUtil.getPrefix() + msg);
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+                    session.restoreInventory();
 
                 }
             }
