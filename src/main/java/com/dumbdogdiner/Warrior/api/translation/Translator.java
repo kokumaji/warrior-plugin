@@ -2,6 +2,8 @@ package com.dumbdogdiner.Warrior.api.translation;
 
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,8 +15,10 @@ import java.util.Map;
 
 public class Translator {
 
-    private static final FileConfiguration C = Warrior.getInstance().getConfig();
     private Plugin owner;
+
+    @Getter @Setter
+    private YamlConfiguration languageFile;
 
     public Translator(Plugin plugin, FileConfiguration conf) throws IOException {
         this.owner = plugin;
@@ -32,19 +36,17 @@ public class Translator {
             if(!langFile.exists())
                 owner.saveResource("translation/messages.en_US.yml", true);
         }
-    }
 
-    public YamlConfiguration getLanguageFile() {
-        File f = new File(owner.getDataFolder(), "translation/messages.en_US.yml");
-        return YamlConfiguration.loadConfiguration(f);
+        File f = new File(plugin.getDataFolder(), "translation/messages.en_US.yml");
+        this.languageFile = YamlConfiguration.loadConfiguration(f);
+
     }
 
     public String translate(String stringPath, boolean addPluginPrefix) {
-        YamlConfiguration config = getLanguageFile();
-        if(config.getString(stringPath) != null) {
-            String msg = TranslationUtil.translateColor(config.getString(stringPath));
+        if(languageFile.getString(stringPath) != null) {
+            String msg = TranslationUtil.translateColor(languageFile.getString(stringPath));
             if(addPluginPrefix) {
-                msg = TranslationUtil.getPrefix() + " " + msg;
+                msg = TranslationUtil.getPrefix() + msg;
             }
             return msg;
         }
@@ -60,10 +62,9 @@ public class Translator {
     }
 
     public String translate(String stringPath, Map<String, String> values) {
-        YamlConfiguration config = getLanguageFile();
-        if(config.get(stringPath) != null) {
+        if(languageFile.get(stringPath) != null) {
             StrSubstitutor sub = new StrSubstitutor(values, "{", "}");
-            String result = sub.replace(config.getString(stringPath));
+            String result = sub.replace(languageFile.getString(stringPath));
 
             return TranslationUtil.translateColor(result);
         }

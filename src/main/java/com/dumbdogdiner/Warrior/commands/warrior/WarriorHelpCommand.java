@@ -3,6 +3,7 @@ package com.dumbdogdiner.Warrior.commands.warrior;
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,13 @@ public class WarriorHelpCommand implements SubCommand {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         if(args.length > 1) return false;
-        sender.sendMessage(TranslationUtil.prettyMessage(commands));
+
+        if(sender instanceof Player) sender.sendMessage(TranslationUtil.prettyMessage(commands));
+        else for (String s : commands) {
+            if(s.equals(" ")) continue;
+            sender.sendMessage(TranslationUtil.translateColor(s));
+        }
+
         return true;
     }
 

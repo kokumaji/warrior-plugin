@@ -18,4 +18,11 @@ public class ArenaManager {
         return new ArrayList<>(arenaMap.values());
     }
 
+    public static Arena get(String arenaName) {
+        for(Arena a : arenaMap.values()) {
+            if(a.getName().equalsIgnoreCase(arenaName)) return a;
+        }
+
+        return null;
+    }
 }

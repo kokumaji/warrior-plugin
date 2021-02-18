@@ -2,25 +2,43 @@ package com.dumbdogdiner.Warrior.api.arena;
 
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.WarriorUser;
+import com.dumbdogdiner.Warrior.api.translation.Constants;
+import com.dumbdogdiner.Warrior.managers.ArenaManager;
+import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 
 @Getter @Setter
 public class ArenaSession {
 
+    public enum SessionResult {
+        CANCEL,
+        CONFIRM
+    }
+
+    public enum PositionType {
+        LOC1,
+        LOC2,
+        SPAWN
+    }
+
+    private Listener listener;
 
     private WarriorUser sessionUser;
     private String arenaName;
@@ -42,6 +60,19 @@ public class ArenaSession {
         inventoryCapture = user.getBukkitPlayer().getInventory().getContents();
     }
 
+    public void setPosition(PositionType type) {
+        if(type.equals(PositionType.LOC1)) setPos1(sessionUser.getBukkitPlayer().getLocation());
+        if(type.equals(PositionType.LOC2)) setPos2(sessionUser.getBukkitPlayer().getLocation());
+        if(type.equals(PositionType.SPAWN)) setSpawn(sessionUser.getBukkitPlayer().getLocation());
+        String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_BUILDER_LOCATION, new HashMap<String, String>() {
+            {
+                put("LOCATION", TranslationUtil.readableLocation(sessionUser.getBukkitPlayer().getLocation(), true, false));
+                put("TYPE", type.name());
+            }
+        });
+        sessionUser.getBukkitPlayer().sendMessage(TranslationUtil.getPrefix() + msg);
+    }
+
     protected void restoreInventory() {
         Player player = sessionUser.getBukkitPlayer();
         player.getInventory().clear();
@@ -51,9 +82,48 @@ public class ArenaSession {
         }
     }
 
-    public void startSession(Listener listener) {
+    public void startSession(WarriorUser user) {
+        this.listener = makeListener(user.getBukkitPlayer());
         Bukkit.getPluginManager().registerEvents(listener, Warrior.getInstance());
         giveSessionItems(this.sessionUser.getBukkitPlayer());
+    }
+
+    public void endSession(SessionResult result) {
+        PlayerInteractEvent.getHandlerList().unregister(listener);
+        PlayerQuitEvent.getHandlerList().unregister(listener);
+        PlayerRespawnEvent.getHandlerList().unregister(listener);
+        PlayerChangedWorldEvent.getHandlerList().unregister(listener);
+        PlayerDropItemEvent.getHandlerList().unregister(listener);
+        InventoryClickEvent.getHandlerList().unregister(listener);
+
+        if(result.equals(SessionResult.CANCEL)) {
+            ArenaBuilder.getSessions().remove(world);
+
+            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_CREATE_CANCEL, new HashMap<>() {
+                {
+                    put("ARENA", getArenaName());
+                }
+            });
+
+            sessionUser.getBukkitPlayer().sendMessage(TranslationUtil.getPrefix() + msg);
+            sessionUser.getBukkitPlayer().playSound(sessionUser.getBukkitPlayer().getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5f, 1f);
+            restoreInventory();
+        } else if(result.equals(SessionResult.CONFIRM)) {
+            ArenaBuilder.getSessions().remove(world);
+
+            Region region = new Region(getPos1(), getPos2());
+            ArenaManager.registerArena(new Arena(getArenaName(), region, getSpawn()));
+
+            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_CREATE_SUCCESS, new HashMap<String, String>() {
+                {
+                    put("ARENA", getArenaName());
+                }
+            });
+
+            sessionUser.getBukkitPlayer().sendMessage(TranslationUtil.getPrefix() + msg);
+            sessionUser.getBukkitPlayer().playSound(sessionUser.getBukkitPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 1f);
+            restoreInventory();
+        }
     }
 
     private void giveSessionItems(Player player) {
@@ -83,5 +153,102 @@ public class ArenaSession {
 
         player.getInventory().setItem(7, confirmOut);
 
+        ItemStack cancelOut = new ItemStack(Material.BARRIER, 1);
+        ItemMeta cancelMeta = cancelOut.getItemMeta();
+        cancelMeta.setDisplayName("§8» §c§lCancel §8«");
+        cancelMeta.setLore(Collections.singletonList("§fRight-Click §7to cancel"));
+        cancelOut.setItemMeta(cancelMeta);
+
+        player.getInventory().setItem(8, cancelOut);
+
+    }
+
+    public Listener makeListener(Player player) {
+        return new Listener() {
+            @EventHandler
+            public void onClick(PlayerInteractEvent e) {
+                if(e.getHand() == EquipmentSlot.OFF_HAND) return;
+                if(e.getHand() == EquipmentSlot.OFF_HAND && e.getAction() == Action.RIGHT_CLICK_BLOCK) return;
+                if(e.getPlayer() != player) return;
+
+                Player pl = e.getPlayer();
+                Action action = e.getAction();
+                ItemStack item = e.getItem();
+
+                if(item == null) return;
+
+                e.setCancelled(true);
+
+                boolean rightClick = action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK);
+
+                if(item.getType() == Material.BLAZE_ROD) {
+                    if(rightClick) {
+                        setPosition(PositionType.LOC1);
+                    }
+                    if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {
+                        setPosition(PositionType.LOC2);
+                    }
+
+                    player.playSound(player.getLocation(), Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, 0.5f, 1f);
+                } else if(item.getType() == Material.NETHER_STAR) {
+                    if (rightClick) {
+                        setPosition(PositionType.SPAWN);
+                    }
+
+                    player.playSound(player.getLocation(), Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, 0.5f, 1f);
+                } else if(item.getType() == Material.LIME_DYE) {
+                    if(getSpawn() == null || (getPos1() == null || getPos2() == null)) {
+                        String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_SETUP_INCOMPLETE, true);
+
+                        player.sendMessage(msg);
+                        player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5f, 1f);
+                        return;
+                    }
+                    endSession(SessionResult.CONFIRM);
+                } else if(item.getType() == Material.BARRIER) {
+                    endSession(SessionResult.CANCEL);
+                }
+            }
+
+            private void unregisterAll() {
+                PlayerInteractEvent.getHandlerList().unregister(listener);
+                PlayerQuitEvent.getHandlerList().unregister(listener);
+                PlayerRespawnEvent.getHandlerList().unregister(listener);
+                PlayerChangedWorldEvent.getHandlerList().unregister(listener);
+                PlayerDropItemEvent.getHandlerList().unregister(listener);
+                InventoryClickEvent.getHandlerList().unregister(listener);
+            }
+
+            @EventHandler
+            public void onDrop(PlayerDropItemEvent e) {
+                if(e.getPlayer() != player) return;
+                e.setCancelled(true);
+            }
+
+            @EventHandler
+            public void onInventoryMove(InventoryClickEvent e) {
+                if(e.getWhoClicked() != player) return;
+                e.setCancelled(true);
+            }
+
+            @EventHandler
+            public void onQuit(PlayerQuitEvent e) {
+                if(e.getPlayer() != player) return;
+                endSession(SessionResult.CANCEL);
+            }
+
+            @EventHandler
+            public void onRespawn(PlayerRespawnEvent e) {
+                if(e.getPlayer() != player) return;
+                endSession(SessionResult.CANCEL);
+            }
+
+            @EventHandler
+            public void onWorldChange(PlayerChangedWorldEvent e) {
+                if(e.getPlayer() != player) return;
+                endSession(SessionResult.CANCEL);
+            }
+
+        };
     }
 }

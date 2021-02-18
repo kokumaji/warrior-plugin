@@ -66,6 +66,10 @@ dependencies {
 // vv Configuring the Gradle plugins below vv
 tasks.build.dependsOn tasks.shadowJar
 
+tasks.withType(Jar) {
+    destinationDirectory = file("$rootDir/debug/plugins")
+}
+
 shadowJar {
     archiveClassifier.set('')
     project.configurations.implementation.canBeResolved = true

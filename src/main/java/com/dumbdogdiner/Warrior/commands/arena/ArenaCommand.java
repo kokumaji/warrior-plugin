@@ -7,16 +7,23 @@ import com.dumbdogdiner.Warrior.api.arena.ArenaBuilder;
 import com.dumbdogdiner.Warrior.api.arena.ArenaSession;
 import com.dumbdogdiner.Warrior.api.command.AsyncCommand;
 import com.dumbdogdiner.Warrior.api.command.ExitStatus;
+import com.dumbdogdiner.Warrior.api.command.SubCommand;
+import com.dumbdogdiner.Warrior.api.translation.Constants;
+import com.dumbdogdiner.Warrior.api.translation.Translator;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
+import com.dumbdogdiner.Warrior.utils.DefaultMessages;
+import com.dumbdogdiner.Warrior.utils.TranslationUtil;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class ArenaCommand extends AsyncCommand {
+public class ArenaCommand extends AsyncCommand implements TabCompleter {
 
     public ArenaCommand(String commmandName, Plugin plugin) {
         super(commmandName, plugin);
@@ -27,18 +34,43 @@ public class ArenaCommand extends AsyncCommand {
 
     @Override
     public ExitStatus executeCommand(CommandSender sender, String commandLabel, String[] args) {
-        Player player = (Player) sender;
-        if(args[0].equalsIgnoreCase("create")) {
-            String name = args[1];
-            ArenaSession session = new ArenaSession(new WarriorUser(player), name);
+        Translator t = Warrior.getTranslator();
 
-            //start session
-            ArenaBuilder.registerSession(player.getWorld(), session);
+        if(!sender.hasPermission(Objects.requireNonNull(getPermission()))) return ExitStatus.PERMISSION_ERROR;
 
-        } else if(args[0].equalsIgnoreCase("list")) {
-            List<String> arenaNames = ArenaManager.getArenas().stream().map(Arena::getName).collect(Collectors.toList());
-            player.sendMessage(String.join(",", arenaNames));
+        if(args.length == 0) {
+            return ExitStatus.SYNTAX_ERROR;
+        } else {
+            String arg = args[0].toLowerCase();
+            if(getSubCommands().get(arg) != null) {
+                SubCommand cmd = getSubCommands().get(arg);
+
+                if(!sender.hasPermission(cmd.getPermission())) return ExitStatus.PERMISSION_ERROR;
+
+                if(!cmd.execute(sender, commandLabel, args)) {
+                    String msg = t.applyPlaceholders(DefaultMessages.SUBCMD_SYNTAX, new HashMap<>() {
+
+                        {
+                            put("SUB_SYNTAX", cmd.getSyntax());
+                        }
+                    });
+
+                    if(sender instanceof Player) {
+                        Player p = (Player) sender;
+                        p.sendMessage(TranslationUtil.prettyMessage(msg));
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
+                    } else {
+                        sender.sendMessage(msg.replace("\n", " "));
+                    }
+
+                    return ExitStatus.SYNTAX_ERROR;
+                }
+
+            } else {
+                return ExitStatus.SYNTAX_ERROR;
+            }
         }
+
         return ExitStatus.EXECUTE_SUCCESS;
     }
 
@@ -55,6 +87,22 @@ public class ArenaCommand extends AsyncCommand {
     @Override
     public void onSyntaxError(CommandSender sender, String label, String[] args) {
 
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if(args.length == 1)
+            return getSubCommands().values().stream().map(SubCommand::getAlias).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+
+        if(args.length > 1) {
+            SubCommand subCmd = getSubCommands().get(args[0]);
+
+            if(!(subCmd == null)) {
+                return subCmd.getArguments(sender, args);
+            }
+        }
+
+        return new ArrayList<>();
     }
 
 }

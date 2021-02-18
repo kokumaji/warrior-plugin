@@ -4,6 +4,7 @@ import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.command.AsyncCommand;
 import com.dumbdogdiner.Warrior.api.command.ExitStatus;
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
+import com.dumbdogdiner.Warrior.api.translation.ConsoleColor;
 import com.dumbdogdiner.Warrior.utils.DefaultMessages;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import com.dumbdogdiner.Warrior.api.translation.Translator;
@@ -44,66 +45,65 @@ public class WarriorCommand extends AsyncCommand implements TabCompleter {
     @Override
     public void onSyntaxError(CommandSender sender, String label, String[] args) {
         if(args.length > 1) return;
+        Translator t = Warrior.getTranslator();
+        String msg = t.applyPlaceholders(DefaultMessages.COMMAND_SYNTAX_ERROR, new HashMap<>() {
+            {
+                put("HELP_CMD", "/warrior help");
+            }
+        });
 
         if(sender instanceof Player) {
             Player p = (Player) sender;
-            Translator t = Warrior.getTranslator();
-            String msg = t.applyPlaceholders(DefaultMessages.COMMAND_SYNTAX_ERROR, new HashMap<>() {
-                {
-                    put("HELP_CMD", "/warrior help");
-                }
-            });
-
             p.sendMessage(TranslationUtil.prettyMessage(msg));
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
         } else {
-            sender.sendMessage(TranslationUtil.translateColor("&cWrong Command Syntax! &7Type /warrior help for commands!"));
+            sender.sendMessage(TranslationUtil.translateColor(ConsoleColor.RED + TranslationUtil.translateColor(msg.replace("\n", " ")) + ConsoleColor.RESET));
         }
 
     }
 
     @Override
     public ExitStatus executeCommand(CommandSender sender, String commandLabel, String[] args) {
-        if(sender instanceof Player) {
-            Player p = (Player) sender;
-            Translator t = Warrior.getInstance().getTranslator();
+        Translator t = Warrior.getTranslator();
 
-            if(!p.hasPermission(Objects.requireNonNull(getPermission()))) return ExitStatus.PERMISSION_ERROR;
+        if(!sender.hasPermission(Objects.requireNonNull(getPermission()))) return ExitStatus.PERMISSION_ERROR;
 
-            if(args.length == 0) {
-                SubCommand helpCmd = getSubCommands().get("help");
-                if(helpCmd != null) helpCmd.execute(sender, commandLabel, args);
-                return ExitStatus.EXECUTE_SUCCESS;
-            } else {
-                String arg = args[0].toLowerCase();
-                if(getSubCommands().get(arg) != null) {
-                    SubCommand cmd = getSubCommands().get(arg);
+        if(args.length == 0) {
+            SubCommand helpCmd = getSubCommands().get("help");
+            if(helpCmd != null) helpCmd.execute(sender, commandLabel, args);
+            return ExitStatus.EXECUTE_SUCCESS;
+        } else {
+            String arg = args[0].toLowerCase();
+            if(getSubCommands().get(arg) != null) {
+                SubCommand cmd = getSubCommands().get(arg);
 
-                    if(!p.hasPermission(cmd.getPermission())) return ExitStatus.PERMISSION_ERROR;
+                if(!sender.hasPermission(cmd.getPermission())) return ExitStatus.PERMISSION_ERROR;
 
-                    if(!cmd.execute(sender, commandLabel, args)) {
-                        String msg = t.applyPlaceholders(DefaultMessages.SUBCMD_SYNTAX, new HashMap<>() {
+                if(!cmd.execute(sender, commandLabel, args)) {
+                    String msg = t.applyPlaceholders(DefaultMessages.SUBCMD_SYNTAX, new HashMap<>() {
 
-                            {
-                                put("SUB_SYNTAX", cmd.getSyntax());
-                            }
-                        });
+                        {
+                            put("SUB_SYNTAX", cmd.getSyntax());
+                        }
+                    });
 
+                    if(sender instanceof Player) {
+                        Player p = (Player) sender;
                         p.sendMessage(TranslationUtil.prettyMessage(msg));
-
                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
-                        return ExitStatus.SYNTAX_ERROR;
+                    } else {
+                        sender.sendMessage(msg.replace("\n", " "));
                     }
 
-                    return ExitStatus.EXECUTE_SUCCESS;
-
-                } else {
                     return ExitStatus.SYNTAX_ERROR;
                 }
+
+            } else {
+                return ExitStatus.SYNTAX_ERROR;
             }
         }
 
-        return ExitStatus.GENERAL_ERROR;
+        return ExitStatus.EXECUTE_SUCCESS;
 
     }
 
