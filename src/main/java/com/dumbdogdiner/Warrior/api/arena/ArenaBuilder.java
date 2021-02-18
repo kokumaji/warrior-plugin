@@ -12,17 +12,18 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
 public class ArenaBuilder {
 
     @Getter
-    private static HashMap<World, ArenaSession> sessions = new HashMap<>();
+    private static HashMap<World, ArenaBuilderSession> sessions = new HashMap<>();
 
     private static Translator TR = Warrior.getTranslator();
 
-    public static void registerSession(World world, ArenaSession session) {
+    public static void registerSession(World world, @NotNull ArenaBuilderSession session) {
         Player player = session.getSessionUser().getBukkitPlayer();
         if(sessions.containsKey(world)) {
             String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_SETUP_IN_PROGRESS, true);
@@ -37,15 +38,15 @@ public class ArenaBuilder {
         session.startSession(session.getSessionUser());
     }
 
-    public static ArenaSession getSession(WarriorUser user) {
-        for(ArenaSession session : sessions.values()) {
+    public static ArenaBuilderSession getSession(WarriorUser user) {
+        for(ArenaBuilderSession session : sessions.values()) {
             if(session.getSessionUser().getBukkitPlayer().getUniqueId().equals(user.getBukkitPlayer().getUniqueId())) return session;
         }
 
         return null;
     }
 
-    public static boolean setPosition(Location loc, ArenaSession.PositionType type) {
+    public static boolean setPosition(Location loc, ArenaBuilderSession.PositionType type) {
         if(sessions.get(loc.getWorld()) == null) return false;
         sessions.get(loc.getWorld()).setPosition(type);
         return true;

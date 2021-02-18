@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 @Getter @Setter
-public class ArenaSession {
+public class ArenaBuilderSession {
 
     public enum SessionResult {
         CANCEL,
@@ -53,7 +53,7 @@ public class ArenaSession {
     private Location pos2;
     private Location spawn;
 
-    public ArenaSession(WarriorUser user, String arenaName) {
+    public ArenaBuilderSession(WarriorUser user, String arenaName) {
         this.sessionUser = user;
         this.arenaName = arenaName;
         this.world = user.getBukkitPlayer().getWorld();
@@ -163,7 +163,7 @@ public class ArenaSession {
 
     }
 
-    public Listener makeListener(Player player) {
+    protected Listener makeListener(Player player) {
         return new Listener() {
             @EventHandler
             public void onClick(PlayerInteractEvent e) {
@@ -208,15 +208,6 @@ public class ArenaSession {
                 } else if(item.getType() == Material.BARRIER) {
                     endSession(SessionResult.CANCEL);
                 }
-            }
-
-            private void unregisterAll() {
-                PlayerInteractEvent.getHandlerList().unregister(listener);
-                PlayerQuitEvent.getHandlerList().unregister(listener);
-                PlayerRespawnEvent.getHandlerList().unregister(listener);
-                PlayerChangedWorldEvent.getHandlerList().unregister(listener);
-                PlayerDropItemEvent.getHandlerList().unregister(listener);
-                InventoryClickEvent.getHandlerList().unregister(listener);
             }
 
             @EventHandler

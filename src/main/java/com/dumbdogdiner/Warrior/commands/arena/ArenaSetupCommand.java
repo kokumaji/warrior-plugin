@@ -3,16 +3,14 @@ package com.dumbdogdiner.Warrior.commands.arena;
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.WarriorUser;
 import com.dumbdogdiner.Warrior.api.arena.ArenaBuilder;
-import com.dumbdogdiner.Warrior.api.arena.ArenaSession;
+import com.dumbdogdiner.Warrior.api.arena.ArenaBuilderSession;
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
 
 import com.dumbdogdiner.Warrior.api.translation.Constants;
-import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ArenaSetupCommand implements SubCommand {
@@ -35,7 +33,7 @@ public class ArenaSetupCommand implements SubCommand {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         WarriorUser user = new WarriorUser((Player)sender);
-        ArenaSession session = ArenaBuilder.getSession(user);
+        ArenaBuilderSession session = ArenaBuilder.getSession(user);
 
         if(session == null) {
             String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_NO_SETUP_RUNNING, true);
@@ -43,15 +41,15 @@ public class ArenaSetupCommand implements SubCommand {
             return true;
         }
         if(args[1].equalsIgnoreCase("cancel")) {
-            session.endSession(ArenaSession.SessionResult.CANCEL);
+            session.endSession(ArenaBuilderSession.SessionResult.CANCEL);
         } else if(args[1].equalsIgnoreCase("pos1")) {
-            ArenaBuilder.setPosition(user.getBukkitPlayer().getLocation(), ArenaSession.PositionType.LOC1);
+            ArenaBuilder.setPosition(user.getBukkitPlayer().getLocation(), ArenaBuilderSession.PositionType.LOC1);
         } else if(args[1].equalsIgnoreCase("pos2")) {
-            ArenaBuilder.setPosition(user.getBukkitPlayer().getLocation(), ArenaSession.PositionType.LOC2);
+            ArenaBuilder.setPosition(user.getBukkitPlayer().getLocation(), ArenaBuilderSession.PositionType.LOC2);
         } else if(args[1].equalsIgnoreCase("spawn")) {
-            ArenaBuilder.setPosition(user.getBukkitPlayer().getLocation(), ArenaSession.PositionType.SPAWN);
+            ArenaBuilder.setPosition(user.getBukkitPlayer().getLocation(), ArenaBuilderSession.PositionType.SPAWN);
         } else if(args[1].equalsIgnoreCase("confirm")) {
-            session.endSession(ArenaSession.SessionResult.CONFIRM);
+            session.endSession(ArenaBuilderSession.SessionResult.CONFIRM);
         }
         return true;
     }

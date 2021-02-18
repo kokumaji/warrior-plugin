@@ -7,6 +7,7 @@ public class Constants {
         public static final String ERROR_SYNTAX = "command-messages.syntax-error";
         public static final String ERROR_SUBCMD = "command-messages.subcmd-syntax";
         public static final String ERROR_PERM = "command-messages.permission-error";
+        public static final String ERROR_CLIENT_CMD = "command-messages.client-only-error";
 
         public static final String ARENA_BUILDER_LOCATION = "command-messages.arena-set-location";
         public static final String ARENA_CREATE_SUCCESS = "command-messages.arena-create-success";
@@ -18,6 +19,7 @@ public class Constants {
         public static final String CMD_RELOAD_LANGUAGE = "command-messages.reload-language";
         public static final String ARENA_SETUP_INCOMPLETE = "command-messages.arena-setup-incomplete";
         public static final String ARENA_NO_SETUP_RUNNING = "command-messages.arena-no-setup-running";
+
     }
 
 }

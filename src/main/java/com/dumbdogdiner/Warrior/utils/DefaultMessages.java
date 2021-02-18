@@ -6,6 +6,7 @@ import com.dumbdogdiner.Warrior.api.translation.Translator;
 
 public class DefaultMessages {
 
+    public static final String COMMAND_CLIENT_ONLY = Warrior.getTranslator().translate(Constants.Lang.ERROR_CLIENT_CMD, false);
     public static String COMMAND_SYNTAX_ERROR = Warrior.getTranslator().translate(Constants.Lang.ERROR_SYNTAX, false);
     public static String SUBCMD_SYNTAX = Warrior.getTranslator().translate(Constants.Lang.ERROR_SUBCMD, false);
     public static String COMMAND_PERM_ERROR = Warrior.getTranslator().translate(Constants.Lang.ERROR_PERM, false);

@@ -3,6 +3,7 @@ package com.dumbdogdiner.Warrior;
 import com.dumbdogdiner.Warrior.commands.DebugCommand;
 import com.dumbdogdiner.Warrior.commands.arena.ArenaCommand;
 import com.dumbdogdiner.Warrior.commands.arena.ArenaCreateCommand;
+import com.dumbdogdiner.Warrior.commands.arena.ArenaJoinCommand;
 import com.dumbdogdiner.Warrior.commands.arena.ArenaSetupCommand;
 import com.dumbdogdiner.Warrior.commands.warrior.*;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
@@ -54,6 +55,7 @@ public class Warrior extends JavaPlugin {
                 .addSubCommand(new WarriorReloadCommand()));
         cmds.add(new ArenaCommand("arena", this)
                 .addSubCommand(new ArenaCreateCommand())
+                .addSubCommand(new ArenaJoinCommand())
                 .addSubCommand(new ArenaSetupCommand()));
         cMap.registerAll(this.getName().toLowerCase(), cmds);
     }

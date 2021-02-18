@@ -1,16 +1,11 @@
 package com.dumbdogdiner.Warrior.commands.arena;
 
 import com.dumbdogdiner.Warrior.Warrior;
-import com.dumbdogdiner.Warrior.api.WarriorUser;
-import com.dumbdogdiner.Warrior.api.arena.Arena;
-import com.dumbdogdiner.Warrior.api.arena.ArenaBuilder;
-import com.dumbdogdiner.Warrior.api.arena.ArenaSession;
 import com.dumbdogdiner.Warrior.api.command.AsyncCommand;
 import com.dumbdogdiner.Warrior.api.command.ExitStatus;
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
-import com.dumbdogdiner.Warrior.api.translation.Constants;
+import com.dumbdogdiner.Warrior.api.translation.ConsoleColor;
 import com.dumbdogdiner.Warrior.api.translation.Translator;
-import com.dumbdogdiner.Warrior.managers.ArenaManager;
 import com.dumbdogdiner.Warrior.utils.DefaultMessages;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import org.bukkit.Sound;
@@ -27,14 +22,17 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
 
     public ArenaCommand(String commmandName, Plugin plugin) {
         super(commmandName, plugin);
-        setDescription("Plugin Main Command");
-        setPermission("warrior.command.admin");
+        setDescription("Manage/Join an Arena.");
+        setPermission("warrior.command.arena");
         setTabCompleter(this);
     }
 
     @Override
     public ExitStatus executeCommand(CommandSender sender, String commandLabel, String[] args) {
         Translator t = Warrior.getTranslator();
+
+        if(!(sender instanceof Player))
+            return ExitStatus.GENERAL_ERROR;
 
         if(!sender.hasPermission(Objects.requireNonNull(getPermission()))) return ExitStatus.PERMISSION_ERROR;
 
@@ -55,13 +53,9 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
                         }
                     });
 
-                    if(sender instanceof Player) {
-                        Player p = (Player) sender;
-                        p.sendMessage(TranslationUtil.prettyMessage(msg));
-                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
-                    } else {
-                        sender.sendMessage(msg.replace("\n", " "));
-                    }
+                    Player p = (Player) sender;
+                    p.sendMessage(TranslationUtil.prettyMessage(msg));
+                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
 
                     return ExitStatus.SYNTAX_ERROR;
                 }
@@ -76,17 +70,36 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
 
     @Override
     public void onPermissionError(CommandSender sender, String label, String[] args) {
+        if(sender instanceof Player) {
+            Player p = (Player) sender;
 
+            p.sendMessage(TranslationUtil.prettyMessage(DefaultMessages.COMMAND_PERM_ERROR));
+            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
+        }
     }
 
     @Override
     public void onError(CommandSender sender, String label, String[] args) {
-
+        sender.sendMessage(DefaultMessages.COMMAND_CLIENT_ONLY);
     }
 
     @Override
     public void onSyntaxError(CommandSender sender, String label, String[] args) {
+        if(args.length > 1) return;
+        Translator t = Warrior.getTranslator();
+        String msg = t.applyPlaceholders(DefaultMessages.COMMAND_SYNTAX_ERROR, new HashMap<>() {
+            {
+                put("HELP_CMD", "/warrior help");
+            }
+        });
 
+        if(sender instanceof Player) {
+            Player p = (Player) sender;
+            p.sendMessage(TranslationUtil.prettyMessage(msg));
+            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
+        } else {
+            sender.sendMessage(TranslationUtil.translateColor(ConsoleColor.RED + TranslationUtil.translateColor(msg.replace("\n", " ")) + ConsoleColor.RESET));
+        }
     }
 
     @Override

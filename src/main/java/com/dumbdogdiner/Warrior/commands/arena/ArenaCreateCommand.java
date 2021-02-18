@@ -4,8 +4,8 @@ import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.WarriorUser;
 import com.dumbdogdiner.Warrior.api.arena.Arena;
 import com.dumbdogdiner.Warrior.api.arena.ArenaBuilder;
-import com.dumbdogdiner.Warrior.api.arena.ArenaSession;
-import com.dumbdogdiner.Warrior.api.command.ExitStatus;
+import com.dumbdogdiner.Warrior.api.arena.ArenaBuilderSession;
+
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
 import com.dumbdogdiner.Warrior.api.translation.Constants;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
@@ -34,9 +34,13 @@ public class ArenaCreateCommand implements SubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if(args.length != 2) {
+            return false;
+        }
+
         Player player = (Player) sender;
         String name = args[1];
-        ArenaSession session = new ArenaSession(new WarriorUser(player), name);
+        ArenaBuilderSession session = new ArenaBuilderSession(new WarriorUser(player), name);
 
         Arena arena = ArenaManager.get(args[1]);
 
@@ -50,7 +54,6 @@ public class ArenaCreateCommand implements SubCommand {
             return true;
         }
 
-        //start session
         ArenaBuilder.registerSession(player.getWorld(), session);
         return true;
     }
