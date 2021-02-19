@@ -4,6 +4,7 @@ import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.arena.Arena;
 import com.dumbdogdiner.Warrior.api.models.ArenaModel;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,8 +14,6 @@ public class JSONUtil {
 
     private static final String DATA_FOLDER_PATH = Warrior.getInstance().getDataFolder().getPath() + "/data";
     private static final String[] subFolderNames = {"/arenas", "/holograms", "/npcData"};
-
-    private static Gson gson = new Gson();
 
     public static boolean fileExists(DataType type, String fileName) {
         File mainFolder = new File(DATA_FOLDER_PATH);
@@ -51,8 +50,10 @@ public class JSONUtil {
         String filePath = DATA_FOLDER_PATH + subFolderNames[0] + "/" + arena.getName() + ".json";
         ArenaModel arenaJson = new ArenaModel(arena);
 
-        try {
-            gson.toJson(arenaJson, new FileWriter(filePath));
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try(FileWriter writer =  new FileWriter(filePath)) {
+            gson.toJson(arenaJson, writer);
+            writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

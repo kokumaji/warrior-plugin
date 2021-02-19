@@ -8,18 +8,19 @@ import org.bukkit.Location;
 public class ArenaModel {
 
     @Getter
-    private LocationModel spawn;
-
-    @Getter
     private String name;
-
-    @Getter
-    private Region bounds;
-
     @Getter
     private boolean enabled;
 
-    public ArenaModel(LocationModel spawn, String name, Region bounds, boolean enabled) {
+
+    @Getter
+    private LocationModel spawn;
+    @Getter
+    private RegionModel bounds;
+
+
+
+    public ArenaModel(LocationModel spawn, String name, RegionModel bounds, boolean enabled) {
         this.spawn = spawn;
         this.name = name;
         this.bounds = bounds;
@@ -32,7 +33,7 @@ public class ArenaModel {
 
         this.spawn = new LocationModel(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getYaw(), loc.getYaw(), loc.getWorld().getName());
         this.name = arena.getName();
-        this.bounds = arena.getBounds();
+        this.bounds = new RegionModel(arena.getBounds().getLoc1(), arena.getBounds().getLoc2(), loc.getWorld().getName());
         this.enabled = arena.isEnabled();
     }
 }

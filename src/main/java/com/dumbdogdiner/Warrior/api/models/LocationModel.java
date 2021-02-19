@@ -26,4 +26,10 @@ public class LocationModel {
         this.world = world;
     }
 
+    public LocationModel(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
 }

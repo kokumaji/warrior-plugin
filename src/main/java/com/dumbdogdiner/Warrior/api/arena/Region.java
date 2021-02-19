@@ -14,7 +14,9 @@ public class Region {
     @Getter
     private final transient World world;
 
+    @Getter
     private transient Vector loc1;
+    @Getter
     private transient Vector loc2;
 
     @Getter
