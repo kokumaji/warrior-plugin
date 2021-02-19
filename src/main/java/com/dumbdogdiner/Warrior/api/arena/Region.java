@@ -12,10 +12,10 @@ import org.bukkit.util.Vector;
 public class Region {
 
     @Getter
-    private final World world;
+    private final transient World world;
 
-    private Vector loc1;
-    private Vector loc2;
+    private transient Vector loc1;
+    private transient Vector loc2;
 
     @Getter
     private int minX;

@@ -112,7 +112,10 @@ public class ArenaBuilderSession {
             ArenaBuilder.getSessions().remove(world);
 
             Region region = new Region(getPos1(), getPos2());
-            ArenaManager.registerArena(new Arena(getArenaName(), region, getSpawn()));
+            Arena a = new Arena(getArenaName(), region, getSpawn(), true);
+            ArenaManager.registerArena(a);
+            a.save();
+
 
             String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_CREATE_SUCCESS, new HashMap<String, String>() {
                 {
