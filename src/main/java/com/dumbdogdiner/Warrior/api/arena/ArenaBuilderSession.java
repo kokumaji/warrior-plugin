@@ -142,7 +142,7 @@ public class ArenaBuilderSession {
         ItemStack locationWand = new ItemStack(Material.BLAZE_ROD, 1);
         ItemMeta lwMeta = locationWand.getItemMeta();
         lwMeta.setDisplayName("§8» §3§lLocation Wand §8«");
-        lwMeta.setLore(Arrays.asList("§fRight-Click §7to set Position 1", "§fLeft-Click §7to set Position 2"));
+        lwMeta.setLore(Arrays.asList("§fLeft-Click §7to set Position 1", "§fRight-Click §7to set Position 2"));
         locationWand.setItemMeta(lwMeta);
 
         player.getInventory().setItem(1, locationWand);
