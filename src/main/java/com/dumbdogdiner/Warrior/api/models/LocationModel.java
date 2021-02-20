@@ -1,6 +1,7 @@
 package com.dumbdogdiner.Warrior.api.models;
 
 import lombok.Getter;
+import org.bukkit.util.Vector;
 
 public class LocationModel {
 
@@ -30,6 +31,12 @@ public class LocationModel {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public LocationModel(Vector vector) {
+        this.x = vector.getBlockX();
+        this.y = vector.getBlockY();
+        this.z = vector.getBlockZ();
     }
 
 }

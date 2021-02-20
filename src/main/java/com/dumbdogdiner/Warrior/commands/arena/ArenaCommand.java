@@ -104,18 +104,35 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if(args.length == 1)
-            return getSubCommands().values().stream().map(SubCommand::getAlias).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        List<String> options = new ArrayList<>();
+
+        if(args.length == 1) {
+            List<String> cmds = getSubCommands().values().stream().map(SubCommand::getAlias).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+            if(!args[0].equals("")) {
+                for(String s : cmds) {
+                    if(s.toLowerCase().startsWith(args[0].toLowerCase())) options.add(s);
+                }
+            } else {
+                options = cmds;
+            }
+        }
 
         if(args.length > 1) {
             SubCommand subCmd = getSubCommands().get(args[0]);
 
             if(!(subCmd == null)) {
-                return subCmd.getArguments(sender, args);
+                List<String> cmds = subCmd.getArguments(sender, args);
+                if(!args[1].equals("")) {
+                    for(String s : cmds) {
+                        if(s.toLowerCase().startsWith(args[1].toLowerCase())) options.add(s);
+                    }
+                } else {
+                    options = cmds;
+                }
             }
         }
 
-        return new ArrayList<>();
+        return options;
     }
 
 }

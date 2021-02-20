@@ -10,9 +10,11 @@ import com.dumbdogdiner.Warrior.api.command.SubCommand;
 import com.dumbdogdiner.Warrior.api.translation.Constants;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class ArenaCreateCommand implements SubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        if(args.length != 2) {
+        if(args.length < 2 || args[1].length() > 18) {
             return false;
         }
 
@@ -45,12 +47,13 @@ public class ArenaCreateCommand implements SubCommand {
         Arena arena = ArenaManager.get(args[1]);
 
         if(arena != null) {
-            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_ALREADY_EXISTS, new HashMap<String, String>() {
+            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_ALREADY_EXISTS, new HashMap<>() {
                 {
                     put("ARENA", arena.getName());
                 }
             });
             player.sendMessage(TranslationUtil.getPrefix() + msg);
+            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5f, 1f);
             return true;
         }
 
@@ -60,6 +63,6 @@ public class ArenaCreateCommand implements SubCommand {
 
     @Override
     public List<String> getArguments(CommandSender sender, String[] arguments) {
-        return null;
+        return new ArrayList<>();
     }
 }

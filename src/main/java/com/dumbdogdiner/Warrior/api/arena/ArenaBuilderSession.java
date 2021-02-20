@@ -33,9 +33,16 @@ public class ArenaBuilderSession {
     }
 
     public enum PositionType {
-        LOC1,
-        LOC2,
-        SPAWN
+        LOC1("Position 1"),
+        LOC2("Position 2"),
+        SPAWN("Spawn");
+
+        @Getter
+        private final String lang;
+
+        PositionType(String type) {
+            this.lang = type;
+        }
     }
 
     private Listener listener;
@@ -67,7 +74,7 @@ public class ArenaBuilderSession {
         String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_BUILDER_LOCATION, new HashMap<String, String>() {
             {
                 put("LOCATION", TranslationUtil.readableLocation(sessionUser.getBukkitPlayer().getLocation(), true, false));
-                put("TYPE", type.name());
+                put("TYPE", type.getLang());
             }
         });
         sessionUser.getBukkitPlayer().sendMessage(TranslationUtil.getPrefix() + msg);
@@ -174,7 +181,6 @@ public class ArenaBuilderSession {
                 if(e.getHand() == EquipmentSlot.OFF_HAND && e.getAction() == Action.RIGHT_CLICK_BLOCK) return;
                 if(e.getPlayer() != player) return;
 
-                Player pl = e.getPlayer();
                 Action action = e.getAction();
                 ItemStack item = e.getItem();
 
@@ -185,10 +191,11 @@ public class ArenaBuilderSession {
                 boolean rightClick = action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK);
 
                 if(item.getType() == Material.BLAZE_ROD) {
-                    if(rightClick) {
+                    if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {
                         setPosition(PositionType.LOC1);
                     }
-                    if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {
+
+                    if(rightClick) {
                         setPosition(PositionType.LOC2);
                     }
 

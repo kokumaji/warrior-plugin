@@ -13,5 +13,7 @@ command-messages:
   arena-create-cancel: "&cCancelled creation of Arena &b{ARENA}"
   setup-in-progress: "&cArena Setup already started!"
   arena-already-exists: "&7Arena &b{ARENA} &7already exists!"
+  arena-doesnt-exist: "&7Arena &b{ARENA} &7doesn't exist!"
+  arena-teleport: "&7Teleported to Arena &b{ARENA}"
   arena-setup-incomplete: "&7Can't create Arena! Setup is incomplete..."
   arena-no-setup-running: "&7Can't execute this command! There is no active arena setup running."

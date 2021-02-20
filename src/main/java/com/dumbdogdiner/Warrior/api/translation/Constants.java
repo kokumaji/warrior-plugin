@@ -20,6 +20,8 @@ public class Constants {
         public static final String ARENA_SETUP_INCOMPLETE = "command-messages.arena-setup-incomplete";
         public static final String ARENA_NO_SETUP_RUNNING = "command-messages.arena-no-setup-running";
 
+        public static final String ARENA_DOESNT_EXIST = "command-messages.arena-doesnt-exist";
+        public static final String ARENA_TELEPORT = "command-messages.arena-teleport";
     }
 
 }
