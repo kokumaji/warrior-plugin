@@ -1,11 +1,9 @@
 package com.dumbdogdiner.Warrior;
 
 import com.dumbdogdiner.Warrior.commands.DebugCommand;
-import com.dumbdogdiner.Warrior.commands.arena.ArenaCommand;
-import com.dumbdogdiner.Warrior.commands.arena.ArenaCreateCommand;
-import com.dumbdogdiner.Warrior.commands.arena.ArenaJoinCommand;
-import com.dumbdogdiner.Warrior.commands.arena.ArenaSetupCommand;
+import com.dumbdogdiner.Warrior.commands.arena.*;
 import com.dumbdogdiner.Warrior.commands.warrior.*;
+import com.dumbdogdiner.Warrior.listeners.PlayerListener;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import com.dumbdogdiner.Warrior.api.translation.Translator;
@@ -57,10 +55,13 @@ public class Warrior extends JavaPlugin {
         cmds.add(new ArenaCommand("arena", this)
                 .addSubCommand(new ArenaCreateCommand())
                 .addSubCommand(new ArenaJoinCommand())
-                .addSubCommand(new ArenaSetupCommand()));
+                .addSubCommand(new ArenaSetupCommand())
+                .addSubCommand(new ArenaLeaveCommand()));
         cMap.registerAll(this.getName().toLowerCase(), cmds);
 
         ArenaManager.loadArenas();
+
+        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
     }
 
     protected void getCommandMap() {
