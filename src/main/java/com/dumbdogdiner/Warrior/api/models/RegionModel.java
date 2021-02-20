@@ -1,12 +1,16 @@
 package com.dumbdogdiner.Warrior.api.models;
 
+import lombok.Getter;
 import org.bukkit.util.Vector;
 
 public class RegionModel {
 
+    @Getter
     LocationModel pos1;
+    @Getter
     LocationModel pos2;
 
+    @Getter
     String world;
 
     public RegionModel(Vector pos1, Vector pos2, String world) {

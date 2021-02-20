@@ -4,7 +4,10 @@
  */
 package com.dumbdogdiner.Warrior.api.arena;
 
+import com.dumbdogdiner.Warrior.api.models.LocationModel;
+import com.dumbdogdiner.Warrior.api.models.RegionModel;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
@@ -12,7 +15,7 @@ import org.bukkit.util.Vector;
 public class Region {
 
     @Getter
-    private final transient World world;
+    private transient World world;
 
     @Getter
     private transient Vector loc1;
@@ -43,6 +46,21 @@ public class Region {
         maxX = Math.max(pos1.getBlockX(), pos2.getBlockX());
         maxZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
 
+    }
+
+    public Region(RegionModel rgm) {
+        LocationModel pos1 = rgm.getPos1();
+        LocationModel pos2 = rgm.getPos2();
+        String worldName = rgm.getWorld();
+
+        this.loc1 = new Location(Bukkit.getWorld(worldName), pos1.getX(), pos1.getY(), pos1.getZ()).toVector();
+        this.loc2 = new Location(Bukkit.getWorld(worldName), pos2.getX(), pos2.getY(), pos2.getZ()).toVector();
+        this.world = Bukkit.getWorld(worldName);
+
+        minX = Math.min(loc1.getBlockX(), loc2.getBlockX());
+        minZ = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
+        maxX = Math.max(loc1.getBlockX(), loc2.getBlockX());
+        maxZ = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
     }
 
     public Vector center() {

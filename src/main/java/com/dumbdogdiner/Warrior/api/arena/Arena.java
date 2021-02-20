@@ -1,14 +1,22 @@
 package com.dumbdogdiner.Warrior.api.arena;
 
+import com.dumbdogdiner.Warrior.api.models.ArenaModel;
+import com.dumbdogdiner.Warrior.api.models.LocationModel;
+import com.dumbdogdiner.Warrior.api.models.RegionModel;
 import com.dumbdogdiner.Warrior.api.util.DataType;
 import com.dumbdogdiner.Warrior.api.util.JSONUtil;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
 import com.google.gson.Gson;
 
+import com.google.gson.stream.JsonReader;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Arena {
 
@@ -40,7 +48,19 @@ public class Arena {
     }
 
     public Arena(File file) {
-        //JsonReader reader = new JsonReader()
+        try(JsonReader reader = new JsonReader(new FileReader(file))) {
+            ArenaModel model = new Gson().fromJson(reader, ArenaModel.class);
+            LocationModel sm = model.getSpawn();
+            RegionModel rgm = model.getBounds();
+
+            this.name = model.getName();
+            this.spawn = new Location(Bukkit.getWorld(sm.getWorld()), sm.getX(), sm.getY(), sm.getZ());
+            this.bounds = new Region(rgm);
+            this.enabled = model.isEnabled();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void save() {

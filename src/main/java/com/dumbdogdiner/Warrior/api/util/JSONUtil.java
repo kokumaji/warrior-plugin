@@ -15,6 +15,8 @@ public class JSONUtil {
     private static final String DATA_FOLDER_PATH = Warrior.getInstance().getDataFolder().getPath() + "/data";
     private static final String[] subFolderNames = {"/arenas", "/holograms", "/npcData"};
 
+    public static final String ARENA_DATA_PATH = DATA_FOLDER_PATH + subFolderNames[0];
+
     public static boolean fileExists(DataType type, String fileName) {
         File mainFolder = new File(DATA_FOLDER_PATH);
 

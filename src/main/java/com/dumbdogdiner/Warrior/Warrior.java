@@ -6,6 +6,7 @@ import com.dumbdogdiner.Warrior.commands.arena.ArenaCreateCommand;
 import com.dumbdogdiner.Warrior.commands.arena.ArenaJoinCommand;
 import com.dumbdogdiner.Warrior.commands.arena.ArenaSetupCommand;
 import com.dumbdogdiner.Warrior.commands.warrior.*;
+import com.dumbdogdiner.Warrior.managers.ArenaManager;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import com.dumbdogdiner.Warrior.api.translation.Translator;
 
@@ -58,6 +59,8 @@ public class Warrior extends JavaPlugin {
                 .addSubCommand(new ArenaJoinCommand())
                 .addSubCommand(new ArenaSetupCommand()));
         cMap.registerAll(this.getName().toLowerCase(), cmds);
+
+        ArenaManager.loadArenas();
     }
 
     protected void getCommandMap() {
