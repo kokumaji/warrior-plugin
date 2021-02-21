@@ -3,7 +3,7 @@ package com.dumbdogdiner.Warrior.listeners;
 import com.dumbdogdiner.Warrior.api.arena.Arena;
 import com.dumbdogdiner.Warrior.api.arena.Region;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
-import org.bukkit.Material;
+
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

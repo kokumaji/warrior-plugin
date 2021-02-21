@@ -1,10 +1,13 @@
 package com.dumbdogdiner.Warrior.commands.arena;
 
 import com.dumbdogdiner.Warrior.Warrior;
+import com.dumbdogdiner.Warrior.api.WarriorUser;
 import com.dumbdogdiner.Warrior.api.arena.Arena;
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
+import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.translation.Constants;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
+import com.dumbdogdiner.Warrior.managers.PlayerManager;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -38,7 +41,7 @@ public class ArenaJoinCommand implements SubCommand {
             return false;
         }
 
-        Player player = (Player) sender;
+        WarriorUser user = PlayerManager.get(((Player)sender).getUniqueId());
         Arena a = ArenaManager.get(args[1]);
 
         if(a == null) {
@@ -47,8 +50,8 @@ public class ArenaJoinCommand implements SubCommand {
                     put("ARENA", args[1]);
                 }
             });
-            player.sendMessage(TranslationUtil.getPrefix() + msg);
-            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5f, 1f);
+            user.sendMessage(TranslationUtil.getPrefix() + msg);
+            user.playSound(Sound.ENTITY_ITEM_BREAK, 0.5f, 1f);
             return true;
         }
 
@@ -57,14 +60,17 @@ public class ArenaJoinCommand implements SubCommand {
             @Override
             public void run() {
                 ((Player)sender).teleport(a.getSpawn());
-                ArenaManager.addSession(player, a);
+                user.setSession(new ArenaSession(user.getUuid(), a));
+                // Keeping this for Compat reasons for now...
+                // gotta change how I handle sessions entirely owo
+                ArenaManager.addSession(user.getBukkitPlayer(), a);
                 String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_TELEPORT, new HashMap<String, String>() {
                     {
                         put("ARENA", args[1]);
                     }
                 });
-                player.sendMessage(TranslationUtil.getPrefix() + msg);
-                player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.5f, 1f);
+                user.sendMessage(TranslationUtil.getPrefix() + msg);
+                user.playSound(Sound.ENTITY_ENDERMAN_TELEPORT, 0.5f, 1f);
             }
 
         }.runTask(Warrior.getInstance());

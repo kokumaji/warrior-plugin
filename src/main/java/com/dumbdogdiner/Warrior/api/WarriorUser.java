@@ -1,5 +1,6 @@
 package com.dumbdogdiner.Warrior.api;
 
+import com.dumbdogdiner.Warrior.api.sesssions.Session;
 import com.dumbdogdiner.Warrior.api.util.ReflectionUtil;
 import com.dumbdogdiner.Warrior.api.util.NMSUtil;
 
@@ -13,13 +14,18 @@ import java.util.UUID;
 import io.netty.channel.Channel;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class WarriorUser {
 
     private static final Class<?> ENTITYPLAYER_CLASS = Objects.requireNonNull(NMSUtil.getNMSClass("EntityPlayer"));
 
     private static final Class<?> NETWORKMANAGER_CLASS = Objects.requireNonNull(NMSUtil.getNMSClass("NetworkManager"));
+
+    @Getter
+    private UUID userId;
 
     @Getter
     private Object craftPlayer;
@@ -33,9 +39,13 @@ public class WarriorUser {
     @Getter
     private Player bukkitPlayer;
 
+    @Getter
+    private Session session;
+
     public WarriorUser(Player player) {
         try {
             this.bukkitPlayer = player;
+            this.userId = bukkitPlayer.getUniqueId();
             this.craftPlayer = player.getClass().getMethod("getHandle").invoke(player);
 
             Field conField = ENTITYPLAYER_CLASS.getField("playerConnection");
@@ -49,8 +59,12 @@ public class WarriorUser {
         }
     }
 
+    public void setSession(Session session) {
+        this.session = session;
+    }
+
     public WarriorUser(UUID uuid) {
-        this(Bukkit.getPlayer(uuid));
+        this(Objects.requireNonNull(Bukkit.getPlayer(uuid)));
     }
 
     public String getName() {
@@ -95,4 +109,11 @@ public class WarriorUser {
         return this.bukkitPlayer.getEntityId();
     }
 
+    public void sendMessage(String s) {
+        bukkitPlayer.sendMessage(s);
+    }
+
+    public void playSound(Sound sound, float volume, float pitch) {
+        bukkitPlayer.playSound(bukkitPlayer.getLocation(), sound, volume, pitch);
+    }
 }
