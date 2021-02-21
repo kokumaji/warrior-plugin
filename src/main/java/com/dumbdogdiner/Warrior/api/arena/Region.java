@@ -64,7 +64,13 @@ public class Region {
     }
 
     public Vector center() {
-        return loc2.midpoint(loc1);
+        int minY = Math.min(loc1.getBlockY(), loc2.getBlockY());
+        int maxY = Math.max(loc1.getBlockY(), loc2.getBlockY());
+        int centerX = (minX + maxX) / 2;
+        int centerY = (minY + maxY) / 2;
+        int centerZ = (minZ + maxZ) / 2;
+
+        return new Location(world, centerX, centerY, centerZ).toVector();
     }
 
     public boolean contains(Region region) {
