@@ -9,7 +9,6 @@ import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import com.dumbdogdiner.Warrior.api.translation.Translator;
 
 import lombok.Getter;
-import lombok.SneakyThrows;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -17,6 +16,7 @@ import org.bukkit.command.CommandMap;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +35,14 @@ public class Warrior extends JavaPlugin {
         return getPlugin(Warrior.class);
     }
 
-    @SneakyThrows
     @Override
     public void onLoad() {
         saveDefaultConfig();
-        translator = new Translator(this, getConfig());
+        try {
+            translator = new Translator(this, getConfig());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -61,7 +64,10 @@ public class Warrior extends JavaPlugin {
 
         ArenaManager.loadArenas();
 
-        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+        if(getConfig().getBoolean("arena-settings.prevent-region-exit")) {
+            Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+        }
+
     }
 
     protected void getCommandMap() {
