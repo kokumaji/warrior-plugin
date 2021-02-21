@@ -22,12 +22,6 @@ public class DebugCommand implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Arena a = ArenaManager.getSessionArena((Player)sender);
-        int vecx = a.getBounds().center().getBlockX();
-        int vecy = a.getBounds().center().getBlockY();
-        int vecz = a.getBounds().center().getBlockZ();
-        System.out.println("X" + vecx + " Y" + vecy + " Z" + vecz);
-
         return true;
     }
 

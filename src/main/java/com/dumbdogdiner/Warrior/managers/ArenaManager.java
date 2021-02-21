@@ -1,7 +1,11 @@
 package com.dumbdogdiner.Warrior.managers;
 
 import com.dumbdogdiner.Warrior.Warrior;
+import com.dumbdogdiner.Warrior.api.WarriorUser;
 import com.dumbdogdiner.Warrior.api.arena.Arena;
+import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
+import com.dumbdogdiner.Warrior.api.sesssions.Session;
+import com.dumbdogdiner.Warrior.api.sesssions.SessionType;
 import com.dumbdogdiner.Warrior.api.util.JSONUtil;
 import org.bukkit.entity.Player;
 
@@ -9,12 +13,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 public class ArenaManager {
 
-    private static HashMap<Integer, Arena> arenaMap = new HashMap<>();
-    private static HashMap<UUID, Arena> sessions = new HashMap<>();
+    private static final HashMap<Integer, Arena> arenaMap = new HashMap<>();
 
     public static void registerArena(Arena arena) {
         arenaMap.put(arenaMap.size(), arena);
@@ -45,19 +47,26 @@ public class ArenaManager {
         Warrior.getInstance().getLogger().info("Loaded " + i + " arena(s) from disk!");
     }
 
-    public static void addSession(Player player, Arena arena) {
-        sessions.put(player.getUniqueId(), arena); // replace with arena.getId(). Implement arena id generation!!!
+    public static List<WarriorUser> getPlayers(Arena a) {
+        return PlayerManager.getListOf(user -> {
+            Session s = user.getSession();
+            if(s.getType().equals(SessionType.GAME))
+                return ((ArenaSession)s).getArena().equals(a);
+            return false;
+        });
     }
 
-    public static Arena getSessionArena(Player player) {
-        return sessions.get(player.getUniqueId()); // Session Object???
+    public static boolean isPlaying(Player player) {
+        WarriorUser user = PlayerManager.get(player.getUniqueId());
+        return user.getSession().getType() == SessionType.GAME;
     }
 
-    public static void removeSession(Player player) {
-        sessions.remove(player.getUniqueId());
-    }
+    public static ArenaSession getSession(Player player) {
+        if(isPlaying(player)) {
+            WarriorUser user = PlayerManager.get(player.getUniqueId());
+            return (ArenaSession) user.getSession();
+        }
 
-    public static HashMap<UUID, Arena> getSessions() {
-        return sessions;
+        return null;
     }
 }

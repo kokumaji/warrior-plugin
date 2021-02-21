@@ -60,15 +60,14 @@ public class ArenaJoinCommand implements SubCommand {
             @Override
             public void run() {
                 ((Player)sender).teleport(a.getSpawn());
-                user.setSession(new ArenaSession(user.getUuid(), a));
-                // Keeping this for Compat reasons for now...
-                // gotta change how I handle sessions entirely owo
-                ArenaManager.addSession(user.getBukkitPlayer(), a);
+                user.setSession(new ArenaSession(user.getUserId(), a));
+
                 String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_TELEPORT, new HashMap<String, String>() {
                     {
                         put("ARENA", args[1]);
                     }
                 });
+
                 user.sendMessage(TranslationUtil.getPrefix() + msg);
                 user.playSound(Sound.ENTITY_ENDERMAN_TELEPORT, 0.5f, 1f);
             }
