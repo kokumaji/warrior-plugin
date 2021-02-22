@@ -1,8 +1,10 @@
 package com.dumbdogdiner.Warrior;
 
+import com.dumbdogdiner.Warrior.api.command.CommandType;
 import com.dumbdogdiner.Warrior.commands.DebugCommand;
 import com.dumbdogdiner.Warrior.commands.arena.*;
 import com.dumbdogdiner.Warrior.commands.warrior.*;
+import com.dumbdogdiner.Warrior.listeners.GameStateListener;
 import com.dumbdogdiner.Warrior.listeners.PlayerListener;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
@@ -15,6 +17,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -34,6 +38,9 @@ public class Warrior extends JavaPlugin {
     public static Warrior getInstance() {
         return getPlugin(Warrior.class);
     }
+
+    @Getter
+    private static Team specTeam;
 
     @Override
     public void onLoad() {
@@ -59,15 +66,32 @@ public class Warrior extends JavaPlugin {
                 .addSubCommand(new ArenaCreateCommand())
                 .addSubCommand(new ArenaJoinCommand())
                 .addSubCommand(new ArenaSetupCommand())
+                .addSubCommand(new ArenaSpectateCommand())
                 .addSubCommand(new ArenaLeaveCommand()));
         cMap.registerAll(this.getName().toLowerCase(), cmds);
 
         ArenaManager.loadArenas();
+        registerTeams();
 
         if(getConfig().getBoolean("arena-settings.prevent-region-exit")) {
             Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         }
 
+        Bukkit.getPluginManager().registerEvents(new GameStateListener(), this);
+
+    }
+
+    private static void registerTeams() {
+        Scoreboard sb = Bukkit.getScoreboardManager().getMainScoreboard();
+        Team team = sb.getTeam("spectating");
+        if(team == null) {
+            team = sb.registerNewTeam("spectating");
+            team.setPrefix("§c§lSPEC §7");
+            team.setAllowFriendlyFire(false);
+            team.setCanSeeFriendlyInvisibles(true);
+        }
+
+        specTeam = team;
     }
 
     protected void getCommandMap() {

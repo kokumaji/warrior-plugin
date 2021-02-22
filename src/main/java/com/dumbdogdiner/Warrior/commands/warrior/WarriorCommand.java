@@ -2,6 +2,7 @@ package com.dumbdogdiner.Warrior.commands.warrior;
 
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.command.AsyncCommand;
+import com.dumbdogdiner.Warrior.api.command.AsyncCommandLegacy;
 import com.dumbdogdiner.Warrior.api.command.ExitStatus;
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
 import com.dumbdogdiner.Warrior.api.translation.ConsoleColor;
@@ -66,42 +67,8 @@ public class WarriorCommand extends AsyncCommand implements TabCompleter {
     public ExitStatus executeCommand(CommandSender sender, String commandLabel, String[] args) {
         Translator t = Warrior.getTranslator();
 
-        if(!sender.hasPermission(Objects.requireNonNull(getPermission()))) return ExitStatus.PERMISSION_ERROR;
-
-        if(args.length == 0) {
-            SubCommand helpCmd = getSubCommands().get("help");
-            if(helpCmd != null) helpCmd.execute(sender, commandLabel, args);
-            return ExitStatus.EXECUTE_SUCCESS;
-        } else {
-            String arg = args[0].toLowerCase();
-            if(getSubCommands().get(arg) != null) {
-                SubCommand cmd = getSubCommands().get(arg);
-
-                if(!sender.hasPermission(cmd.getPermission())) return ExitStatus.PERMISSION_ERROR;
-
-                if(!cmd.execute(sender, commandLabel, args)) {
-                    String msg = t.applyPlaceholders(DefaultMessages.SUBCMD_SYNTAX, new HashMap<>() {
-
-                        {
-                            put("SUB_SYNTAX", cmd.getSyntax());
-                        }
-                    });
-
-                    if(sender instanceof Player) {
-                        Player p = (Player) sender;
-                        p.sendMessage(TranslationUtil.prettyMessage(msg));
-                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
-                    } else {
-                        sender.sendMessage(msg.replace("\n", " "));
-                    }
-
-                    return ExitStatus.SYNTAX_ERROR;
-                }
-
-            } else {
-                return ExitStatus.SYNTAX_ERROR;
-            }
-        }
+        SubCommand helpCmd = getSubCommands().get("help");
+        if(helpCmd != null) helpCmd.execute(sender, commandLabel, args);
 
         return ExitStatus.EXECUTE_SUCCESS;
 

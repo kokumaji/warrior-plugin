@@ -1,10 +1,16 @@
 package com.dumbdogdiner.Warrior.api.command;
 
+import com.dumbdogdiner.Warrior.Warrior;
+import com.dumbdogdiner.Warrior.utils.DefaultMessages;
+import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
@@ -15,20 +21,29 @@ import java.util.concurrent.Executors;
 public abstract class AsyncCommand extends Command implements TabCompleter {
 
     @Getter
-    private HashMap<String, SubCommand> subCommands;
+    private final HashMap<String, SubCommand> subCommands;
 
     @Getter
-    private Plugin owner;
-
+    private final Plugin owner;
     private TabCompleter completer;
-
     private static ExecutorService pool = Executors.newFixedThreadPool(3);
+    @Getter @Setter
+    private CommandType type;
+
+    public AsyncCommand(String commmandName, Plugin plugin, CommandType type) {
+        super(commmandName);
+        this.owner = plugin;
+
+        subCommands = new HashMap<>();
+        this.type = type;
+    }
 
     public AsyncCommand(String commmandName, Plugin plugin) {
         super(commmandName);
         this.owner = plugin;
 
         subCommands = new HashMap<>();
+        this.type = CommandType.ANY;
     }
 
 
@@ -51,22 +66,59 @@ public abstract class AsyncCommand extends Command implements TabCompleter {
     @Override
     public final boolean execute(CommandSender sender, String commandLabel, String[] args) {
         if(!this.owner.isEnabled()) return false;
-
         AsyncCommand cmd = this;
+
+        if(!canExecute(sender)) {
+            cmd.onError(sender, commandLabel, args);
+            return true;
+        } else if(getPermission() != null && !sender.hasPermission(getPermission())) {
+            cmd.onPermissionError(sender, commandLabel, args);
+            return true;
+        }
+
         CommandTask<Boolean> t = new CommandTask<>(() -> {
             try {
-                switch (cmd.executeCommand(sender, commandLabel, args)) {
-                    default:
-                        cmd.onError(sender, commandLabel, args);
-                        break;
-                    case EXECUTE_SUCCESS:
-                        break;
-                    case PERMISSION_ERROR:
-                        cmd.onPermissionError(sender, commandLabel, args);
-                        break;
-                    case SYNTAX_ERROR:
+                if(args.length == 0) {
+                    switch (cmd.executeCommand(sender, commandLabel, args)) {
+                        default:
+                            cmd.onError(sender, commandLabel, args);
+                            break;
+                        case EXECUTE_SUCCESS:
+                            break;
+                        case ERROR_PERMISSION:
+                            cmd.onPermissionError(sender, commandLabel, args);
+                            break;
+                        case ERROR_SYNTAX:
+                            cmd.onSyntaxError(sender, commandLabel, args);
+                            break;
+                    }
+                } else {
+                    String arg = args[0].toLowerCase();
+                    if(getSubCommands().get(arg) != null) {
+                        SubCommand subCommand = getSubCommands().get(arg);
+                        if(subCommand.getPermission() != null && !sender.hasPermission(subCommand.getPermission())) {
+                            cmd.onPermissionError(sender, commandLabel, args);
+                            return true;
+                        }
+
+                        if(!subCommand.execute(sender, commandLabel, args)) {
+                            String msg = Warrior.getTranslator().applyPlaceholders(DefaultMessages.SUBCMD_SYNTAX, new HashMap<>() {
+
+                                {
+                                    put("SUB_SYNTAX", subCommand.getSyntax());
+                                }
+                            });
+
+                            Player p = (Player) sender;
+                            p.sendMessage(TranslationUtil.prettyMessage(msg));
+                            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
+
+                            return true;
+                        }
+                    } else {
                         cmd.onSyntaxError(sender, commandLabel, args);
-                        break;
+                        return true;
+                    }
                 }
 
             } catch(Throwable ex) {
@@ -79,6 +131,19 @@ public abstract class AsyncCommand extends Command implements TabCompleter {
         pool.execute(t);
 
         return true;
+    }
+
+    public boolean canExecute(CommandSender sender) {
+        switch (type) {
+            case PLAYER_ONLY:
+                return sender instanceof Player;
+            case CONSOLE_ONLY:
+                return !(sender instanceof Player);
+            case ANY:
+                return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -109,7 +174,7 @@ public abstract class AsyncCommand extends Command implements TabCompleter {
     }
 
     @Override
-    public java.util.List<String> tabComplete(CommandSender sender, String alias, String[] args)
+    public List<String> tabComplete(CommandSender sender, String alias, String[] args)
             throws CommandException, IllegalArgumentException {
         if (sender == null || alias == null || args == null)
             throw new NullPointerException("arguments to tabComplete cannot be null");

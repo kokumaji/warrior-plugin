@@ -1,9 +1,7 @@
 package com.dumbdogdiner.Warrior.commands.arena;
 
 import com.dumbdogdiner.Warrior.Warrior;
-import com.dumbdogdiner.Warrior.api.command.AsyncCommand;
-import com.dumbdogdiner.Warrior.api.command.ExitStatus;
-import com.dumbdogdiner.Warrior.api.command.SubCommand;
+import com.dumbdogdiner.Warrior.api.command.*;
 import com.dumbdogdiner.Warrior.api.translation.ConsoleColor;
 import com.dumbdogdiner.Warrior.api.translation.Translator;
 import com.dumbdogdiner.Warrior.utils.DefaultMessages;
@@ -21,51 +19,15 @@ import java.util.stream.Collectors;
 public class ArenaCommand extends AsyncCommand implements TabCompleter {
 
     public ArenaCommand(String commmandName, Plugin plugin) {
-        super(commmandName, plugin);
+        super(commmandName, plugin, CommandType.PLAYER_ONLY);
         setDescription("Manage/Join an Arena.");
-        setPermission("warrior.command.arena");
+        //setPermission("warrior.command.arena");
         setTabCompleter(this);
     }
 
     @Override
     public ExitStatus executeCommand(CommandSender sender, String commandLabel, String[] args) {
-        Translator t = Warrior.getTranslator();
-
-        if(!(sender instanceof Player))
-            return ExitStatus.GENERAL_ERROR;
-
-        if(!sender.hasPermission(Objects.requireNonNull(getPermission()))) return ExitStatus.PERMISSION_ERROR;
-
-        if(args.length == 0) {
-            return ExitStatus.SYNTAX_ERROR;
-        } else {
-            String arg = args[0].toLowerCase();
-            if(getSubCommands().get(arg) != null) {
-                SubCommand cmd = getSubCommands().get(arg);
-
-                if(!sender.hasPermission(cmd.getPermission())) return ExitStatus.PERMISSION_ERROR;
-
-                if(!cmd.execute(sender, commandLabel, args)) {
-                    String msg = t.applyPlaceholders(DefaultMessages.SUBCMD_SYNTAX, new HashMap<>() {
-
-                        {
-                            put("SUB_SYNTAX", cmd.getSyntax());
-                        }
-                    });
-
-                    Player p = (Player) sender;
-                    p.sendMessage(TranslationUtil.prettyMessage(msg));
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
-
-                    return ExitStatus.SYNTAX_ERROR;
-                }
-
-            } else {
-                return ExitStatus.SYNTAX_ERROR;
-            }
-        }
-
-        return ExitStatus.EXECUTE_SUCCESS;
+        return ExitStatus.ERROR_SYNTAX;
     }
 
     @Override
