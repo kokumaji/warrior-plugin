@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.util.Vector;
 
 import java.util.Objects;
@@ -23,6 +24,14 @@ public class PlayerListener implements Listener {
             PlayerManager.addUser(e.getPlayer().getUniqueId());
         }
     }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        if(PlayerManager.contains(e.getPlayer().getUniqueId())) {
+            PlayerManager.remove(e.getPlayer().getUniqueId());
+        }
+    }
+
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {

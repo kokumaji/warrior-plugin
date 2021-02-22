@@ -1,6 +1,7 @@
 package com.dumbdogdiner.Warrior.api.sesssions;
 
 import com.dumbdogdiner.Warrior.api.arena.Arena;
+import com.dumbdogdiner.Warrior.api.events.ArenaJoinEvent;
 import com.dumbdogdiner.Warrior.api.events.GameStateChangeEvent;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -22,11 +23,7 @@ public class ArenaSession implements Session {
     private GameState state;
 
     public ArenaSession(UUID uuid, Arena arena) {
-        this.playerId = uuid;
-        this.startTime = System.currentTimeMillis();
-        this.arena = arena;
-
-        setState(GameState.PRE_GAME);
+        this(uuid, arena, GameState.PRE_GAME);
     }
 
     public ArenaSession(UUID uuid, Arena arena, GameState state) {
@@ -35,6 +32,8 @@ public class ArenaSession implements Session {
         this.arena = arena;
 
         setState(state);
+        ArenaJoinEvent e = new ArenaJoinEvent(this, Objects.requireNonNull(Bukkit.getPlayer(uuid)));
+        Bukkit.getPluginManager().callEvent(e);
     }
 
     @Override
@@ -48,9 +47,11 @@ public class ArenaSession implements Session {
     }
 
     public void setState(GameState newState) {
+        GameState old = state;
+        this.state = newState;
         GameStateChangeEvent e = new GameStateChangeEvent(this.state, newState, this, Objects.requireNonNull(Bukkit.getPlayer(playerId)));
         Bukkit.getPluginManager().callEvent(e);
-        if(!e.isCancelled())
-            this.state = newState;
+        if(e.isCancelled())
+            this.state = old;
     }
 }

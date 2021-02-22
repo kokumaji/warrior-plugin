@@ -20,7 +20,7 @@ public class GameStateChangeEvent extends Event implements Cancellable {
     private final GameState toState;
 
     @Getter
-    private final Session context;
+    private Session context;
 
     @Getter
     private final Player player;

@@ -84,6 +84,7 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
 
             if(!(subCmd == null)) {
                 List<String> cmds = subCmd.getArguments(sender, args);
+                if(cmds == null) return options;
                 if(!args[1].equals("")) {
                     for(String s : cmds) {
                         if(s.toLowerCase().startsWith(args[1].toLowerCase())) options.add(s);

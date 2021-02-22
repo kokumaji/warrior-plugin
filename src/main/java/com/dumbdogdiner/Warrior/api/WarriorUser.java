@@ -135,6 +135,7 @@ public class WarriorUser {
             @Override
             public void run() {
                 if(b) {
+                    bukkitPlayer.setGameMode(GameMode.ADVENTURE);
                     Warrior.getSpecTeam().addEntry(bukkitPlayer.getName());
                     bukkitPlayer.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
                 } else {

@@ -14,6 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ArenaSpectateCommand implements SubCommand {
     @Override
@@ -46,6 +47,7 @@ public class ArenaSpectateCommand implements SubCommand {
                 u.setSession(new ArenaSession(u.getUserId(), a, GameState.SPECTATING));
                 u.setSpectating(true);
             }
+
         }.runTask(Warrior.getInstance());
 
         return true;
@@ -53,6 +55,12 @@ public class ArenaSpectateCommand implements SubCommand {
 
     @Override
     public List<String> getArguments(CommandSender sender, String[] arguments) {
-        return new ArrayList<>();
+        List<String> strings = new ArrayList<>();
+        if(arguments.length == 2)
+            strings = ArenaManager.getArenas().stream()
+                        .map(Arena::getName)
+                        .collect(Collectors.toList());
+
+        return strings;
     }
 }
