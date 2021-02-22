@@ -1,7 +1,7 @@
 package com.dumbdogdiner.Warrior.listeners;
 
 import com.dumbdogdiner.Warrior.api.events.GameStateChangeEvent;
-import com.dumbdogdiner.Warrior.managers.ArenaManager;
+import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,8 +12,7 @@ public class GameStateListener implements Listener {
 
     @EventHandler
     public void onStateChange(GameStateChangeEvent e) {
-        System.out.println("AAAAAAAAAAAAAAAAAAAAA");
-        if(ArenaManager.getSession(e.getPlayer()) != null) {
+        if(e.getContext() instanceof ArenaSession) {
             Player p = e.getPlayer();
             switch(e.getToState()) {
                 case PRE_GAME:
