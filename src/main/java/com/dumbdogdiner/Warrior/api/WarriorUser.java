@@ -1,5 +1,8 @@
 package com.dumbdogdiner.Warrior.api;
 
+import com.dumbdogdiner.Warrior.Warrior;
+import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
+import com.dumbdogdiner.Warrior.api.sesssions.GameState;
 import com.dumbdogdiner.Warrior.api.sesssions.Session;
 import com.dumbdogdiner.Warrior.api.util.ReflectionUtil;
 import com.dumbdogdiner.Warrior.api.util.NMSUtil;
@@ -11,11 +14,16 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.dumbdogdiner.Warrior.listeners.GameStateListener;
 import io.netty.channel.Channel;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 public class WarriorUser {
@@ -41,6 +49,9 @@ public class WarriorUser {
 
     @Getter
     private Session session;
+
+    @Getter
+    private boolean spectating;
 
     public WarriorUser(Player player) {
         try {
@@ -116,4 +127,28 @@ public class WarriorUser {
     public void playSound(Sound sound, float volume, float pitch) {
         bukkitPlayer.playSound(bukkitPlayer.getLocation(), sound, volume, pitch);
     }
+
+    public void setSpectating(boolean b) {
+        this.spectating = b;
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                if(b) {
+                    Warrior.getSpecTeam().addEntry(bukkitPlayer.getName());
+                    bukkitPlayer.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
+                } else {
+                    Warrior.getSpecTeam().removeEntry(bukkitPlayer.getName());
+                    for(PotionEffect effect : bukkitPlayer.getActivePotionEffects())
+                        bukkitPlayer.removePotionEffect(effect.getType());
+                }
+
+                bukkitPlayer.setAllowFlight(b);
+                bukkitPlayer.setFlying(b);
+
+            }
+        }.runTask(Warrior.getInstance());
+
+    }
+
 }

@@ -4,12 +4,11 @@ import com.dumbdogdiner.Warrior.api.WarriorUser;
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
 import com.dumbdogdiner.Warrior.api.sesssions.LobbySession;
 import com.dumbdogdiner.Warrior.api.sesssions.SessionType;
-import com.dumbdogdiner.Warrior.managers.ArenaManager;
+
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.time.Duration;
 import java.util.List;
 
 public class ArenaLeaveCommand implements SubCommand {
@@ -35,6 +34,7 @@ public class ArenaLeaveCommand implements SubCommand {
             long time = user.getSession().getTimestamp();
             user.sendMessage("this session lasted " + (System.currentTimeMillis() - time)/1e3 + "s");
             user.setSession(new LobbySession(user.getUserId()));
+            if(user.isSpectating()) user.setSpectating(false);
         }
         return true;
     }

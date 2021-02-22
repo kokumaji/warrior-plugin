@@ -58,6 +58,7 @@ public class ArenaManager {
 
     public static boolean isPlaying(Player player) {
         WarriorUser user = PlayerManager.get(player.getUniqueId());
+        if(user.getSession() == null) return false;
         return user.getSession().getType() == SessionType.GAME;
     }
 
