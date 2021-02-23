@@ -53,7 +53,7 @@ public class Arena {
             RegionModel rgm = model.getBounds();
 
             this.name = model.getName();
-            this.spawn = new Location(Bukkit.getWorld(sm.getWorld()), sm.getX(), sm.getY(), sm.getZ());
+            this.spawn = new Location(Bukkit.getWorld(sm.getWorld()), sm.getX(), sm.getY(), sm.getZ(), sm.getYaw(), sm.getPitch());
             this.bounds = new Region(rgm);
             this.enabled = model.isEnabled();
 
