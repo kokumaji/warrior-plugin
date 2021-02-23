@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -54,6 +55,14 @@ public class ItemBuilder {
 
     public ItemBuilder setName(String name) {
         meta.setDisplayName(TranslationUtil.translateColor(name));
+
+        return this;
+    }
+
+    public ItemBuilder setOwner(String owner) {
+        if(item.getType().equals(Material.PLAYER_HEAD)) {
+            ((SkullMeta)meta).setOwner(owner);
+        }
 
         return this;
     }

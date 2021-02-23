@@ -3,6 +3,9 @@ package com.dumbdogdiner.Warrior.api.util;
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.arena.Arena;
 import com.dumbdogdiner.Warrior.api.models.ArenaModel;
+import com.dumbdogdiner.Warrior.api.models.LobbyDataModel;
+import com.dumbdogdiner.Warrior.api.models.LocationModel;
+import com.dumbdogdiner.Warrior.managers.LobbyManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -13,6 +16,7 @@ import java.io.IOException;
 public class JSONUtil {
 
     private static final String DATA_FOLDER_PATH = Warrior.getInstance().getDataFolder().getPath() + "/data";
+    public static final String LOBBY_DATA_PATH = DATA_FOLDER_PATH + "/lobby.json";
     private static final String[] subFolderNames = {"/arenas", "/holograms", "/npcData"};
 
     public static final String ARENA_DATA_PATH = DATA_FOLDER_PATH + subFolderNames[0];
@@ -53,8 +57,20 @@ public class JSONUtil {
         ArenaModel arenaJson = new ArenaModel(arena);
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try(FileWriter writer =  new FileWriter(filePath)) {
+        try(FileWriter writer = new FileWriter(filePath)) {
             gson.toJson(arenaJson, writer);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveSpawn() {
+        LobbyDataModel ldm = new LobbyDataModel(new LocationModel(LobbyManager.getLobbySpawn()));
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        try(FileWriter writer = new FileWriter(LOBBY_DATA_PATH)) {
+            gson.toJson(ldm, writer);
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();

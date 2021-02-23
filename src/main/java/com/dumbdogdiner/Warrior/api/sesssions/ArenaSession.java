@@ -84,6 +84,7 @@ public class ArenaSession implements Session {
             ItemStack stats = new ItemBuilder(Material.PLAYER_HEAD)
                     .setName("&8» &3&lSTATS &8«")
                     .setLore("&7View Your Warrior Stats")
+                    .setOwner(p.getName())
                     .build();
             ItemStack spectate = new ItemBuilder(Material.COMPASS)
                     .setName("&8» &3&lSPECTATE &8«")
