@@ -1,23 +1,34 @@
 package com.dumbdogdiner.Warrior.api.util;
 
+import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
+
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class ItemBuilder {
 
     Material material;
     ItemStack item;
+    ItemMeta meta;
     int amount;
 
     public ItemBuilder(Material material) {
         this.material = material;
         this.amount = 1;
         this.item = new ItemStack(material);
+        this.meta = item.getItemMeta();
         item.setAmount(amount);
     }
 
@@ -42,20 +53,21 @@ public class ItemBuilder {
     }
 
     public ItemBuilder setName(String name) {
-        ItemMeta meta = getItemMeta();
         meta.setDisplayName(TranslationUtil.translateColor(name));
 
         return this;
     }
 
     public ItemBuilder setLore(String... lore) {
-        ItemMeta meta = getItemMeta();
-        meta.setLore(Arrays.asList(lore));
+        meta.setLore(Arrays.stream(lore)
+                .map(TranslationUtil::translateColor)
+                .collect(Collectors.toList()));
 
         return this;
     }
 
     public ItemStack build() {
+        item.setItemMeta(meta);
         return item;
     }
 

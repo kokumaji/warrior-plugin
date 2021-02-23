@@ -1,6 +1,7 @@
 package com.dumbdogdiner.Warrior.api.models;
 
 import lombok.Getter;
+import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 public class LocationModel {
