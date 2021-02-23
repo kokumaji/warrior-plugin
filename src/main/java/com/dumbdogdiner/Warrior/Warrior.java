@@ -1,15 +1,17 @@
 package com.dumbdogdiner.Warrior;
 
 import com.dumbdogdiner.Warrior.api.command.CommandType;
+import com.dumbdogdiner.Warrior.api.util.ReflectionUtil;
 import com.dumbdogdiner.Warrior.commands.DebugCommand;
 import com.dumbdogdiner.Warrior.commands.arena.*;
 import com.dumbdogdiner.Warrior.commands.warrior.*;
-import com.dumbdogdiner.Warrior.listeners.GameStateListener;
-import com.dumbdogdiner.Warrior.listeners.PlayerListener;
+import com.dumbdogdiner.Warrior.listeners.*;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
+import com.dumbdogdiner.Warrior.managers.LobbyManager;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import com.dumbdogdiner.Warrior.api.translation.Translator;
 
+import com.google.common.reflect.ClassPath;
 import lombok.Getter;
 
 import org.bukkit.Bukkit;
@@ -61,6 +63,7 @@ public class Warrior extends JavaPlugin {
         cmds.add(new WarriorCommand("warrior", this)
                 .addSubCommand(new WarriorHelpCommand())
                 .addSubCommand(new WarriorAboutCommand())
+                .addSubCommand(new WarriorLobbyCommand())
                 .addSubCommand(new WarriorReloadCommand()));
         cmds.add(new ArenaCommand("arena", this)
                 .addSubCommand(new ArenaCreateCommand())
@@ -72,13 +75,20 @@ public class Warrior extends JavaPlugin {
 
         ArenaManager.loadArenas();
         registerTeams();
+        registerEvents();
 
-        if(getConfig().getBoolean("arena-settings.prevent-region-exit")) {
-            Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
-        }
+        LobbyManager.loadData();
 
+    }
+
+    private void registerEvents() {
+        Bukkit.getPluginManager().registerEvents(new ArenaListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ArenaSessionListener(), this);
         Bukkit.getPluginManager().registerEvents(new GameStateListener(), this);
-
+        Bukkit.getPluginManager().registerEvents(new LobbySessionListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+        Bukkit.getPluginManager().registerEvents(new RegionExitListener(), this);
+        Bukkit.getPluginManager().registerEvents(new SessionChangeListener(), this);
     }
 
     private static void registerTeams() {

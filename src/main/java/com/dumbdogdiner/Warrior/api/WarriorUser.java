@@ -1,6 +1,7 @@
 package com.dumbdogdiner.Warrior.api;
 
 import com.dumbdogdiner.Warrior.Warrior;
+import com.dumbdogdiner.Warrior.api.events.SessionChangeEvent;
 import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.sesssions.GameState;
 import com.dumbdogdiner.Warrior.api.sesssions.Session;
@@ -71,6 +72,13 @@ public class WarriorUser {
     }
 
     public void setSession(Session session) {
+        SessionChangeEvent e = new SessionChangeEvent(this.session, session, bukkitPlayer);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.getPluginManager().callEvent(e);
+            }
+        }.runTask(Warrior.getInstance());
         this.session = session;
     }
 
