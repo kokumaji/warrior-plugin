@@ -59,9 +59,7 @@ public class ArenaJoinCommand implements SubCommand {
 
             @Override
             public void run() {
-                ((Player)sender).teleport(a.getSpawn());
                 user.setSession(new ArenaSession(user.getUserId(), a));
-
                 String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_TELEPORT, new HashMap<String, String>() {
                     {
                         put("ARENA", args[1]);

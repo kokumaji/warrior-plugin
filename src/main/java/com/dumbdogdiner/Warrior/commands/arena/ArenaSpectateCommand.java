@@ -43,7 +43,6 @@ public class ArenaSpectateCommand implements SubCommand {
 
             @Override
             public void run() {
-                ((Player)sender).teleport(a.getSpawn());
                 u.setSession(new ArenaSession(u.getUserId(), a, GameState.SPECTATING));
                 u.setSpectating(true);
             }
