@@ -3,27 +3,28 @@ package com.dumbdogdiner.Warrior.api.events;
 import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.sesssions.Session;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class SessionChangeEvent extends Event {
-
+public class KillStreakChangeEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
 
     @Getter
-    private Session previous;
-    @Getter
-    private Session next;
-    @Getter
-    private Player player;
+    private final Player player;
 
-    public SessionChangeEvent(Session previous, Session next, Player player) {
-        this.previous = previous;
-        this.next = next;
-        this.player = player;
+    @Getter
+    private final Session context;
+
+    @Getter
+    private final int streak;
+
+    public KillStreakChangeEvent(int killStreak, ArenaSession arenaSession) {
+        this.player = Bukkit.getPlayer(arenaSession.getPlayerId());
+        this.context = arenaSession;
+        this.streak = killStreak;
     }
 
     @NotNull

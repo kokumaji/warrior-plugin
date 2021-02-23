@@ -39,6 +39,10 @@ public class ArenaSpectateCommand implements SubCommand {
 
         if(a == null || u == null) return false;
 
+        if(u.getSession() instanceof ArenaSession) {
+            if(((ArenaSession)u.getSession()).getState() == GameState.IN_GAME) return false;
+        }
+
         new BukkitRunnable() {
 
             @Override

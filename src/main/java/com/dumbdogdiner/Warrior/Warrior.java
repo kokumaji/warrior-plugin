@@ -7,6 +7,8 @@ import com.dumbdogdiner.Warrior.commands.arena.*;
 import com.dumbdogdiner.Warrior.commands.warrior.*;
 import com.dumbdogdiner.Warrior.listeners.*;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
+import com.dumbdogdiner.Warrior.managers.GUIManager;
+import com.dumbdogdiner.Warrior.managers.KitManager;
 import com.dumbdogdiner.Warrior.managers.LobbyManager;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import com.dumbdogdiner.Warrior.api.translation.Translator;
@@ -78,6 +80,8 @@ public class Warrior extends JavaPlugin {
         registerEvents();
 
         LobbyManager.loadData();
+        GUIManager.registerGUIs();
+        KitManager.registerKits();
 
     }
 
@@ -99,6 +103,7 @@ public class Warrior extends JavaPlugin {
             team.setPrefix("§c§lSPEC §7");
             team.setAllowFriendlyFire(false);
             team.setCanSeeFriendlyInvisibles(true);
+            team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.FOR_OWN_TEAM);
         }
 
         specTeam = team;

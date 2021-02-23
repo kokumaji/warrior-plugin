@@ -46,10 +46,9 @@ public class ArenaBuilder {
         return null;
     }
 
-    public static boolean setPosition(Location loc, ArenaBuilderSession.PositionType type) {
-        if(sessions.get(loc.getWorld()) == null) return false;
+    public static void setPosition(Location loc, ArenaBuilderSession.PositionType type) {
+        if(sessions.get(loc.getWorld()) == null) return;
         sessions.get(loc.getWorld()).setPosition(type);
-        return true;
     }
 
 

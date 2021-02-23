@@ -22,6 +22,7 @@ public class Constants {
 
         public static final String ARENA_DOESNT_EXIST = "command-messages.arena-doesnt-exist";
         public static final String ARENA_TELEPORT = "command-messages.arena-teleport";
+        public static final String KIT_EQUIP = "command-messages.kit-equip";
     }
 
 }

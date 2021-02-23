@@ -1,16 +1,11 @@
 package com.dumbdogdiner.Warrior.api.util;
 
-import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -24,6 +19,8 @@ public class ItemBuilder {
     ItemStack item;
     ItemMeta meta;
     int amount;
+
+    boolean glow;
 
     public ItemBuilder(Material material) {
         this.material = material;
@@ -75,8 +72,24 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder makeGlow(boolean glow) {
+        this.glow = glow;
+        return this;
+    }
+
+    public ItemBuilder addFlags(ItemFlag... flags) {
+        meta.addItemFlags(flags);
+        return this;
+    }
+
     public ItemStack build() {
         item.setItemMeta(meta);
+        if(glow) {
+            item.addUnsafeEnchantment(Enchantment.LUCK, 1);
+            ItemMeta m = item.getItemMeta();
+            m.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            item.setItemMeta(m);
+        }
         return item;
     }
 

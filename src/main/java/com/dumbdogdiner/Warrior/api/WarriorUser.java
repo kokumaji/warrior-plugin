@@ -34,6 +34,11 @@ public class WarriorUser {
     private static final Class<?> NETWORKMANAGER_CLASS = Objects.requireNonNull(NMSUtil.getNMSClass("NetworkManager"));
 
     @Getter
+    private int kills;
+    @Getter
+    private int deaths;
+
+    @Getter
     private UUID userId;
 
     @Getter
@@ -146,8 +151,26 @@ public class WarriorUser {
                     bukkitPlayer.setGameMode(GameMode.ADVENTURE);
                     Warrior.getSpecTeam().addEntry(bukkitPlayer.getName());
                     bukkitPlayer.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
+                    for(Player p : Bukkit.getOnlinePlayers()) {
+                        if(Warrior.getSpecTeam().hasEntry(p.getName())) continue;
+                        p.hidePlayer(Warrior.getInstance(), bukkitPlayer);
+                    }
+
+                    for(String s : Warrior.getSpecTeam().getEntries()) {
+                        Player p = Bukkit.getPlayer(s);
+                        bukkitPlayer.showPlayer(Warrior.getInstance(), p);
+                    }
                 } else {
                     Warrior.getSpecTeam().removeEntry(bukkitPlayer.getName());
+                    for(Player p : Bukkit.getOnlinePlayers()) {
+                        p.showPlayer(Warrior.getInstance(), bukkitPlayer);
+                    }
+
+                    for(String s : Warrior.getSpecTeam().getEntries()) {
+                        Player p = Bukkit.getPlayer(s);
+                        bukkitPlayer.hidePlayer(Warrior.getInstance(), p);
+                    }
+
                     for(PotionEffect effect : bukkitPlayer.getActivePotionEffects())
                         bukkitPlayer.removePotionEffect(effect.getType());
                 }
@@ -160,4 +183,15 @@ public class WarriorUser {
 
     }
 
+    public void addKill() {
+        kills++;
+    }
+
+    public void addDeath() {
+        deaths++;
+    }
+
+    public double getKDR() {
+        return 0.0;
+    }
 }

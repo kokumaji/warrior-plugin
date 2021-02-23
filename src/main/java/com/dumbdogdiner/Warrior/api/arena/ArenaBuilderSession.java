@@ -123,8 +123,7 @@ public class ArenaBuilderSession {
             ArenaManager.registerArena(a);
             a.save();
 
-
-            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_CREATE_SUCCESS, new HashMap<String, String>() {
+            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_CREATE_SUCCESS, new HashMap<>() {
                 {
                     put("ARENA", getArenaName());
                 }

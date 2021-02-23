@@ -36,7 +36,7 @@ public class SessionChangeListener implements Listener {
     public void onSessionChange(SessionChangeEvent e) {
         if(e.getNext() instanceof LobbySession) {
             Player p = e.getPlayer();
-            p.sendMessage("Returning to Lobby...");
+            //p.sendMessage("Returning to Lobby...");
             p.getInventory().clear();
 
             ItemStack stats = new ItemBuilder(Material.PLAYER_HEAD)
@@ -55,7 +55,7 @@ public class SessionChangeListener implements Listener {
             p.getInventory().setHeldItemSlot(4);
 
         } else if(e.getNext() instanceof ArenaSession) {
-            e.getPlayer().sendMessage("Teleporting to Arena...");
+            //e.getPlayer().sendMessage("Teleporting to Arena...");
         }
     }
 

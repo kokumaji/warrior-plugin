@@ -4,11 +4,16 @@ import com.dumbdogdiner.Warrior.api.WarriorUser;
 import com.dumbdogdiner.Warrior.api.arena.Arena;
 import com.dumbdogdiner.Warrior.api.events.ArenaJoinEvent;
 import com.dumbdogdiner.Warrior.api.events.GameStateChangeEvent;
+import com.dumbdogdiner.Warrior.api.events.KillStreakChangeEvent;
+import com.dumbdogdiner.Warrior.api.kit.IWarriorKit;
 import com.dumbdogdiner.Warrior.api.util.ItemBuilder;
+
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,6 +32,12 @@ public class ArenaSession implements Session {
 
     @Getter
     private GameState state;
+
+    @Getter
+    private int killStreak;
+
+    @Getter @Setter
+    private IWarriorKit kit;
 
     public ArenaSession(UUID uuid, Arena arena) {
         this(uuid, arena, GameState.PRE_GAME);
@@ -61,6 +72,19 @@ public class ArenaSession implements Session {
             this.state = old;
     }
 
+    public void addKill() {
+        KillStreakChangeEvent e = new KillStreakChangeEvent(killStreak, this);
+
+        WarriorUser user = PlayerManager.get(playerId);
+        user.addKill();
+        Bukkit.getPluginManager().callEvent(e);
+        killStreak++;
+    }
+
+    public void resetStreak() {
+        killStreak = 0;
+    }
+
     public void setInventory() {
         Player p = Objects.requireNonNull(Bukkit.getPlayer(playerId));
 
@@ -87,6 +111,7 @@ public class ArenaSession implements Session {
                     .setOwner(p.getName())
                     .build();
             ItemStack spectate = new ItemBuilder(Material.COMPASS)
+                    .makeGlow(true)
                     .setName("&8» &3&lSPECTATE &8«")
                     .setLore("&7Enter Spectator Mode")
                     .build();
