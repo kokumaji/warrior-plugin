@@ -62,41 +62,48 @@ public class ArenaSession implements Session {
     }
 
     public void setInventory() {
-        WarriorUser user = PlayerManager.get(playerId);
+        Player p = Objects.requireNonNull(Bukkit.getPlayer(playerId));
 
-        switch(state) {
-            case PRE_GAME:
+        ItemStack exit = new ItemBuilder(Material.BARRIER)
+                .setName("&4&l☓ &c&lQUIT &4&l☓")
+                .setLore("&7Return to Lobby")
+                .build();
 
-                ItemStack kit = new ItemBuilder(Material.IRON_SWORD)
-                                .setName("&8» &3&lSELECT KIT &8«")
-                                .setLore("&7Select One of Many Kits!")
-                                .build();
-                ItemStack shop = new ItemBuilder(Material.ENDER_CHEST)
-                                .setName("&8» &3&lSHOP &8«")
-                                .setLore("&7Browse & Unlock new Kits!")
-                                .build();
-                ItemStack exit = new ItemBuilder(Material.BARRIER)
-                                .setName("&4&l☓ &c&lQUIT &4&l☓")
-                                .setLore("&7Return to Lobby")
-                                .build();
-                ItemStack stats = new ItemBuilder(Material.PLAYER_HEAD)
-                                .setName("&8» &3&lSTATS &8«")
-                                .setLore("&7View Your Warrior Stats")
-                                .build();
-                ItemStack spectate = new ItemBuilder(Material.COMPASS)
-                                .setName("&8» &3&lSPECTATE &8«")
-                                .setLore("&7Enter Spectator Mode")
-                                .build();
+        p.getInventory().clear();
 
-                Player p = Objects.requireNonNull(Bukkit.getPlayer(playerId));
-                p.getInventory().clear();
-                p.getInventory().setItem(0, kit);
-                p.getInventory().setItem(1, shop);
-                p.getInventory().setItem(4, spectate);
-                p.getInventory().setItem(7, stats);
-                p.getInventory().setItem(8, exit);
-                break;
+        if(state.equals(GameState.PRE_GAME)) {
 
+            ItemStack kit = new ItemBuilder(Material.IRON_SWORD)
+                    .setName("&8» &3&lSELECT KIT &8«")
+                    .setLore("&7Select One of Many Kits!")
+                    .build();
+            ItemStack shop = new ItemBuilder(Material.ENDER_CHEST)
+                    .setName("&8» &3&lSHOP &8«")
+                    .setLore("&7Browse & Unlock new Kits!")
+                    .build();
+            ItemStack stats = new ItemBuilder(Material.PLAYER_HEAD)
+                    .setName("&8» &3&lSTATS &8«")
+                    .setLore("&7View Your Warrior Stats")
+                    .build();
+            ItemStack spectate = new ItemBuilder(Material.COMPASS)
+                    .setName("&8» &3&lSPECTATE &8«")
+                    .setLore("&7Enter Spectator Mode")
+                    .build();
+
+            p.getInventory().setItem(0, kit);
+            p.getInventory().setItem(1, shop);
+            p.getInventory().setItem(4, spectate);
+            p.getInventory().setItem(7, stats);
+            p.getInventory().setItem(8, exit);
+        } else if(state.equals(GameState.SPECTATING)) {
+            ItemStack spec = new ItemBuilder(Material.COMPASS)
+                    .setName("&8» &3&lTELEPORT &8«")
+                    .setLore("&7Teleport to a specific player")
+                    .build();
+
+            p.getInventory().setItem(4, spec);
+            p.getInventory().setItem(8, exit);
         }
+
     }
 }

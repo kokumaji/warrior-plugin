@@ -15,10 +15,8 @@ public class GameStateListener implements Listener {
             Player p = e.getPlayer();
             switch(e.getToState()) {
                 case PRE_GAME:
-                    ((ArenaSession)e.getContext()).setInventory();
-                    break;
                 case SPECTATING:
-                    p.getInventory().clear();
+                    ((ArenaSession)e.getContext()).setInventory();
                     break;
                 case IN_GAME:
                     // GIVE KIT HERE???

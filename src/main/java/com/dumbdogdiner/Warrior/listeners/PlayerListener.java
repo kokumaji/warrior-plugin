@@ -1,17 +1,23 @@
 package com.dumbdogdiner.Warrior.listeners;
 
+import com.dumbdogdiner.Warrior.api.WarriorUser;
 import com.dumbdogdiner.Warrior.api.arena.Arena;
 import com.dumbdogdiner.Warrior.api.arena.Region;
+import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
+import com.dumbdogdiner.Warrior.api.sesssions.GameState;
+import com.dumbdogdiner.Warrior.api.sesssions.LobbySession;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
 
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 import java.util.Objects;
@@ -52,6 +58,61 @@ public class PlayerListener implements Listener {
 
             }
         }
+    }
 
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent e) {
+        Player p = e.getPlayer();
+        if(ArenaManager.isPlaying(p)) {
+            WarriorUser user = PlayerManager.get(p.getUniqueId());
+            if(((ArenaSession)user.getSession()).getState() == GameState.PRE_GAME) e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onItemClick(InventoryClickEvent e) {
+        if(e.getWhoClicked() instanceof Player) {
+            Player p = (Player) e.getWhoClicked();
+            if(ArenaManager.isPlaying(p)) {
+                WarriorUser user = PlayerManager.get(p.getUniqueId());
+                if(((ArenaSession)user.getSession()).getState() == GameState.PRE_GAME) e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onSwapHand(PlayerSwapHandItemsEvent e) {
+        Player p = e.getPlayer();
+        if(ArenaManager.isPlaying(p)) {
+            WarriorUser user = PlayerManager.get(p.getUniqueId());
+            if(((ArenaSession)user.getSession()).getState() == GameState.PRE_GAME) e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        if(e.getItem() == null) return;
+
+        Player p = e.getPlayer();
+        if(ArenaManager.isPlaying(p)) {
+            WarriorUser user = PlayerManager.get(p.getUniqueId());
+            if(((ArenaSession)user.getSession()).getState() == GameState.PRE_GAME) {
+                ItemMeta meta = e.getItem().getItemMeta();
+
+                if(meta.getDisplayName().equals("§4§l☓ §c§lQUIT §4§l☓")) {
+                    user.setSession(new LobbySession(user.getUserId()));
+                    if(user.isSpectating()) user.setSpectating(false);
+                    p.getInventory().clear();
+                } else if(meta.getDisplayName().equals("§8» §3§lSPECTATE §8«")) {
+                    ((ArenaSession) user.getSession()).setState(GameState.SPECTATING);
+                    user.setSpectating(true);
+                } else {
+                    p.sendActionBar("§4§lFeature Not Implemented!");
+                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.75f, 0.5f);
+                }
+
+                e.setCancelled(true);
+            }
+        }
     }
 }
