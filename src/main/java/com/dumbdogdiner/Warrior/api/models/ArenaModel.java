@@ -31,7 +31,7 @@ public class ArenaModel {
     public ArenaModel(Arena arena) {
         Location loc = arena.getSpawn();
 
-        this.spawn = new LocationModel(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getYaw(), loc.getYaw(), loc.getWorld().getName());
+        this.spawn = new LocationModel(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getYaw(), loc.getPitch(), loc.getWorld().getName());
         this.name = arena.getName();
         this.bounds = new RegionModel(arena.getBounds().getLoc1(), arena.getBounds().getLoc2(), loc.getWorld().getName());
         this.enabled = arena.isEnabled();
