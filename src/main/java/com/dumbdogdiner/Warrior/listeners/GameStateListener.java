@@ -3,9 +3,11 @@ package com.dumbdogdiner.Warrior.listeners;
 import com.dumbdogdiner.Warrior.api.events.GameStateChangeEvent;
 import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 
 public class GameStateListener implements Listener {
 
@@ -20,7 +22,12 @@ public class GameStateListener implements Listener {
                     p.teleport(((ArenaSession)e.getContext()).getArena().getSpawn());
                     break;
                 case IN_GAME:
-                    // GIVE KIT HERE???
+                    p.getInventory().clear();
+                    p.getInventory().setHelmet(new ItemStack(Material.LEATHER_HELMET));
+                    p.getInventory().setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
+                    p.getInventory().setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+                    p.getInventory().setBoots(new ItemStack(Material.LEATHER_BOOTS));
+                    p.getInventory().setItem(0, new ItemStack(Material.IRON_SWORD));
             }
         }
     }

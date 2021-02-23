@@ -28,6 +28,15 @@ public class LocationModel {
         this.world = world;
     }
 
+    public LocationModel(Location loc) {
+        this.x = (int) loc.getX();
+        this.y = (int) loc.getY();
+        this.z = (int) loc.getZ();
+        this.yaw = loc.getYaw();
+        this.pitch = loc.getPitch();
+        this.world = loc.getWorld().getName();
+    }
+
     public LocationModel(int x, int y, int z) {
         this.x = x;
         this.y = y;
