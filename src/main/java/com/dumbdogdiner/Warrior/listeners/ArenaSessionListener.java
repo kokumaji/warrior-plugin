@@ -8,12 +8,14 @@ import com.dumbdogdiner.Warrior.api.kit.kits.ArcherKit;
 import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.sesssions.GameState;
 import com.dumbdogdiner.Warrior.api.sesssions.LobbySession;
+import com.dumbdogdiner.Warrior.api.translation.Constants;
 import com.dumbdogdiner.Warrior.api.util.Note;
 import com.dumbdogdiner.Warrior.gui.KitGUI;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
 import com.dumbdogdiner.Warrior.managers.GUIManager;
 import com.dumbdogdiner.Warrior.managers.KitManager;
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
+import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import com.dumbdogdiner.stickyapi.common.util.MathUtil;
 import net.md_5.bungee.api.chat.hover.content.Item;
 import org.bukkit.Bukkit;
@@ -109,7 +111,7 @@ public class ArenaSessionListener implements Listener {
                 e.setCancelled(true);
             } else if(((ArenaSession)user.getSession()).getState() == GameState.IN_GAME) {
                 if(meta.getDisplayName().equals("§8» §3§lSPECIAL ABILITY §8«")) {
-                    ((ArenaSession)user.getSession()).getKit().executeSpecial(p);
+                    ((ArenaSession)user.getSession()).getKit().activateAbility(user);
                 }
             } else if(((ArenaSession)user.getSession()).getState() == GameState.SPECTATING) {
                 if(meta.getDisplayName().equals("§4§l☓ §c§lQUIT §4§l☓")) {
@@ -148,6 +150,7 @@ public class ArenaSessionListener implements Listener {
         if(session.getState() == GameState.IN_GAME) {
             e.setCancelled(true);
             ((ArenaSession) user.getSession()).setState(GameState.SPECTATING);
+            ((ArenaSession) user.getSession()).setKillStreak(0);
             user.setSpectating(true);
             user.getBukkitPlayer().setVelocity(user.getBukkitPlayer().getVelocity().add(new Vector(0, 1, 0)));
             user.addDeath();
@@ -229,7 +232,29 @@ public class ArenaSessionListener implements Listener {
 
     @EventHandler
     public void onKillStreak(KillStreakChangeEvent e) {
+        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
+        if(user == null) return;
 
+        if(!(user.getSession() instanceof ArenaSession)) return;
+        ArenaSession session = (ArenaSession) user.getSession();
+
+        user.getBukkitPlayer().sendActionBar("§7Your Killstreak: §3" + e.getStreak());
+
+        if(!session.canUseAbility()) {
+            if(session.getKit().getAbility() == null) return;
+            int abilityMin = session.getKit().getAbility().getStreakMinimum();
+            int streak = session.getKillStreak();
+
+            if(streak == 0) return;
+
+            if(streak % abilityMin == 0) {
+                session.getKit().getAbility().canExecute(user, true);
+                String msg = Warrior.getTranslator().translate(Constants.Lang.ABILITY_READY);
+                user.sendMessage(TranslationUtil.getPrefix() + msg);
+                user.playSound(Sound.BLOCK_NOTE_BLOCK_PLING, 1f, 0.5f);
+            }
+
+        }
     }
 
     @EventHandler
@@ -275,7 +300,8 @@ public class ArenaSessionListener implements Listener {
             projectile.getWorld().spawnParticle(Particle.BLOCK_CRACK, projectile.getLocation(), 10, b.getBlockData());
 
             if(e.getHitBlock().getType().equals(Material.NOTE_BLOCK)) {
-                Sound sound = Sound.valueOf("BLOCK_NOTE_BLOCK_" + ((NoteBlock)b.getBlockData()).getInstrument());
+                String soundString = String.format("BLOCK_NOTE_BLOCK_%s", ((NoteBlock)b.getBlockData()).getInstrument().toString());
+                Sound sound = Sound.valueOf(soundString);
 
                 if(pointer > easter_egg.length - 1) pointer = 0;
                 projectile.getWorld().playSound(projectile.getLocation(), sound, 2f, (float) easter_egg[pointer].getPitch());

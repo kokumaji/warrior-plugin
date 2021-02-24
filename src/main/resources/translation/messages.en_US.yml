@@ -18,3 +18,6 @@ command-messages:
   arena-setup-incomplete: "&7Can't create Arena! Setup is incomplete..."
   arena-no-setup-running: "&7Can't execute this command! There is no active arena setup running."
   kit-equip: "&7Selected Kit &3{KIT}"
+
+gameplay:
+  ability-ready: "&7Your special ability is ready!"

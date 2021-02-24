@@ -2,11 +2,15 @@ package com.dumbdogdiner.Warrior.api.kit.kits;
 
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.WarriorUser;
+
+import com.dumbdogdiner.Warrior.api.kit.Ability;
 import com.dumbdogdiner.Warrior.api.kit.IWarriorKit;
+import com.dumbdogdiner.Warrior.api.kit.abilities.PaceMakerAbility;
 import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.util.ItemBuilder;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -14,8 +18,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class ArcherKit implements IWarriorKit {
 
-    public ArcherKit() {
+    @Getter
+    private final PaceMakerAbility ability;
 
+    public ArcherKit() {
+        this.ability = new PaceMakerAbility();
     }
 
     @Override
@@ -46,8 +53,9 @@ public class ArcherKit implements IWarriorKit {
     }
 
     @Override
-    public void executeSpecial(Player player) {
-
+    public void activateAbility(WarriorUser user) {
+        if(((ArenaSession)user.getSession()).canUseAbility())
+            ability.run(user).run();
     }
 
     @Override
@@ -68,8 +76,15 @@ public class ArcherKit implements IWarriorKit {
         p.getInventory().setItem(0, new ItemStack(Material.BOW));
         p.getInventory().setItem(7, arrows);
 
-        ItemStack special = new ItemBuilder(Material.MAGMA_CREAM)
-                .setName("&8» &3&lSPECIAL ABILITY &8«")
+        Material m = Material.FIREWORK_STAR;
+        String decorator = Ability.DEACTIVATED_ABILITY_STRING;
+        if(ability.availableOnStart()) {
+            m = Material.MAGMA_CREAM;
+            decorator = Ability.ACTIVE_ABILITY_STRING;
+        }
+
+        ItemStack special = new ItemBuilder(m)
+                .setName(decorator)
                 .setLore("&7Activate your Special Ability")
                 .build();
 
@@ -107,4 +122,5 @@ public class ArcherKit implements IWarriorKit {
         }.runTaskTimer(Warrior.getInstance(), 0L, 20L);
 
     }
+
 }

@@ -1,5 +1,7 @@
 package com.dumbdogdiner.Warrior.api.kit.kits;
 
+import com.dumbdogdiner.Warrior.api.WarriorUser;
+import com.dumbdogdiner.Warrior.api.kit.Ability;
 import com.dumbdogdiner.Warrior.api.kit.IWarriorKit;
 import com.dumbdogdiner.Warrior.api.models.CustomKitModel;
 import com.dumbdogdiner.Warrior.api.models.ItemStackModel;
@@ -97,7 +99,7 @@ public class CustomKit implements IWarriorKit {
     }
 
     @Override
-    public void executeSpecial(Player player) {
+    public void activateAbility(WarriorUser user) {
 
     }
 
@@ -123,5 +125,10 @@ public class CustomKit implements IWarriorKit {
         for(int i : inv.keySet()) {
             p.getInventory().setItem(i, inv.get(i));
         }
+    }
+
+    @Override
+    public Ability getAbility() {
+        return null;
     }
 }

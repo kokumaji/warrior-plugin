@@ -18,6 +18,8 @@ import java.util.UUID;
 import com.dumbdogdiner.Warrior.listeners.GameStateListener;
 import io.netty.channel.Channel;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
@@ -60,6 +62,7 @@ public class WarriorUser {
     private boolean spectating;
 
     public WarriorUser(Player player) {
+
         try {
             this.bukkitPlayer = player;
             this.userId = bukkitPlayer.getUniqueId();

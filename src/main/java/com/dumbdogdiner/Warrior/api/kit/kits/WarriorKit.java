@@ -1,19 +1,24 @@
 package com.dumbdogdiner.Warrior.api.kit.kits;
 
-import com.dumbdogdiner.Warrior.Warrior;
+import com.dumbdogdiner.Warrior.api.WarriorUser;
+import com.dumbdogdiner.Warrior.api.kit.Ability;
 import com.dumbdogdiner.Warrior.api.kit.IWarriorKit;
+import com.dumbdogdiner.Warrior.api.kit.abilities.PaceMakerAbility;
+import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.util.ItemBuilder;
+import lombok.Getter;
 import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class WarriorKit implements IWarriorKit {
 
-    public WarriorKit() {
+    @Getter
+    private final Ability ability;
 
+    public WarriorKit() {
+        this.ability = new PaceMakerAbility();
     }
 
     @Override
@@ -50,20 +55,9 @@ public class WarriorKit implements IWarriorKit {
     }
 
     @Override
-    public void executeSpecial(Player player) {
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                ItemStack deactivated = new ItemBuilder(Material.FIREWORK_STAR)
-                                        .setName("&8» &7&lSPECIAL ABILITY &8«")
-                                        .setLore("&7Activate your Special Ability")
-                                        .build();
-                player.getInventory().setItem(8, deactivated);
-                player.playSound(player.getLocation(), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 0.5f, 1f);
-                player.spawnParticle(Particle.SMOKE_NORMAL, player.getLocation(), 50, 1, 1, 1);
-            }
-        }.runTask(Warrior.getInstance());
+    public void activateAbility(WarriorUser user) {
+        if(((ArenaSession)user.getSession()).canUseAbility())
+            ability.run(user).run();
     }
 
     @Override
@@ -76,8 +70,16 @@ public class WarriorKit implements IWarriorKit {
         p.getInventory().setBoots(new ItemStack(Material.LEATHER_BOOTS));
 
         p.getInventory().setItem(0, new ItemStack(Material.IRON_SWORD));
-        ItemStack special = new ItemBuilder(Material.MAGMA_CREAM)
-                            .setName("&8» &3&lSPECIAL ABILITY &8«")
+
+        Material m = Material.FIREWORK_STAR;
+        String decorator = Ability.DEACTIVATED_ABILITY_STRING;
+        if(ability.availableOnStart()) {
+            m = Material.MAGMA_CREAM;
+            decorator = Ability.ACTIVE_ABILITY_STRING;
+        }
+
+        ItemStack special = new ItemBuilder(m)
+                            .setName(decorator)
                             .setLore("&7Activate your Special Ability")
                             .build();
 

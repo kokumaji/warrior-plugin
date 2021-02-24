@@ -11,6 +11,7 @@ import com.dumbdogdiner.Warrior.api.util.ItemBuilder;
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
@@ -21,6 +22,10 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ArenaSession implements Session {
+
+    @Accessors(fluent = true)
+    @Getter @Setter
+    private boolean canUseAbility;
 
     @Getter
     public UUID playerId;
@@ -33,7 +38,7 @@ public class ArenaSession implements Session {
     @Getter
     private GameState state;
 
-    @Getter
+    @Getter @Setter
     private int killStreak;
 
     @Getter @Setter
@@ -76,12 +81,12 @@ public class ArenaSession implements Session {
     }
 
     public void addKill() {
-        KillStreakChangeEvent e = new KillStreakChangeEvent(killStreak, this);
-
         WarriorUser user = PlayerManager.get(playerId);
         user.addKill();
-        Bukkit.getPluginManager().callEvent(e);
         killStreak++;
+
+        KillStreakChangeEvent e = new KillStreakChangeEvent(killStreak, this);
+        Bukkit.getPluginManager().callEvent(e);
     }
 
     public void resetStreak() {
