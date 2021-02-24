@@ -2,7 +2,9 @@ package com.dumbdogdiner.Warrior.api.util;
 
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.arena.Arena;
+import com.dumbdogdiner.Warrior.api.kit.kits.CustomKit;
 import com.dumbdogdiner.Warrior.api.models.ArenaModel;
+import com.dumbdogdiner.Warrior.api.models.CustomKitModel;
 import com.dumbdogdiner.Warrior.api.models.LobbyDataModel;
 import com.dumbdogdiner.Warrior.api.models.LocationModel;
 import com.dumbdogdiner.Warrior.managers.LobbyManager;
@@ -15,10 +17,11 @@ import java.io.IOException;
 
 public class JSONUtil {
 
+    private static final String[] subFolderNames = {"/arenas", "/holograms", "/npcData", "/kits"};
     private static final String DATA_FOLDER_PATH = Warrior.getInstance().getDataFolder().getPath() + "/data";
-    public static final String LOBBY_DATA_PATH = DATA_FOLDER_PATH + "/lobby.json";
-    private static final String[] subFolderNames = {"/arenas", "/holograms", "/npcData"};
 
+    public static final String LOBBY_DATA_PATH = DATA_FOLDER_PATH + "/lobby.json";
+    public static final String KIT_DATA_PATH = DATA_FOLDER_PATH + subFolderNames[3];
     public static final String ARENA_DATA_PATH = DATA_FOLDER_PATH + subFolderNames[0];
 
     public static boolean fileExists(DataType type, String fileName) {
@@ -48,11 +51,32 @@ public class JSONUtil {
             case LOBBY:
                 f = new File(LOBBY_DATA_PATH);
                 break;
+            case KIT:
+                f = new File(DATA_FOLDER_PATH + subFolderNames[3] + fileName);
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
         }
 
         return f.exists();
+    }
+
+    public static void saveKit(CustomKit kit) {
+        String filePath = DATA_FOLDER_PATH + subFolderNames[3] + "/" + kit.getName() + ".json";
+        CustomKitModel kitModel = new CustomKitModel(kit);
+
+        // idk.. will have to adjust a few functions here ig
+        // for now this is a workaround to create folders when
+        // setting the lobby..
+        fileExists(DataType.KIT, kit.getName() + ".json");
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try(FileWriter writer = new FileWriter(filePath)) {
+            gson.toJson(kitModel, writer);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void saveArena(Arena arena) {

@@ -5,5 +5,6 @@ public enum DataType {
     ARENA,
     ENTITY,
     LOBBY,
-    HOLOGRAM;
+    HOLOGRAM,
+    KIT;
 }

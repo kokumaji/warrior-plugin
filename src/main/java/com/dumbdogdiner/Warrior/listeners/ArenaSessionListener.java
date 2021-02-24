@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.entity.ProjectileCollideEvent;
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.WarriorUser;
 import com.dumbdogdiner.Warrior.api.events.KillStreakChangeEvent;
+import com.dumbdogdiner.Warrior.api.kit.kits.ArcherKit;
 import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.sesssions.GameState;
 import com.dumbdogdiner.Warrior.api.sesssions.LobbySession;
@@ -14,6 +15,7 @@ import com.dumbdogdiner.Warrior.managers.GUIManager;
 import com.dumbdogdiner.Warrior.managers.KitManager;
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
 import com.dumbdogdiner.stickyapi.common.util.MathUtil;
+import net.md_5.bungee.api.chat.hover.content.Item;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -239,9 +241,14 @@ public class ArenaSessionListener implements Listener {
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
+        if(!(((ArenaSession) user.getSession()).getKit() instanceof ArcherKit)) return;
+        ((ArenaSession) user.getSession()).setLastArrow(System.currentTimeMillis());
 
         if(e.getArrowItem().getAmount() == 1) {
-            p.getInventory().setItem(7, new ItemStack(Material.GRAY_DYE));
+            ItemStack item = p.getInventory().getItem(7);
+            item.setType(Material.GRAY_DYE);
+
+            p.getInventory().setItem(7, item);
         }
     }
 
@@ -261,9 +268,9 @@ public class ArenaSessionListener implements Listener {
             return;
         };
         if(e.getHitBlock() != null) {
-            //automatically clean up arrows.. we dont need them
             Block b = e.getHitBlock();
 
+            //automatically clean up arrows.. we dont need them
             projectile.remove();
             projectile.getWorld().spawnParticle(Particle.BLOCK_CRACK, projectile.getLocation(), 10, b.getBlockData());
 

@@ -39,6 +39,9 @@ public class ArenaSession implements Session {
     @Getter @Setter
     private IWarriorKit kit;
 
+    @Getter @Setter
+    private long lastArrow;
+
     public ArenaSession(UUID uuid, Arena arena) {
         this(uuid, arena, GameState.PRE_GAME);
     }

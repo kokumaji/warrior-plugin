@@ -46,7 +46,7 @@ public class ArenaManager {
             i++;
         }
 
-        Warrior.getInstance().getLogger().info("Loaded " + i + " arena(s) from disk!");
+        Warrior.getInstance().getLogger().info("Loaded " + i + " arena(s) from data folder!");
     }
 
     public static List<WarriorUser> getPlayers(Arena a) {

@@ -4,6 +4,8 @@ import com.dumbdogdiner.Warrior.api.command.CommandType;
 import com.dumbdogdiner.Warrior.api.util.ReflectionUtil;
 import com.dumbdogdiner.Warrior.commands.DebugCommand;
 import com.dumbdogdiner.Warrior.commands.arena.*;
+import com.dumbdogdiner.Warrior.commands.kit.KitCommand;
+import com.dumbdogdiner.Warrior.commands.kit.KitCreateCommand;
 import com.dumbdogdiner.Warrior.commands.warrior.*;
 import com.dumbdogdiner.Warrior.listeners.*;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
@@ -73,6 +75,8 @@ public class Warrior extends JavaPlugin {
                 .addSubCommand(new ArenaSetupCommand())
                 .addSubCommand(new ArenaSpectateCommand())
                 .addSubCommand(new ArenaLeaveCommand()));
+        cmds.add(new KitCommand("kit")
+                .addSubCommand(new KitCreateCommand()));
         cMap.registerAll(this.getName().toLowerCase(), cmds);
 
         ArenaManager.loadArenas();

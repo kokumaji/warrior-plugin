@@ -1,7 +1,9 @@
 package com.dumbdogdiner.Warrior.api.kit.kits;
 
 import com.dumbdogdiner.Warrior.Warrior;
+import com.dumbdogdiner.Warrior.api.WarriorUser;
 import com.dumbdogdiner.Warrior.api.kit.IWarriorKit;
+import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.util.ItemBuilder;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
@@ -57,9 +59,14 @@ public class ArcherKit implements IWarriorKit {
         p.getInventory().setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
         p.getInventory().setBoots(new ItemStack(Material.LEATHER_BOOTS));
 
+        ItemStack arrows = new ItemBuilder(Material.ARROW)
+                            .setAmount(16)
+                            .setName("&8» &3&lARROWS &8«")
+                            .build();
+
         p.getInventory().setItem(1, new ItemStack(Material.STONE_SWORD));
         p.getInventory().setItem(0, new ItemStack(Material.BOW));
-        p.getInventory().setItem(7, new ItemStack(Material.ARROW, 16));
+        p.getInventory().setItem(7, arrows);
 
         ItemStack special = new ItemBuilder(Material.MAGMA_CREAM)
                 .setName("&8» &3&lSPECIAL ABILITY &8«")
@@ -77,6 +84,11 @@ public class ArcherKit implements IWarriorKit {
                     return;
                 }
 
+                WarriorUser user = PlayerManager.get(p.getUniqueId());
+                double lastShotDelta = Math.min(System.currentTimeMillis() - ((ArenaSession)user.getSession()).getLastArrow(), 3000);
+
+                if(lastShotDelta < 3000) return;
+
                 ItemStack item = p.getInventory().getItem(7);
                 if(item == null || (item.getType() != Material.ARROW && item.getType() != Material.GRAY_DYE)) {
                     cancel();
@@ -92,7 +104,7 @@ public class ArcherKit implements IWarriorKit {
                     p.getInventory().setItem(7, item);
                 }
             }
-        }.runTaskTimer(Warrior.getInstance(), 0L, 50L);
+        }.runTaskTimer(Warrior.getInstance(), 0L, 20L);
 
     }
 }
