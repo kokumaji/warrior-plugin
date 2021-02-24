@@ -86,25 +86,33 @@ public class LobbySessionListener implements Listener {
 
         if(!(user.getSession() instanceof LobbySession)) return;
         e.setCancelled(true);
+        e.getWhoClicked().closeInventory();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEvent e) {
-        if(e.getHand() == EquipmentSlot.OFF_HAND) return;
-
-        if(e.getAction() == Action.RIGHT_CLICK_AIR) {
-            e.setCancelled(true);
-            return;
-        }
-
         if(e.getItem() == null) return;
         WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof LobbySession)) return;
-        e.setCancelled(true);
+
+        // workaround to tools firing LEFT_CLICK_AIR and RIGHT_CLICK_AIR
+        // ignores right clicks with blocks right now...
+        if(e.getHand() == EquipmentSlot.OFF_HAND) return;
+        if(e.getAction() == Action.RIGHT_CLICK_AIR) {
+            e.setCancelled(true);
+            return;
+        }
 
         ItemMeta meta = e.getPlayer().getInventory().getItemInMainHand().getItemMeta();
+
+        // TODO: Check for Tool + Lobby Item
+        // disgusting hotfix for now.. gonna replace this with an
+        // actual item comparison
+        if(!meta.getDisplayName().startsWith("§")) return;
+
+        e.setCancelled(true);
         if(meta.getDisplayName().equals("§8» §3§lARENAS §8«")) {
             ArenaGUI gui = GUIManager.get(ArenaGUI.class);
             gui.open(e.getPlayer());

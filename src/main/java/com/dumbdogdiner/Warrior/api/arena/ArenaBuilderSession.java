@@ -119,7 +119,7 @@ public class ArenaBuilderSession {
             ArenaBuilder.getSessions().remove(world);
 
             Region region = new Region(getPos1(), getPos2());
-            Arena a = new Arena(getArenaName(), region, getSpawn(), true);
+            Arena a = new Arena(getArenaName(), region, getSpawn(), true, ArenaManager.getArenas().size());
             ArenaManager.registerArena(a);
             a.save();
 
@@ -207,9 +207,9 @@ public class ArenaBuilderSession {
                     player.playSound(player.getLocation(), Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, 0.5f, 1f);
                 } else if(item.getType() == Material.LIME_DYE) {
                     if(getSpawn() == null || (getPos1() == null || getPos2() == null)) {
-                        String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_SETUP_INCOMPLETE, true);
+                        String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_SETUP_INCOMPLETE);
 
-                        player.sendMessage(msg);
+                        player.sendMessage(TranslationUtil.getPrefix() + msg);
                         player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5f, 1f);
                         return;
                     }

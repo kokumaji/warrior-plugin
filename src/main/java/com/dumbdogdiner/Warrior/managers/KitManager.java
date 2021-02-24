@@ -1,11 +1,10 @@
 package com.dumbdogdiner.Warrior.managers;
 
 import com.dumbdogdiner.Warrior.api.kit.IWarriorKit;
+import com.dumbdogdiner.Warrior.api.kit.kits.ArcherKit;
 import com.dumbdogdiner.Warrior.api.kit.kits.WarriorKit;
-import com.dumbdogdiner.Warrior.gui.KitGUI;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class KitManager {
@@ -14,6 +13,7 @@ public class KitManager {
 
     public static void registerKits() {
         kits.add(new WarriorKit());
+        kits.add(new ArcherKit());
     }
 
     public static IWarriorKit get(String n) {

@@ -6,6 +6,7 @@ import com.dumbdogdiner.Warrior.api.WarriorUser;
 import com.dumbdogdiner.Warrior.api.translation.Constants;
 import com.dumbdogdiner.Warrior.api.translation.Translator;
 
+import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import lombok.Getter;
 
 import org.bukkit.Location;
@@ -26,8 +27,8 @@ public class ArenaBuilder {
     public static void registerSession(World world, @NotNull ArenaBuilderSession session) {
         Player player = session.getSessionUser().getBukkitPlayer();
         if(sessions.containsKey(world)) {
-            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_SETUP_IN_PROGRESS, true);
-            player.sendMessage(msg);
+            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_SETUP_IN_PROGRESS);
+            player.sendMessage(TranslationUtil.getPrefix() + msg);
             return;
         }
 

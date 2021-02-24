@@ -34,9 +34,9 @@ public class Arena {
     private boolean enabled;
 
     @Getter
-    private String id;
+    private int id;
 
-    public Arena(String arenaName, Region region, Location spawn, boolean enabled) {
+    public Arena(String arenaName, Region region, Location spawn, boolean enabled, int id) {
         if(ArenaManager.get(arenaName) != null) throw new IllegalStateException("Duplicate Arena in ArenaManager");
         else if(JSONUtil.fileExists(DataType.ARENA, arenaName)) throw new IllegalStateException("Can't create Arena, JSON data already exists");
         this.name = arenaName;
@@ -44,9 +44,11 @@ public class Arena {
         this.bounds = region;
         this.enabled = enabled;
 
+        this.id = id;
+
     }
 
-    public Arena(File file) {
+    public Arena(File file, int id) {
         try(JsonReader reader = new JsonReader(new FileReader(file))) {
             ArenaModel model = new Gson().fromJson(reader, ArenaModel.class);
             LocationModel sm = model.getSpawn();
@@ -56,6 +58,7 @@ public class Arena {
             this.spawn = new Location(Bukkit.getWorld(sm.getWorld()), sm.getX(), sm.getY(), sm.getZ(), sm.getYaw(), sm.getPitch());
             this.bounds = new Region(rgm);
             this.enabled = model.isEnabled();
+            this.id = id;
 
         } catch (IOException e) {
             e.printStackTrace();

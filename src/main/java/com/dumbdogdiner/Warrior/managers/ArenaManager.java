@@ -38,9 +38,11 @@ public class ArenaManager {
         File dataFolder = new File(JSONUtil.ARENA_DATA_PATH);
         File[] files = dataFolder.listFiles();
 
+        if(files == null) return;
+
         int i = 0;
         for(File f : files) {
-            registerArena(new Arena(f));
+            registerArena(new Arena(f, i));
             i++;
         }
 
@@ -69,5 +71,9 @@ public class ArenaManager {
         }
 
         return null;
+    }
+
+    public static void remove(Arena a) {
+        arenaMap.remove(a.getId());
     }
 }

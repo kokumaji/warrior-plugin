@@ -45,6 +45,9 @@ public class JSONUtil {
             case ENTITY:
                 f = new File(DATA_FOLDER_PATH + subFolderNames[2] + fileName);
                 break;
+            case LOBBY:
+                f = new File(LOBBY_DATA_PATH);
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
         }
@@ -68,6 +71,11 @@ public class JSONUtil {
     public static void saveSpawn() {
         LobbyDataModel ldm = new LobbyDataModel(new LocationModel(LobbyManager.getLobbySpawn()));
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        // idk.. will have to adjust a few functions here ig
+        // for now this is a workaround to create folders when
+        // setting the lobby..
+        fileExists(DataType.LOBBY, "lobby.json");
 
         try(FileWriter writer = new FileWriter(LOBBY_DATA_PATH)) {
             gson.toJson(ldm, writer);

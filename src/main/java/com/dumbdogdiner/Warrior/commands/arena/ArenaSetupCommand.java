@@ -7,6 +7,7 @@ import com.dumbdogdiner.Warrior.api.arena.ArenaBuilderSession;
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
 
 import com.dumbdogdiner.Warrior.api.translation.Constants;
+import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -36,8 +37,8 @@ public class ArenaSetupCommand implements SubCommand {
         ArenaBuilderSession session = ArenaBuilder.getSession(user);
 
         if(session == null) {
-            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_NO_SETUP_RUNNING, true);
-            user.getBukkitPlayer().sendMessage(msg);
+            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_NO_SETUP_RUNNING);
+            user.getBukkitPlayer().sendMessage(TranslationUtil.getPrefix() + msg);
             return true;
         }
         if(args[1].equalsIgnoreCase("cancel")) {

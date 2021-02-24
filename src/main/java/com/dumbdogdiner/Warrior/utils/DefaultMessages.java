@@ -17,11 +17,11 @@ public class DefaultMessages {
     }
 
     public static void update() {
-        COMMAND_CLIENT_ONLY = Warrior.getTranslator().translate(Constants.Lang.ERROR_CLIENT_CMD, false);
-        COMMAND_SYNTAX_ERROR = Warrior.getTranslator().translate(Constants.Lang.ERROR_SYNTAX, false);
-        SUBCMD_SYNTAX = Warrior.getTranslator().translate(Constants.Lang.ERROR_SUBCMD, false);
-        COMMAND_PERM_ERROR = Warrior.getTranslator().translate(Constants.Lang.ERROR_PERM, false);
-        COMMAND_GENERAL_ERROR = Warrior.getTranslator().translate(Constants.Lang.ERROR_GENERAL, false);
+        COMMAND_CLIENT_ONLY = Warrior.getTranslator().translate(Constants.Lang.ERROR_CLIENT_CMD);
+        COMMAND_SYNTAX_ERROR = Warrior.getTranslator().translate(Constants.Lang.ERROR_SYNTAX);
+        SUBCMD_SYNTAX = Warrior.getTranslator().translate(Constants.Lang.ERROR_SUBCMD);
+        COMMAND_PERM_ERROR = Warrior.getTranslator().translate(Constants.Lang.ERROR_PERM);
+        COMMAND_GENERAL_ERROR = Warrior.getTranslator().translate(Constants.Lang.ERROR_GENERAL);
     }
 
     //public static String PLUGIN_RELOAD_SUCCESS = Warrior.getTranslator().translate("command-messages.reload-config", true);

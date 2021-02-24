@@ -4,9 +4,11 @@ import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import lombok.Getter;
 import lombok.Setter;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -42,34 +44,34 @@ public class Translator {
 
     }
 
-    public String translate(String stringPath, boolean addPluginPrefix) {
-        if(languageFile.getString(stringPath) != null) {
-            String msg = TranslationUtil.translateColor(languageFile.getString(stringPath));
-            if(addPluginPrefix) {
-                msg = TranslationUtil.getPrefix() + msg;
-            }
-            return msg;
-        }
-
-        return "§cError in language file! String " + stringPath + " does not exist.";
+    public String translate(String stringPath) {
+        return translate(stringPath, null);
     }
 
     public String applyPlaceholders(String msg, Map<String, String> values) {
-        StrSubstitutor sub = new StrSubstitutor(values, "{", "}");
-        String result = sub.replace(msg);
+        if(values != null) {
+            StrSubstitutor sub = new StrSubstitutor(values, "{", "}");
+            msg = sub.replace(msg);
+        }
 
-        return TranslationUtil.translateColor(result);
+        return TranslationUtil.translateColor(msg);
     }
 
-    public String translate(String stringPath, Map<String, String> values) {
+    public String translate(String stringPath, Map<String, String> values, Player player) {
         if(languageFile.get(stringPath) != null) {
-            StrSubstitutor sub = new StrSubstitutor(values, "{", "}");
-            String result = sub.replace(languageFile.getString(stringPath));
+            String result = applyPlaceholders(languageFile.getString(stringPath), values);
+            if(Warrior.usePlaceholderAPI() && player != null) {
+                result = PlaceholderAPI.setPlaceholders(player, result);
+            }
 
             return TranslationUtil.translateColor(result);
         }
 
         return "§cError in language file! String " + stringPath + " does not exist.";
+    }
+
+    public String translate(String stringPath, Map<String, String> values) {
+        return translate(stringPath, values, null);
     }
 
 }

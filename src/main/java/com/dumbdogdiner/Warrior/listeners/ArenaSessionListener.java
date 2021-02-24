@@ -1,32 +1,36 @@
 package com.dumbdogdiner.Warrior.listeners;
 
+import com.destroystokyo.paper.event.entity.ProjectileCollideEvent;
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.WarriorUser;
 import com.dumbdogdiner.Warrior.api.events.KillStreakChangeEvent;
 import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.sesssions.GameState;
 import com.dumbdogdiner.Warrior.api.sesssions.LobbySession;
+import com.dumbdogdiner.Warrior.api.util.Note;
 import com.dumbdogdiner.Warrior.gui.KitGUI;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
 import com.dumbdogdiner.Warrior.managers.GUIManager;
 import com.dumbdogdiner.Warrior.managers.KitManager;
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
+import com.dumbdogdiner.stickyapi.common.util.MathUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 
+import org.bukkit.block.Block;
+import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemDamageEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -70,10 +74,18 @@ public class ArenaSessionListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if(e.getItem() == null) return;
-
         Player p = e.getPlayer();
         if(ArenaManager.isPlaying(p)) {
+            if(e.getClickedBlock() != null) {
+                Block b = e.getClickedBlock();
+
+                if(b.getType() == Material.NOTE_BLOCK) {
+                    e.setCancelled(true);
+                }
+            }
+
+            if(e.getItem() == null) return;
+
             WarriorUser user = PlayerManager.get(p.getUniqueId());
             ItemMeta meta = e.getItem().getItemMeta();
 
@@ -178,6 +190,15 @@ public class ArenaSessionListener implements Listener {
     }
 
     @EventHandler
+    public void onBlockBreak(PlayerPickupArrowEvent e) {
+        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
+        if(user == null) return;
+
+        if(!(user.getSession() instanceof ArenaSession)) return;
+        e.setCancelled(true);
+    }
+
+    @EventHandler
     public void onKill(PlayerDeathEvent e) {
         if(e.getEntity().getKiller() == null) return;
         Player killer = e.getEntity().getKiller();
@@ -196,6 +217,9 @@ public class ArenaSessionListener implements Listener {
 
         if(victim == null || attacker == null) return;
 
+        if(!(attacker.getSession() instanceof ArenaSession)) return;
+        if(!(victim.getSession() instanceof ArenaSession)) return;
+
         if(((ArenaSession)victim.getSession()).getState() != GameState.IN_GAME) e.setCancelled(true);
         if(((ArenaSession)attacker.getSession()).getState() != GameState.IN_GAME) e.setCancelled(true);
 
@@ -204,6 +228,53 @@ public class ArenaSessionListener implements Listener {
     @EventHandler
     public void onKillStreak(KillStreakChangeEvent e) {
 
+    }
+
+    @EventHandler
+    public void onShoot(EntityShootBowEvent e) {
+        if(!(e.getEntity() instanceof Player)) return;
+        Player p = (Player) e.getEntity();
+
+        WarriorUser user = PlayerManager.get(p.getUniqueId());
+        if(user == null) return;
+
+        if(!(user.getSession() instanceof ArenaSession)) return;
+
+        if(e.getArrowItem().getAmount() == 1) {
+            p.getInventory().setItem(7, new ItemStack(Material.GRAY_DYE));
+        }
+    }
+
+    private static final Note[] easter_egg = {
+            Note.D2, Note.D2, Note.D3, Note.A2, Note.G2_SHARP, Note.G2, Note.F2, Note.D2, Note.F2, Note.G2
+    };
+
+    private static int pointer = 0;
+
+    @EventHandler
+    public void onProjectileHit(ProjectileHitEvent e) {
+        Projectile projectile = e.getEntity();
+        if(e.getHitEntity() != null) {
+            if(!(e.getHitBlock() instanceof Player)) return;
+
+            projectile.getWorld().spawnParticle(Particle.BLOCK_CRACK, projectile.getLocation(), 10, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
+            return;
+        };
+        if(e.getHitBlock() != null) {
+            //automatically clean up arrows.. we dont need them
+            Block b = e.getHitBlock();
+
+            projectile.remove();
+            projectile.getWorld().spawnParticle(Particle.BLOCK_CRACK, projectile.getLocation(), 10, b.getBlockData());
+
+            if(e.getHitBlock().getType().equals(Material.NOTE_BLOCK)) {
+                Sound sound = Sound.valueOf("BLOCK_NOTE_BLOCK_" + ((NoteBlock)b.getBlockData()).getInstrument());
+
+                if(pointer > easter_egg.length - 1) pointer = 0;
+                projectile.getWorld().playSound(projectile.getLocation(), sound, 2f, (float) easter_egg[pointer].getPitch());
+                pointer++;
+            }
+        }
     }
 
 }

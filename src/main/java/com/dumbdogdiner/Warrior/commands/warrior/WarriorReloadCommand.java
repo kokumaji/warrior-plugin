@@ -5,6 +5,7 @@ import com.dumbdogdiner.Warrior.api.command.SubCommand;
 
 import com.dumbdogdiner.Warrior.api.translation.Constants;
 import com.dumbdogdiner.Warrior.utils.DefaultMessages;
+import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -46,8 +47,8 @@ public class WarriorReloadCommand implements SubCommand {
 
     private void reloadConfig(CommandSender sender) {
         Warrior.getInstance().reloadConfig();
-        String msg = Warrior.getTranslator().translate(Constants.Lang.CMD_RELOAD_CONFIG, true);
-        sender.sendMessage(msg);
+        String msg = Warrior.getTranslator().translate(Constants.Lang.CMD_RELOAD_CONFIG);
+        sender.sendMessage(TranslationUtil.getPrefix() + msg);
     }
 
     private void reloadLanguage(CommandSender sender) {
@@ -55,8 +56,8 @@ public class WarriorReloadCommand implements SubCommand {
         Warrior.getTranslator().setLanguageFile(YamlConfiguration.loadConfiguration(f));
         DefaultMessages.update();
 
-        String msg = Warrior.getTranslator().translate(Constants.Lang.CMD_RELOAD_LANGUAGE, true);
-        sender.sendMessage(msg);
+        String msg = Warrior.getTranslator().translate(Constants.Lang.CMD_RELOAD_LANGUAGE);
+        sender.sendMessage(TranslationUtil.getPrefix() + msg);
     }
 
 
