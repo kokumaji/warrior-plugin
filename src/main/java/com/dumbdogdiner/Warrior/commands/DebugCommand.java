@@ -2,8 +2,9 @@ package com.dumbdogdiner.Warrior.commands;
 
 import com.dumbdogdiner.Warrior.Warrior;
 
-import com.dumbdogdiner.Warrior.api.arena.Arena;
-import com.dumbdogdiner.Warrior.managers.ArenaManager;
+import com.dumbdogdiner.Warrior.api.WarriorUser;
+import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
+import com.dumbdogdiner.Warrior.managers.PlayerManager;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,6 +23,8 @@ public class DebugCommand implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        WarriorUser user = PlayerManager.get(((Player)sender).getUniqueId());
+        ((ArenaSession)user.getSession()).addKill();
         return true;
     }
 

@@ -16,12 +16,14 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.dumbdogdiner.Warrior.listeners.GameStateListener;
+import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import io.netty.channel.Channel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -60,6 +62,15 @@ public class WarriorUser {
 
     @Getter
     private boolean spectating;
+
+    @Getter @Setter
+    private boolean abilityActive;
+
+    @Getter
+    private Sound deathSound = Sound.ENTITY_FISHING_BOBBER_SPLASH;
+
+    @Getter
+    private Particle deathParticle = Particle.HEART;
 
     public WarriorUser(Player player) {
 
@@ -101,7 +112,7 @@ public class WarriorUser {
     public void sendPacket(Object packet) {
         try {
             Class<?> nmsPacket = NMSUtil.NMS_PACKET_CLASS;
-            if(!ReflectionUtil.isSuperclassRecursive(packet.getClass(), nmsPacket)) return;
+            //if(!ReflectionUtil.isSuperclassRecursive(packet.getClass(), nmsPacket)) return;
 
             Object conn = getPlayerConnection();
             Method sendPacket = conn.getClass().getMethod("sendPacket", nmsPacket);
@@ -197,4 +208,26 @@ public class WarriorUser {
     public double getKDR() {
         return 0.0;
     }
+
+    public void sendActionBar(String msg) {
+        try {
+            Object icbc = BukkitHandler.getNMSClass("IChatBaseComponent")
+                    .getDeclaredClasses()[0]
+                    .getMethod("a", String.class)
+                    .invoke(BukkitHandler.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0], "{\"text\": \"" + msg + "\"}");
+
+            Object messageType = BukkitHandler.getNMSClass("ChatMessageType").getMethod("valueOf", String.class)
+                    .invoke(null, "GAME_INFO");
+
+            Object packetChat = BukkitHandler.getNMSClass("PacketPlayOutChat")
+                    .getConstructor(BukkitHandler.getNMSClass("IChatBaseComponent"), messageType.getClass(), UUID.class)
+                    .newInstance(icbc, messageType, UUID.randomUUID());
+
+            sendPacket(packetChat);
+        } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

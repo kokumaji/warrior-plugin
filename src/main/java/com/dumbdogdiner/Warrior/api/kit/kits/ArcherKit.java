@@ -4,58 +4,28 @@ import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.WarriorUser;
 
 import com.dumbdogdiner.Warrior.api.kit.Ability;
-import com.dumbdogdiner.Warrior.api.kit.IWarriorKit;
-import com.dumbdogdiner.Warrior.api.kit.abilities.PaceMakerAbility;
+import com.dumbdogdiner.Warrior.api.kit.BaseKit;
+import com.dumbdogdiner.Warrior.api.kit.SpecialAbilities;
 import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.util.ItemBuilder;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
-import lombok.Getter;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class ArcherKit implements IWarriorKit {
+public class ArcherKit extends BaseKit {
 
-    @Getter
-    private final PaceMakerAbility ability;
+    private static final String[] desc = {
+            "&8Default Kit",
+            " ",
+            "&7Main Weapon: &fBow"
+    };
 
-    public ArcherKit() {
-        this.ability = new PaceMakerAbility();
-    }
-
-    @Override
-    public String getName() {
-        return "Archer";
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] {
-                "Default Kit"
-        };
-    }
-
-    @Override
-    public int getCost() {
-        return 0;
-    }
-
-    @Override
-    public String getPermission() {
-        return "warrior.kit.archer";
-    }
-
-    @Override
-    public Material getIcon() {
-        return Material.BOW;
-    }
-
-    @Override
-    public void activateAbility(WarriorUser user) {
-        if(((ArenaSession)user.getSession()).canUseAbility())
-            ability.run(user).run();
+    public ArcherKit(String name, int cost, String permission, Material icon) {
+        super(name, cost, permission, icon, SpecialAbilities.PACEMAKER, desc);
     }
 
     @Override
@@ -78,7 +48,7 @@ public class ArcherKit implements IWarriorKit {
 
         Material m = Material.FIREWORK_STAR;
         String decorator = Ability.DEACTIVATED_ABILITY_STRING;
-        if(ability.availableOnStart()) {
+        if(getAbility().availableOnStart()) {
             m = Material.MAGMA_CREAM;
             decorator = Ability.ACTIVE_ABILITY_STRING;
         }
@@ -94,6 +64,10 @@ public class ArcherKit implements IWarriorKit {
 
             @Override
             public void run() {
+                if(!p.isOnline()) {
+                    cancel();
+                    return;
+                }
                 if(!ArenaManager.isPlaying(p)) {
                     cancel();
                     return;

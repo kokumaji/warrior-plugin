@@ -5,7 +5,7 @@ import com.dumbdogdiner.Warrior.api.arena.Arena;
 import com.dumbdogdiner.Warrior.api.events.ArenaJoinEvent;
 import com.dumbdogdiner.Warrior.api.events.GameStateChangeEvent;
 import com.dumbdogdiner.Warrior.api.events.KillStreakChangeEvent;
-import com.dumbdogdiner.Warrior.api.kit.IWarriorKit;
+import com.dumbdogdiner.Warrior.api.kit.BaseKit;
 import com.dumbdogdiner.Warrior.api.util.ItemBuilder;
 
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
@@ -42,7 +42,7 @@ public class ArenaSession implements Session {
     private int killStreak;
 
     @Getter @Setter
-    private IWarriorKit kit;
+    private BaseKit kit;
 
     @Getter @Setter
     private long lastArrow;

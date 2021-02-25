@@ -9,6 +9,7 @@ import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.sesssions.GameState;
 import com.dumbdogdiner.Warrior.api.sesssions.LobbySession;
 import com.dumbdogdiner.Warrior.api.translation.Constants;
+import com.dumbdogdiner.Warrior.api.util.HologramBuilder;
 import com.dumbdogdiner.Warrior.api.util.Note;
 import com.dumbdogdiner.Warrior.gui.KitGUI;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
@@ -18,16 +19,16 @@ import com.dumbdogdiner.Warrior.managers.PlayerManager;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
 import com.dumbdogdiner.stickyapi.common.util.MathUtil;
 import net.md_5.bungee.api.chat.hover.content.Item;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.NoteBlock;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -155,12 +156,21 @@ public class ArenaSessionListener implements Listener {
             user.getBukkitPlayer().setVelocity(user.getBukkitPlayer().getVelocity().add(new Vector(0, 1, 0)));
             user.addDeath();
 
+            // Play Custom Death Sound + Particles???
+            Location loc = user.getBukkitPlayer().getLocation();
+            loc.getWorld().playSound(loc, user.getDeathSound(), 1f, 1f);
+            loc.getWorld().spawnParticle(user.getDeathParticle(), e.getEntity().getLocation(), 15, 0.35, 0.35, 0.35);
+
             new BukkitRunnable() {
 
                 int totalTime = 3;
 
                 @Override
                 public void run() {
+                    if(!user.getBukkitPlayer().isOnline()) {
+                        cancel();
+                        return;
+                    }
                     if(this.totalTime == 0) {
                         ((ArenaSession) user.getSession()).setState(GameState.PRE_GAME);
                         user.setSpectating(false);
@@ -209,10 +219,39 @@ public class ArenaSessionListener implements Listener {
         Player killer = e.getEntity().getKiller();
 
         WarriorUser killerUser = PlayerManager.get(killer.getUniqueId());
+        if(!(killerUser.getSession() instanceof ArenaSession)) return;
+
         ((ArenaSession)killerUser.getSession()).addKill();
+
+        Location loc = e.getEntity().getLocation();
+
+        new HologramBuilder(loc)
+        .setText("&c+1 Kill", "&7+69 Coins")
+        .removeAfter(2)
+        .sendTo(killerUser);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onArrowDamage(EntityDamageByEntityEvent e) {
+        if(!(e.getDamager() instanceof Projectile)) return;
+        if(!(e.getEntity() instanceof Player)) return;
+
+        Projectile projectile = (Arrow) e.getDamager();
+        if(!(projectile.getShooter() instanceof Player)) return;
+
+        WarriorUser victim = PlayerManager.get(e.getEntity().getUniqueId());
+
+        if(victim.getSession() == null) return;
+
+        if(!(victim.getSession() instanceof ArenaSession)) {
+            e.setCancelled(true);
+        } else if(((ArenaSession)victim.getSession()).getState() != GameState.IN_GAME) {
+            e.setCancelled(true);
+        }
+
+    }
+
+    @EventHandler(priority = EventPriority.LOW)
     public void onDamage(EntityDamageByEntityEvent e) {
         if(!(e.getEntity() instanceof Player)) return;
         if(!(e.getDamager() instanceof Player)) return;
@@ -239,10 +278,11 @@ public class ArenaSessionListener implements Listener {
         ArenaSession session = (ArenaSession) user.getSession();
 
         user.getBukkitPlayer().sendActionBar("§7Your Killstreak: §3" + e.getStreak());
+        if(user.isAbilityActive()) return;
 
         if(!session.canUseAbility()) {
             if(session.getKit().getAbility() == null) return;
-            int abilityMin = session.getKit().getAbility().getStreakMinimum();
+            int abilityMin = session.getKit().getAbility().getMinStreak();
             int streak = session.getKillStreak();
 
             if(streak == 0) return;
@@ -287,8 +327,7 @@ public class ArenaSessionListener implements Listener {
     public void onProjectileHit(ProjectileHitEvent e) {
         Projectile projectile = e.getEntity();
         if(e.getHitEntity() != null) {
-            if(!(e.getHitBlock() instanceof Player)) return;
-
+            if(!(e.getHitEntity() instanceof Player)) return;
             projectile.getWorld().spawnParticle(Particle.BLOCK_CRACK, projectile.getLocation(), 10, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
             return;
         };

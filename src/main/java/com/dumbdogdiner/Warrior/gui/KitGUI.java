@@ -2,13 +2,13 @@ package com.dumbdogdiner.Warrior.gui;
 
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.WarriorUser;
-import com.dumbdogdiner.Warrior.api.arena.Arena;
-import com.dumbdogdiner.Warrior.api.kit.IWarriorKit;
+
+import com.dumbdogdiner.Warrior.api.kit.BaseKit;
 import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.sesssions.GameState;
 import com.dumbdogdiner.Warrior.api.translation.Constants;
 import com.dumbdogdiner.Warrior.api.util.ItemBuilder;
-import com.dumbdogdiner.Warrior.managers.ArenaManager;
+
 import com.dumbdogdiner.Warrior.managers.KitManager;
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
@@ -64,7 +64,7 @@ public class KitGUI extends GUI {
                     addSlot(x, y, blank);
                     continue;
                 }
-                IWarriorKit k = KitManager.getKits().get(i);
+                BaseKit k = KitManager.getKits().get(i);
                 ItemStack kitItem = new ItemBuilder(k.getIcon())
                         .setName("§7Kit §3" + k.getName())
                         .setLore(k.getDescription())
@@ -91,7 +91,7 @@ public class KitGUI extends GUI {
             WarriorUser user = PlayerManager.get(event.getWhoClicked().getUniqueId());
 
             if(user == null) return;
-            IWarriorKit kit = KitManager.get(kitName);
+            BaseKit kit = KitManager.get(kitName);
             if(kit == null) return;
 
             kit.giveKit(user.getBukkitPlayer());
