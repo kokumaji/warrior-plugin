@@ -3,6 +3,7 @@ package com.dumbdogdiner.Warrior.listeners;
 import com.dumbdogdiner.Warrior.api.WarriorUser;
 import com.dumbdogdiner.Warrior.api.sesssions.LobbySession;
 import com.dumbdogdiner.Warrior.gui.ArenaGUI;
+import com.dumbdogdiner.Warrior.gui.DeathSoundGUI;
 import com.dumbdogdiner.Warrior.managers.GUIManager;
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
 import org.bukkit.GameMode;
@@ -98,12 +99,12 @@ public class LobbySessionListener implements Listener {
         if(!(user.getSession() instanceof LobbySession)) return;
 
         // workaround to tools firing LEFT_CLICK_AIR and RIGHT_CLICK_AIR
-        // ignores right clicks with blocks right now...
-        if(e.getHand() == EquipmentSlot.OFF_HAND) return;
-        if(e.getAction() == Action.RIGHT_CLICK_AIR) {
+        if((e.getHand() == EquipmentSlot.HAND && e.getAction() == Action.RIGHT_CLICK_AIR)) {
             e.setCancelled(true);
             return;
         }
+
+        System.out.println(e.getHand() + " " + e.getAction());
 
         ItemMeta meta = e.getPlayer().getInventory().getItemInMainHand().getItemMeta();
 
@@ -115,6 +116,9 @@ public class LobbySessionListener implements Listener {
         e.setCancelled(true);
         if(meta.getDisplayName().equals("§8» §3§lARENAS §8«")) {
             ArenaGUI gui = GUIManager.get(ArenaGUI.class);
+            gui.open(e.getPlayer());
+        } else if(meta.getDisplayName().equals("§8» §3§lSHOP §8«")) {
+            DeathSoundGUI gui = GUIManager.get(DeathSoundGUI.class);
             gui.open(e.getPlayer());
         } else {
             user.getBukkitPlayer().sendActionBar("§4§lFeature Not Implemented!");

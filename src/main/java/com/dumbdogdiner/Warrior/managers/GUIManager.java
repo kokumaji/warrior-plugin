@@ -2,6 +2,7 @@ package com.dumbdogdiner.Warrior.managers;
 
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.gui.ArenaGUI;
+import com.dumbdogdiner.Warrior.gui.DeathSoundGUI;
 import com.dumbdogdiner.Warrior.gui.KitGUI;
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 
@@ -14,6 +15,7 @@ public class GUIManager {
     public static void registerGUIs() {
         map.put(ArenaGUI.class, new ArenaGUI(5, "Select Arena", Warrior.getInstance()));
         map.put(KitGUI.class, new KitGUI(5, "Select a Kit", Warrior.getInstance()));
+        map.put(DeathSoundGUI.class, new DeathSoundGUI());
     }
 
     public static  <T> T get(Class<T> guiClass) {

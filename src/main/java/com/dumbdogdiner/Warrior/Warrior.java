@@ -87,7 +87,6 @@ public class Warrior extends JavaPlugin {
         LobbyManager.loadData();
         GUIManager.registerGUIs();
         KitManager.registerKits();
-        DeathSounds.registerSounds();
 
     }
 

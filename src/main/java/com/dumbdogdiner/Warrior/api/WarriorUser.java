@@ -107,6 +107,9 @@ public class WarriorUser {
 
     public void unlockSound(DeathSound sound) {
         this.deathSounds = deathSounds | sound.getUnlockValue();
+        playSound(Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.2f, 1f);
+        bukkitPlayer.sendTitle("§3§lNew Unlock!", "§7You've unlocked DeathSound §f" + sound.friendlyName(), 10, 80, 10);
+        bukkitPlayer.spawnParticle(Particle.HEART, bukkitPlayer.getLocation(), 30, 2, 2, 2);
     }
 
 
