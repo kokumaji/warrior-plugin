@@ -158,7 +158,7 @@ public class ArenaSessionListener implements Listener {
 
             // Play Custom Death Sound + Particles???
             Location loc = user.getBukkitPlayer().getLocation();
-            loc.getWorld().playSound(loc, user.getDeathSound(), 1f, 1f);
+            loc.getWorld().playSound(loc, user.getDeathSound().getSound(), 1f, 1f);
             loc.getWorld().spawnParticle(user.getDeathParticle(), e.getEntity().getLocation(), 15, 0.35, 0.35, 0.35);
 
             new BukkitRunnable() {

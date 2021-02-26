@@ -2,6 +2,7 @@ package com.dumbdogdiner.Warrior.api;
 
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.events.SessionChangeEvent;
+import com.dumbdogdiner.Warrior.api.kit.effects.DeathSound;
 import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.sesssions.GameState;
 import com.dumbdogdiner.Warrior.api.sesssions.Session;
@@ -66,11 +67,14 @@ public class WarriorUser {
     @Getter @Setter
     private boolean abilityActive;
 
-    @Getter
-    private Sound deathSound = Sound.ENTITY_FISHING_BOBBER_SPLASH;
+    @Getter @Setter
+    private DeathSound deathSound = DeathSound.WATERSPLASH;
 
     @Getter
-    private Particle deathParticle = Particle.HEART;
+    private final Particle deathParticle = Particle.HEART;
+
+    @Getter
+    private int deathSounds;
 
     public WarriorUser(Player player) {
 
@@ -100,6 +104,11 @@ public class WarriorUser {
         }.runTask(Warrior.getInstance());
         this.session = session;
     }
+
+    public void unlockSound(DeathSound sound) {
+        this.deathSounds = deathSounds | sound.getUnlockValue();
+    }
+
 
     public WarriorUser(UUID uuid) {
         this(Objects.requireNonNull(Bukkit.getPlayer(uuid)));

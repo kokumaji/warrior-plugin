@@ -1,45 +1,33 @@
 package com.dumbdogdiner.Warrior.commands;
 
-import com.dumbdogdiner.Warrior.Warrior;
-
 import com.dumbdogdiner.Warrior.api.WarriorUser;
+import com.dumbdogdiner.Warrior.api.kit.effects.DeathSound;
+import com.dumbdogdiner.Warrior.api.kit.effects.DeathSounds;
 import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
-import org.bukkit.*;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Giant;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.jetbrains.annotations.NotNull;
 
-public class DebugCommand implements CommandExecutor, Listener {
+import java.util.Arrays;
+import java.util.List;
 
-    public DebugCommand() {
-        Bukkit.getPluginManager().registerEvents(this, Warrior.getInstance());
-    }
+
+public class DebugCommand implements CommandExecutor {
+
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         WarriorUser user = PlayerManager.get(((Player)sender).getUniqueId());
-        ((ArenaSession)user.getSession()).addKill();
+        user.unlockSound(DeathSound.GHAST_DEATH);
+        user.unlockSound(DeathSound.THUNDERSTORM);
+
+        List<DeathSound> sounds = DeathSounds.getDeathSounds(user);
+        System.out.println(Arrays.toString(sounds.stream().map(DeathSound::name).toArray(String[]::new)));
         return true;
     }
 
-    @EventHandler
-    public void onImpact(EntityDamageEvent e) {
-        if(!(e.getEntity() instanceof Giant)) return;
-        if(e.getCause() == EntityDamageEvent.DamageCause.FALL) {
-            Giant ent = (Giant) e.getEntity();
-            Location loc = ent.getLocation();
-
-            loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 200, 5, 2, 5);
-            ent.remove();
-
-            loc.getWorld().playSound(loc, Sound.ENTITY_ENDER_DRAGON_DEATH, 2f, 1f);
-
-        }
-    }
 }

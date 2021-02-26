@@ -1,6 +1,7 @@
 package com.dumbdogdiner.Warrior;
 
 import com.dumbdogdiner.Warrior.api.command.CommandType;
+import com.dumbdogdiner.Warrior.api.kit.effects.DeathSounds;
 import com.dumbdogdiner.Warrior.api.util.ReflectionUtil;
 import com.dumbdogdiner.Warrior.commands.DebugCommand;
 import com.dumbdogdiner.Warrior.commands.arena.*;
@@ -86,6 +87,7 @@ public class Warrior extends JavaPlugin {
         LobbyManager.loadData();
         GUIManager.registerGUIs();
         KitManager.registerKits();
+        DeathSounds.registerSounds();
 
     }
 
