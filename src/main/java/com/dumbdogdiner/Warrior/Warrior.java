@@ -1,6 +1,7 @@
 package com.dumbdogdiner.Warrior;
 
 import com.dumbdogdiner.Warrior.api.command.CommandType;
+import com.dumbdogdiner.Warrior.api.kit.SpecialAbilities;
 import com.dumbdogdiner.Warrior.api.kit.effects.DeathSounds;
 import com.dumbdogdiner.Warrior.api.util.ReflectionUtil;
 import com.dumbdogdiner.Warrior.commands.DebugCommand;
@@ -83,6 +84,8 @@ public class Warrior extends JavaPlugin {
         ArenaManager.loadArenas();
         registerTeams();
         registerEvents();
+
+        SpecialAbilities.registerAbility();
 
         LobbyManager.loadData();
         GUIManager.registerGUIs();

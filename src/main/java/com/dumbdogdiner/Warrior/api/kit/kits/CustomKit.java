@@ -1,6 +1,8 @@
 package com.dumbdogdiner.Warrior.api.kit.kits;
 
+import com.dumbdogdiner.Warrior.api.kit.Ability;
 import com.dumbdogdiner.Warrior.api.kit.BaseKit;
+import com.dumbdogdiner.Warrior.api.kit.SpecialAbilities;
 import com.dumbdogdiner.Warrior.api.models.CustomKitModel;
 import com.dumbdogdiner.Warrior.api.models.ItemStackModel;
 import com.dumbdogdiner.Warrior.api.util.ItemBuilder;
@@ -23,13 +25,13 @@ public class CustomKit extends BaseKit {
     private ItemStackModel[] items;
 
     public CustomKit(CustomKitModel model) {
-        super(model.getKitName(), model.getCost(), model.getPermission(), model.getIcon(), null, model.getDescription());
+        super(model.getKitName(), model.getCost(), model.getPermission(), model.getIcon(), SpecialAbilities.fromString(model.getAbility()), model.getDescription());
 
         this.items = model.getInventory();
     }
 
-    public CustomKit(String name, int cost, String perm, Material icon, String[] desc, ItemStack... items) {
-        super(name, cost, perm, icon, null, desc);
+    public CustomKit(String name, int cost, String perm, Material icon, Ability ability, String[] desc, ItemStack... items) {
+        super(name, cost, perm, icon, ability, desc);
 
         List<ItemStackModel> tmp = new ArrayList<>();
         for(int i = 0; i < items.length; i++) {
@@ -67,6 +69,21 @@ public class CustomKit extends BaseKit {
         for(int i : invMap.keySet()) {
             p.getInventory().setItem(i, invMap.get(i));
         }
+
+        Material m = Material.FIREWORK_STAR;
+        String decorator = Ability.DEACTIVATED_ABILITY_STRING;
+        if(getAbility().availableOnStart()) {
+            m = Material.MAGMA_CREAM;
+            decorator = Ability.ACTIVE_ABILITY_STRING;
+        }
+
+        ItemStack special = new ItemBuilder(m)
+                .setName(decorator)
+                .setLore("&7Activate your Special Ability")
+                .build();
+
+        p.getInventory().setItem(8, special);
+
     }
 
 }

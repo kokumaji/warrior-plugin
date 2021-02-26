@@ -18,7 +18,7 @@ public class ItemStackModel {
     public ItemStackModel(ItemStack item, int slot) {
         this.type = item.getType().toString();
         this.amount = item.getAmount();
-        this.name = item.getItemMeta().getDisplayName();
+        this.name = item.getItemMeta().getDisplayName().length() > 0 ? item.getItemMeta().getDisplayName() : null;
         this.slot = slot;
     }
 }

@@ -89,6 +89,7 @@ public class TranslationUtil {
     }
 
     public static String translateColor(String str) {
+        if(str == null) return null;
         return ChatColor.translateAlternateColorCodes('&', str);
     }
 

@@ -19,6 +19,8 @@ public class CustomKitModel {
 
     private ItemStackModel[] inventory;
 
+    private String ability;
+
     public CustomKitModel(CustomKit kit) {
         this.kitName = kit.getName();
         this.description = kit.getDescription();
@@ -26,6 +28,7 @@ public class CustomKitModel {
         this.permission = kit.getPermission();
         this.icon = kit.getIcon();
         this.inventory = kit.getItems();
+        this.ability = kit.getAbility().getName();
     }
 
 }

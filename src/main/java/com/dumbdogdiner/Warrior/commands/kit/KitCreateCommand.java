@@ -1,6 +1,8 @@
 package com.dumbdogdiner.Warrior.commands.kit;
 
 import com.dumbdogdiner.Warrior.api.command.SubCommand;
+import com.dumbdogdiner.Warrior.api.kit.SpecialAbilities;
+import com.dumbdogdiner.Warrior.api.kit.abilities.PaceMakerAbility;
 import com.dumbdogdiner.Warrior.api.kit.kits.CustomKit;
 import com.dumbdogdiner.Warrior.managers.KitManager;
 import org.bukkit.Material;
@@ -35,7 +37,7 @@ public class KitCreateCommand implements SubCommand {
         ItemStack[] inv = p.getInventory().getContents();
         String name = args[1];
 
-        CustomKit kit = new CustomKit(name, 200, "warrior.kit." + name.toLowerCase(), Material.PAPER, new String[]{"Line 1", "Line 2"}, inv);
+        CustomKit kit = new CustomKit(name, 200, "warrior.kit." + name.toLowerCase(), Material.PAPER, SpecialAbilities.getAbility(PaceMakerAbility.class), new String[]{"Line 1", "Line 2"}, inv);
         System.out.println("Kit Created");
         kit.save();
 

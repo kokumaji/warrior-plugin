@@ -1,13 +1,11 @@
 package com.dumbdogdiner.Warrior.api.kit.kits;
 
-import com.dumbdogdiner.Warrior.api.WarriorUser;
 import com.dumbdogdiner.Warrior.api.kit.Ability;
 import com.dumbdogdiner.Warrior.api.kit.BaseKit;
 import com.dumbdogdiner.Warrior.api.kit.SpecialAbilities;
 
-import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.util.ItemBuilder;
-import lombok.Getter;
+
 import org.bukkit.Material;
 
 import org.bukkit.entity.Player;
