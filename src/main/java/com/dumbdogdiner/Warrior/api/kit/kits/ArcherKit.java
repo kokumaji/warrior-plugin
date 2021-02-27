@@ -29,7 +29,7 @@ public class ArcherKit extends BaseKit {
     }
 
     @Override
-    public BaseKit giveKit(Player p) {
+    public void giveKit(Player p) {
         p.getInventory().clear();
 
         p.getInventory().setHelmet(new ItemStack(Material.LEATHER_HELMET));
@@ -45,6 +45,20 @@ public class ArcherKit extends BaseKit {
         p.getInventory().setItem(1, new ItemStack(Material.STONE_SWORD));
         p.getInventory().setItem(0, new ItemStack(Material.BOW));
         p.getInventory().setItem(7, arrows);
+
+        Material m = Material.FIREWORK_STAR;
+        String decorator = Ability.DEACTIVATED_ABILITY_STRING;
+        if(getAbility().availableOnStart()) {
+            m = Material.MAGMA_CREAM;
+            decorator = Ability.ACTIVE_ABILITY_STRING;
+        }
+
+        ItemStack special = new ItemBuilder(m)
+                .setName(decorator)
+                .setLore("&7Activate your Special Ability")
+                .build();
+
+        p.getInventory().setItem(8, special);
 
         new BukkitRunnable() {
 
@@ -81,8 +95,6 @@ public class ArcherKit extends BaseKit {
             }
         }.runTaskTimer(Warrior.getInstance(), 0L, 20L);
 
-        withAbility(p);
-        return this;
     }
 
 }

@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class WarriorKit extends BaseKit {
 
+
     private static final String[] desc = {
             "&8Default Kit",
             " ",
@@ -24,11 +25,11 @@ public class WarriorKit extends BaseKit {
     };
 
     public WarriorKit(String name, int cost, String permission, Material icon) {
-        super(name, cost, permission, icon, SpecialAbilities.MEDIC, desc);
+        super(name, cost, permission, icon, SpecialAbilities.PACEMAKER, desc);
     }
 
     @Override
-    public BaseKit giveKit(Player p) {
+    public void giveKit(Player p) {
         p.getInventory().clear();
 
         p.getInventory().setHelmet(new ItemStack(Material.LEATHER_HELMET));
@@ -38,7 +39,18 @@ public class WarriorKit extends BaseKit {
 
         p.getInventory().setItem(0, new ItemStack(Material.IRON_SWORD));
 
-        withAbility(p);
-        return this;
+        Material m = Material.FIREWORK_STAR;
+        String decorator = Ability.DEACTIVATED_ABILITY_STRING;
+        if(getAbility().availableOnStart()) {
+            m = Material.MAGMA_CREAM;
+            decorator = Ability.ACTIVE_ABILITY_STRING;
+        }
+
+        ItemStack special = new ItemBuilder(m)
+                            .setName(decorator)
+                            .setLore("&7Activate your Special Ability")
+                            .build();
+
+        p.getInventory().setItem(8, special);
     }
 }

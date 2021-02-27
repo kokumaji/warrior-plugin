@@ -101,7 +101,6 @@ public class Warrior extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new RegionExitListener(), this);
         Bukkit.getPluginManager().registerEvents(new SessionChangeListener(), this);
-        Bukkit.getPluginManager().registerEvents(new ItemClickListener(), this);
     }
 
     private static void registerTeams() {

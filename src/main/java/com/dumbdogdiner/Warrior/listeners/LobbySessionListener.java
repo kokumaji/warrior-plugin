@@ -98,9 +98,32 @@ public class LobbySessionListener implements Listener {
 
         if(!(user.getSession() instanceof LobbySession)) return;
 
-        // Moved everything to a custom listener cuz bukkit is wack...
-        // just cancelling actions here because my listener can't do it (yet)
+        // workaround to tools firing LEFT_CLICK_AIR and RIGHT_CLICK_AIR
+        if((e.getHand() == EquipmentSlot.HAND && e.getAction() == Action.RIGHT_CLICK_AIR)) {
+            e.setCancelled(true);
+            return;
+        }
+
+        System.out.println(e.getHand() + " " + e.getAction());
+
+        ItemMeta meta = e.getPlayer().getInventory().getItemInMainHand().getItemMeta();
+
+        // TODO: Check for Tool + Lobby Item
+        // disgusting hotfix for now.. gonna replace this with an
+        // actual item comparison
+        if(!meta.getDisplayName().startsWith("§")) return;
+
         e.setCancelled(true);
+        if(meta.getDisplayName().equals("§8» §3§lARENAS §8«")) {
+            ArenaGUI gui = GUIManager.get(ArenaGUI.class);
+            gui.open(e.getPlayer());
+        } else if(meta.getDisplayName().equals("§8» §3§lSHOP §8«")) {
+            DeathSoundGUI gui = GUIManager.get(DeathSoundGUI.class);
+            gui.open(e.getPlayer());
+        } else {
+            user.getBukkitPlayer().sendActionBar("§4§lFeature Not Implemented!");
+            user.playSound(Sound.BLOCK_NOTE_BLOCK_PLING, 0.75f, 0.5f);
+        }
     }
 
 
