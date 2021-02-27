@@ -22,7 +22,7 @@ import java.util.List;
 public class CustomKit extends BaseKit {
 
     @Getter
-    private ItemStackModel[] items;
+    private final ItemStackModel[] items;
 
     public CustomKit(CustomKitModel model) {
         super(model.getKitName(), model.getCost(), model.getPermission(), model.getIcon(), SpecialAbilities.fromString(model.getAbility()), model.getDescription());
@@ -48,7 +48,7 @@ public class CustomKit extends BaseKit {
     }
 
     @Override
-    public void giveKit(Player p) {
+    public BaseKit giveKit(Player p) {
         p.getInventory().clear();
         HashMap<Integer, ItemStack> invMap = new HashMap<Integer, ItemStack>();
 
@@ -70,20 +70,8 @@ public class CustomKit extends BaseKit {
             p.getInventory().setItem(i, invMap.get(i));
         }
 
-        Material m = Material.FIREWORK_STAR;
-        String decorator = Ability.DEACTIVATED_ABILITY_STRING;
-        if(getAbility().availableOnStart()) {
-            m = Material.MAGMA_CREAM;
-            decorator = Ability.ACTIVE_ABILITY_STRING;
-        }
-
-        ItemStack special = new ItemBuilder(m)
-                .setName(decorator)
-                .setLore("&7Activate your Special Ability")
-                .build();
-
-        p.getInventory().setItem(8, special);
-
+        withAbility(p);
+        return this;
     }
 
 }

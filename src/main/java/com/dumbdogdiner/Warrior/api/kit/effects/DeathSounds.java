@@ -7,7 +7,6 @@ import java.util.List;
 
 public class DeathSounds {
 
-
     public static List<DeathSound> getDeathSounds(WarriorUser user) {
         ArrayList<DeathSound> unlock = new ArrayList<>();
         for(DeathSound sound : DeathSound.values()) {
