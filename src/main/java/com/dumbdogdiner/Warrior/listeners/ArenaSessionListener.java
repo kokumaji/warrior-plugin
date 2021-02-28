@@ -108,24 +108,7 @@ public class ArenaSessionListener implements Listener {
 
                 if (user.getBukkitPlayer().getOpenInventory().getType() == InventoryType.CHEST) return;
 
-
-                if(((ArenaSession)user.getSession()).getState() == GameState.PRE_GAME) {
-                    if(meta.getDisplayName().equals("§8» §3§lSELECT KIT §8«")) {
-                        KitGUI gui = GUIManager.get(KitGUI.class);
-                        gui.open(p);
-                    } else if(meta.getDisplayName().equals("§4§l☓ §c§lQUIT §4§l☓")) {
-                        user.setSession(new LobbySession(user.getUserId()));
-                        if(user.isSpectating()) user.setSpectating(false);
-                    } else if(meta.getDisplayName().equals("§8» §3§lSPECTATE §8«")) {
-                        ((ArenaSession) user.getSession()).setState(GameState.SPECTATING);
-                        user.setSpectating(true);
-                    } else {
-                        p.sendActionBar("§4§lFeature Not Implemented!");
-                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.75f, 0.5f);
-                    }
-
-                    e.setCancelled(true);
-                } else if(((ArenaSession)user.getSession()).getState() == GameState.IN_GAME) {
+                else if(((ArenaSession)user.getSession()).getState() == GameState.IN_GAME) {
                     if(meta.getDisplayName().equals("§8» §3§lSPECIAL ABILITY §8«")) {
                         ((ArenaSession)user.getSession()).getKit().activateAbility(user);
                     }
@@ -188,6 +171,12 @@ public class ArenaSessionListener implements Listener {
                         cancel();
                         return;
                     }
+
+                    if(!(user.getSession() instanceof ArenaSession)) {
+                        cancel();
+                        return;
+                    }
+
                     if(this.totalTime == 0) {
                         ((ArenaSession) user.getSession()).setState(GameState.PRE_GAME);
                         user.setSpectating(false);

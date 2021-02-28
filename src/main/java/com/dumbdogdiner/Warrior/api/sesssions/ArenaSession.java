@@ -9,6 +9,7 @@ import com.dumbdogdiner.Warrior.api.kit.BaseKit;
 import com.dumbdogdiner.Warrior.api.util.ItemBuilder;
 
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
+import com.google.common.base.Preconditions;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -22,6 +23,30 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ArenaSession implements Session {
+
+    public static ItemStack KIT_SELECTOR = new ItemBuilder(Material.IRON_SWORD)
+            .setName("&8» &3&lSELECT KIT &8«")
+            .setLore("&7Select One of Many Kits!")
+            .build();
+
+    public static ItemStack STATS_MENU(String owner) {
+        return new ItemBuilder(Material.PLAYER_HEAD)
+                .setName("&8» &3&lSTATS &8«")
+                .setLore("&7View Your Warrior Stats")
+                .setOwner(owner)
+                .build();
+    }
+
+    public static ItemStack SPECTATE_GAME = new ItemBuilder(Material.COMPASS)
+            .makeGlow(true)
+            .setName("&8» &3&lSPECTATE &8«")
+            .setLore("&7Enter Spectator Mode")
+            .build();
+
+    public static ItemStack EXIT_ARENA = new ItemBuilder(Material.BARRIER)
+            .setName("&4&l☓ &c&lQUIT &4&l☓")
+            .setLore("&7Return to Lobby")
+            .build();
 
     @Accessors(fluent = true)
     @Getter @Setter
@@ -56,8 +81,11 @@ public class ArenaSession implements Session {
         this.startTime = System.currentTimeMillis();
         this.arena = arena;
 
+        Player player = Preconditions.checkNotNull(Bukkit.getPlayer(uuid), "Player cannot be null!");
+
         setState(state);
-        ArenaJoinEvent e = new ArenaJoinEvent(this, Objects.requireNonNull(Bukkit.getPlayer(uuid)));
+        this.setupInventory(player);
+        ArenaJoinEvent e = new ArenaJoinEvent(this, player);
         Bukkit.getPluginManager().callEvent(e);
     }
 
@@ -93,50 +121,26 @@ public class ArenaSession implements Session {
         killStreak = 0;
     }
 
-    public void setInventory() {
-        Player p = Objects.requireNonNull(Bukkit.getPlayer(playerId));
-
-        ItemStack exit = new ItemBuilder(Material.BARRIER)
-                .setName("&4&l☓ &c&lQUIT &4&l☓")
-                .setLore("&7Return to Lobby")
-                .build();
-
-        p.getInventory().clear();
+    public void setupInventory(Player player) {
+        player.getInventory().clear();
 
         if(state.equals(GameState.PRE_GAME)) {
 
-            ItemStack kit = new ItemBuilder(Material.IRON_SWORD)
-                    .setName("&8» &3&lSELECT KIT &8«")
-                    .setLore("&7Select One of Many Kits!")
-                    .build();
-            ItemStack shop = new ItemBuilder(Material.ENDER_CHEST)
-                    .setName("&8» &3&lSHOP &8«")
-                    .setLore("&7Browse & Unlock new Kits!")
-                    .build();
-            ItemStack stats = new ItemBuilder(Material.PLAYER_HEAD)
-                    .setName("&8» &3&lSTATS &8«")
-                    .setLore("&7View Your Warrior Stats")
-                    .setOwner(p.getName())
-                    .build();
-            ItemStack spectate = new ItemBuilder(Material.COMPASS)
-                    .makeGlow(true)
-                    .setName("&8» &3&lSPECTATE &8«")
-                    .setLore("&7Enter Spectator Mode")
-                    .build();
+            player.getInventory().setItem(0, KIT_SELECTOR);
+            player.getInventory().setItem(1, LobbySession.SHOP_ITEM);
+            player.getInventory().setItem(4, SPECTATE_GAME);
+            player.getInventory().setItem(7, STATS_MENU(player.getName()));
+            player.getInventory().setItem(8, EXIT_ARENA);
 
-            p.getInventory().setItem(0, kit);
-            p.getInventory().setItem(1, shop);
-            p.getInventory().setItem(4, spectate);
-            p.getInventory().setItem(7, stats);
-            p.getInventory().setItem(8, exit);
         } else if(state.equals(GameState.SPECTATING)) {
+
             ItemStack spec = new ItemBuilder(Material.COMPASS)
                     .setName("&8» &3&lTELEPORT &8«")
                     .setLore("&7Teleport to a specific player")
                     .build();
 
-            p.getInventory().setItem(4, spec);
-            p.getInventory().setItem(8, exit);
+            player.getInventory().setItem(4, spec);
+            player.getInventory().setItem(8, EXIT_ARENA);
         }
 
     }

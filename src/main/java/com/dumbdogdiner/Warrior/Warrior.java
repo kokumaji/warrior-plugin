@@ -105,13 +105,14 @@ public class Warrior extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new RegionExitListener(), this);
         Bukkit.getPluginManager().registerEvents(new SessionChangeListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ItemInteractListener(), this);
     }
 
     private static void registerTeams() {
         Scoreboard sb = Bukkit.getScoreboardManager().getMainScoreboard();
-        Team team = sb.getTeam("warrior_spectating");
+        Team team = sb.getTeam("warrior_spec");
         if(team == null) {
-            team = sb.registerNewTeam("warrior_spectating");
+            team = sb.registerNewTeam("warrior_spec");
             team.setPrefix("§c§lSPEC §7");
             team.setAllowFriendlyFire(false);
             team.setCanSeeFriendlyInvisibles(true);

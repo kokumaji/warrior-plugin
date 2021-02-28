@@ -83,7 +83,8 @@ public class WarriorUser {
         player.setHealth(20D);
         player.setLevel(0);
 
-        removeEffects();
+        if(player.getActivePotionEffects().size() > 0)
+            removeEffects();
 
         if(!player.hasPermission("warrior.lobby.bypass")) {
             player.setFlying(false);

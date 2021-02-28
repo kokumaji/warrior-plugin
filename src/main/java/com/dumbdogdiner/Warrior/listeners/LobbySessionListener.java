@@ -95,49 +95,4 @@ public class LobbySessionListener implements Listener {
         e.getWhoClicked().closeInventory();
     }
 
-    WeakHashMap<Player, Integer> clickTime = new WeakHashMap<>();
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onInteract(PlayerInteractEvent e) {
-        if(e.getItem() == null) return;
-        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
-        if(user == null) return;
-
-        if(!(user.getSession() instanceof LobbySession)) return;
-        if(user.getBukkitPlayer().getGameMode() == GameMode.CREATIVE) return;
-        e.setCancelled(true);
-
-        // credit to spazzylemons for this solution uwu
-        int currentTick = Bukkit.getCurrentTick();
-        if(clickTime.get(user.getBukkitPlayer()) == null || clickTime.get(user.getBukkitPlayer()) != currentTick) {
-            clickTime.put(user.getBukkitPlayer(), currentTick);
-
-            if(user.getBukkitPlayer().getOpenInventory().getType() == InventoryType.CHEST) return;
-
-            if(e.getItem().equals(SessionChangeListener.ARENA_ITEM)) {
-                ArenaGUI gui = GUIManager.get(ArenaGUI.class);
-                gui.open(e.getPlayer());
-            } else if(e.getItem().equals(SessionChangeListener.SHOP_ITEM)) {
-                DeathSoundGUI gui = GUIManager.get(DeathSoundGUI.class);
-                gui.open(e.getPlayer());
-            } else {
-                user.getBukkitPlayer().sendActionBar("§4§lFeature Not Implemented!");
-                user.playSound(Sound.BLOCK_NOTE_BLOCK_PLING, 0.75f, 0.5f);
-            }
-        }
-    }
-
-    // if above still fails, let's at least prevent users from
-    // taking items out of the inventory
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent e) {
-        if(e.getInventory().getType() == InventoryType.CHEST) {
-            WarriorUser user = PlayerManager.get(e.getWhoClicked().getUniqueId());
-            if(!(user.getSession() instanceof LobbySession)) return;
-
-            e.setCancelled(true);
-        }
-    }
-
-
 }
