@@ -5,7 +5,9 @@ import com.dumbdogdiner.Warrior.api.sesssions.LobbySession;
 import com.dumbdogdiner.Warrior.gui.ArenaGUI;
 import com.dumbdogdiner.Warrior.gui.DeathSoundGUI;
 import com.dumbdogdiner.Warrior.managers.GUIManager;
+import com.dumbdogdiner.Warrior.managers.LobbyManager;
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -18,12 +20,15 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.WeakHashMap;
 
 public class LobbySessionListener implements Listener {
 
@@ -90,6 +95,8 @@ public class LobbySessionListener implements Listener {
         e.getWhoClicked().closeInventory();
     }
 
+    WeakHashMap<Player, Integer> clickTime = new WeakHashMap<>();
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEvent e) {
         if(e.getItem() == null) return;
@@ -97,32 +104,38 @@ public class LobbySessionListener implements Listener {
         if(user == null) return;
 
         if(!(user.getSession() instanceof LobbySession)) return;
-
-        // workaround to tools firing LEFT_CLICK_AIR and RIGHT_CLICK_AIR
-        if((e.getHand() == EquipmentSlot.HAND && e.getAction() == Action.RIGHT_CLICK_AIR)) {
-            e.setCancelled(true);
-            return;
-        }
-
-        System.out.println(e.getHand() + " " + e.getAction());
-
-        ItemMeta meta = e.getPlayer().getInventory().getItemInMainHand().getItemMeta();
-
-        // TODO: Check for Tool + Lobby Item
-        // disgusting hotfix for now.. gonna replace this with an
-        // actual item comparison
-        if(!meta.getDisplayName().startsWith("§")) return;
-
+        if(user.getBukkitPlayer().getGameMode() == GameMode.CREATIVE) return;
         e.setCancelled(true);
-        if(meta.getDisplayName().equals("§8» §3§lARENAS §8«")) {
-            ArenaGUI gui = GUIManager.get(ArenaGUI.class);
-            gui.open(e.getPlayer());
-        } else if(meta.getDisplayName().equals("§8» §3§lSHOP §8«")) {
-            DeathSoundGUI gui = GUIManager.get(DeathSoundGUI.class);
-            gui.open(e.getPlayer());
-        } else {
-            user.getBukkitPlayer().sendActionBar("§4§lFeature Not Implemented!");
-            user.playSound(Sound.BLOCK_NOTE_BLOCK_PLING, 0.75f, 0.5f);
+
+        // credit to spazzylemons for this solution uwu
+        int currentTick = Bukkit.getCurrentTick();
+        if(clickTime.get(user.getBukkitPlayer()) == null || clickTime.get(user.getBukkitPlayer()) != currentTick) {
+            clickTime.put(user.getBukkitPlayer(), currentTick);
+
+            if(user.getBukkitPlayer().getOpenInventory().getType() == InventoryType.CHEST) return;
+
+            if(e.getItem().equals(SessionChangeListener.ARENA_ITEM)) {
+                ArenaGUI gui = GUIManager.get(ArenaGUI.class);
+                gui.open(e.getPlayer());
+            } else if(e.getItem().equals(SessionChangeListener.SHOP_ITEM)) {
+                DeathSoundGUI gui = GUIManager.get(DeathSoundGUI.class);
+                gui.open(e.getPlayer());
+            } else {
+                user.getBukkitPlayer().sendActionBar("§4§lFeature Not Implemented!");
+                user.playSound(Sound.BLOCK_NOTE_BLOCK_PLING, 0.75f, 0.5f);
+            }
+        }
+    }
+
+    // if above still fails, let's at least prevent users from
+    // taking items out of the inventory
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+        if(e.getInventory().getType() == InventoryType.CHEST) {
+            WarriorUser user = PlayerManager.get(e.getWhoClicked().getUniqueId());
+            if(!(user.getSession() instanceof LobbySession)) return;
+
+            e.setCancelled(true);
         }
     }
 

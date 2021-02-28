@@ -35,12 +35,15 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+
+import java.util.WeakHashMap;
 
 public class ArenaSessionListener implements Listener {
 
@@ -79,6 +82,8 @@ public class ArenaSessionListener implements Listener {
         }
     }
 
+    WeakHashMap<Player, Integer> clickTime = new WeakHashMap<>();
+
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
@@ -96,34 +101,44 @@ public class ArenaSessionListener implements Listener {
             WarriorUser user = PlayerManager.get(p.getUniqueId());
             ItemMeta meta = e.getItem().getItemMeta();
 
-            if(((ArenaSession)user.getSession()).getState() == GameState.PRE_GAME) {
-                if(meta.getDisplayName().equals("§8» §3§lSELECT KIT §8«")) {
-                    KitGUI gui = GUIManager.get(KitGUI.class);
-                    gui.open(p);
-                } else if(meta.getDisplayName().equals("§4§l☓ §c§lQUIT §4§l☓")) {
-                    user.setSession(new LobbySession(user.getUserId()));
-                    if(user.isSpectating()) user.setSpectating(false);
-                } else if(meta.getDisplayName().equals("§8» §3§lSPECTATE §8«")) {
-                    ((ArenaSession) user.getSession()).setState(GameState.SPECTATING);
-                    user.setSpectating(true);
-                } else {
-                    p.sendActionBar("§4§lFeature Not Implemented!");
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.75f, 0.5f);
+            // credit to spazzylemons for this solution uwu
+            int currentTick = Bukkit.getCurrentTick();
+            if(clickTime.get(user.getBukkitPlayer()) == null || clickTime.get(user.getBukkitPlayer()) != currentTick) {
+                clickTime.put(user.getBukkitPlayer(), currentTick);
+
+                if (user.getBukkitPlayer().getOpenInventory().getType() == InventoryType.CHEST) return;
+
+
+                if(((ArenaSession)user.getSession()).getState() == GameState.PRE_GAME) {
+                    if(meta.getDisplayName().equals("§8» §3§lSELECT KIT §8«")) {
+                        KitGUI gui = GUIManager.get(KitGUI.class);
+                        gui.open(p);
+                    } else if(meta.getDisplayName().equals("§4§l☓ §c§lQUIT §4§l☓")) {
+                        user.setSession(new LobbySession(user.getUserId()));
+                        if(user.isSpectating()) user.setSpectating(false);
+                    } else if(meta.getDisplayName().equals("§8» §3§lSPECTATE §8«")) {
+                        ((ArenaSession) user.getSession()).setState(GameState.SPECTATING);
+                        user.setSpectating(true);
+                    } else {
+                        p.sendActionBar("§4§lFeature Not Implemented!");
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.75f, 0.5f);
+                    }
+
+                    e.setCancelled(true);
+                } else if(((ArenaSession)user.getSession()).getState() == GameState.IN_GAME) {
+                    if(meta.getDisplayName().equals("§8» §3§lSPECIAL ABILITY §8«")) {
+                        ((ArenaSession)user.getSession()).getKit().activateAbility(user);
+                    }
+                } else if(((ArenaSession)user.getSession()).getState() == GameState.SPECTATING) {
+                    if(meta.getDisplayName().equals("§4§l☓ §c§lQUIT §4§l☓")) {
+                        user.setSession(new LobbySession(user.getUserId()));
+                        if(user.isSpectating()) user.setSpectating(false);
+                    } else {
+                        p.sendActionBar("§4§lFeature Not Implemented!");
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.75f, 0.5f);
+                    }
                 }
 
-                e.setCancelled(true);
-            } else if(((ArenaSession)user.getSession()).getState() == GameState.IN_GAME) {
-                if(meta.getDisplayName().equals("§8» §3§lSPECIAL ABILITY §8«")) {
-                    ((ArenaSession)user.getSession()).getKit().activateAbility(user);
-                }
-            } else if(((ArenaSession)user.getSession()).getState() == GameState.SPECTATING) {
-                if(meta.getDisplayName().equals("§4§l☓ §c§lQUIT §4§l☓")) {
-                    user.setSession(new LobbySession(user.getUserId()));
-                    if(user.isSpectating()) user.setSpectating(false);
-                } else {
-                    p.sendActionBar("§4§lFeature Not Implemented!");
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.75f, 0.5f);
-                }
             }
         }
     }

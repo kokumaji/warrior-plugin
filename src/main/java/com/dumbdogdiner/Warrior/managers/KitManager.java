@@ -7,6 +7,7 @@ import com.dumbdogdiner.Warrior.api.kit.kits.CustomKit;
 import com.dumbdogdiner.Warrior.api.kit.kits.WarriorKit;
 import com.dumbdogdiner.Warrior.api.models.CustomKitModel;
 import com.dumbdogdiner.Warrior.api.util.JSONUtil;
+import com.dumbdogdiner.Warrior.utils.DefaultMessages;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import org.bukkit.Material;
@@ -16,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -42,7 +44,14 @@ public class KitManager {
             i++;
         }
 
-        Warrior.getInstance().getLogger().info("Loaded " + i + " custom kit(s) from data folder!");
+        int finalI = i;
+        String msg = Warrior.getTranslator().applyPlaceholders(DefaultMessages.LOADED_OBJECT, new HashMap<>() {
+            {
+                put("AMOUNT", Integer.toString(finalI));
+                put("TYPE", "kit");
+            }
+        });
+        Warrior.getPluginLogger().info(msg);
 
     }
 

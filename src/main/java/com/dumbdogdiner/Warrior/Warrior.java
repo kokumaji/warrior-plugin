@@ -1,9 +1,8 @@
 package com.dumbdogdiner.Warrior;
 
-import com.dumbdogdiner.Warrior.api.command.CommandType;
+import com.dumbdogdiner.Warrior.api.WarriorLogger;
 import com.dumbdogdiner.Warrior.api.kit.SpecialAbilities;
-import com.dumbdogdiner.Warrior.api.kit.effects.DeathSounds;
-import com.dumbdogdiner.Warrior.api.util.ReflectionUtil;
+
 import com.dumbdogdiner.Warrior.commands.DebugCommand;
 import com.dumbdogdiner.Warrior.commands.arena.*;
 import com.dumbdogdiner.Warrior.commands.kit.KitCommand;
@@ -23,6 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -36,21 +36,20 @@ public class Warrior extends JavaPlugin {
 
     public final String COMMAND_HEADER = "&8" + TranslationUtil.HL(15) + " &8[ &3&l" + getName() + " &8] " + TranslationUtil.HL(15);
 
-    private static List<Command> cmds = new ArrayList<Command>();
+    private static final List<Command> cmds = new ArrayList<Command>();
     private CommandMap cMap;
 
     @Getter
     private static Translator translator;
 
-    public static Warrior getInstance() {
-        return getPlugin(Warrior.class);
-    }
-
     @Getter
     private static Team specTeam;
 
+    private static WarriorLogger logger;
+
     @Override
     public void onLoad() {
+        logger = new WarriorLogger(this);
         saveDefaultConfig();
         try {
             translator = new Translator(this, getConfig());
@@ -61,7 +60,6 @@ public class Warrior extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        System.out.println("Warrior loaded successfully!");
         getCommand("debug").setExecutor(new DebugCommand());
         this.getCommandMap();
 
@@ -121,6 +119,14 @@ public class Warrior extends JavaPlugin {
         return
                 Warrior.getInstance().getConfig().getBoolean("general-settings.use-placeholderapi")
                 && Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
+    }
+
+    public static Warrior getInstance() {
+        return getPlugin(Warrior.class);
+    }
+
+    public static WarriorLogger getPluginLogger() {
+        return logger;
     }
 
     protected void getCommandMap() {

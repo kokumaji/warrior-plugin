@@ -13,21 +13,21 @@ import org.bukkit.inventory.ItemStack;
 
 public class SessionChangeListener implements Listener {
 
-    private static final ItemStack KITS_ITEM = new ItemBuilder(Material.LEATHER_CHESTPLATE)
+    public static final ItemStack KITS_ITEM = new ItemBuilder(Material.LEATHER_CHESTPLATE)
                                             .setName("&8» &3&lVIEW KITS &8«")
                                             .setLore("&7View Your Available Kits")
                                             .build();
 
-    private static final ItemStack SHOP_ITEM = new ItemBuilder(Material.ENDER_CHEST)
+    public static final ItemStack SHOP_ITEM = new ItemBuilder(Material.ENDER_CHEST)
                                             .setName("&8» &3&lSHOP &8«")
                                             .setLore("&7Browse & Unlock new Kits!")
                                             .build();
 
-    private static final ItemStack ARENA_ITEM = new ItemBuilder(Material.MAP)
+    public static final ItemStack ARENA_ITEM = new ItemBuilder(Material.MAP)
                                             .setName("&8» &3&lARENAS &8«")
                                             .setLore("&7Select an Arena to Join")
                                             .build();
-    private static final ItemStack EXIT_ITEM = new ItemBuilder(Material.BARRIER)
+    public static final ItemStack EXIT_ITEM = new ItemBuilder(Material.BARRIER)
                                             .setName("&4&l☓ &c&lQUIT &4&l☓")
                                             .setLore("&7Return to Lobby")
                                             .build();

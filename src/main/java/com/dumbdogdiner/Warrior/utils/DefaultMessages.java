@@ -12,6 +12,9 @@ public class DefaultMessages {
     public static String COMMAND_PERM_ERROR;
     public static String COMMAND_GENERAL_ERROR;
 
+    // GENERAL PLUGIN LOG MESSAGES
+    public static String LOADED_OBJECT = "Loaded {AMOUNT} {TYPE}(s) from data folder!";
+
     static {
         update();
     }

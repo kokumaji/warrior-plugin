@@ -7,6 +7,7 @@ import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
 import com.dumbdogdiner.Warrior.api.sesssions.Session;
 import com.dumbdogdiner.Warrior.api.sesssions.SessionType;
 import com.dumbdogdiner.Warrior.api.util.JSONUtil;
+import com.dumbdogdiner.Warrior.utils.DefaultMessages;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -46,7 +47,15 @@ public class ArenaManager {
             i++;
         }
 
-        Warrior.getInstance().getLogger().info("Loaded " + i + " arena(s) from data folder!");
+        int finalI = i;
+        String msg = Warrior.getTranslator().applyPlaceholders(DefaultMessages.LOADED_OBJECT, new HashMap<>() {
+            {
+                put("AMOUNT", Integer.toString(finalI));
+                put("TYPE", "arena");
+            }
+        });
+        Warrior.getPluginLogger().info(msg);
+
     }
 
     public static List<WarriorUser> getPlayers(Arena a) {

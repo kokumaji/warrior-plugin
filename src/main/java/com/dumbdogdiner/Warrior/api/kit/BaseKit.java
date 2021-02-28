@@ -41,7 +41,11 @@ public abstract class BaseKit {
     }
 
     public void activateAbility(WarriorUser user) {
-        if (hasAbility()) ability.run(user).run();
+        if (hasAbility()) {
+            // could add some error handling here??
+            Runnable r = ability.run(user);
+            new Thread(r).start();
+        }
     }
 
     public BaseKit giveKit(Player p) {
