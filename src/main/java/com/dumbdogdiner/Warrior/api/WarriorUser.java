@@ -13,6 +13,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -78,6 +80,16 @@ public class WarriorUser {
 
     public WarriorUser(Player player) {
 
+        player.setHealth(20D);
+        player.setLevel(0);
+
+        removeEffects();
+
+        if(!player.hasPermission("warrior.lobby.bypass")) {
+            player.setFlying(false);
+            player.setGameMode(GameMode.ADVENTURE);
+        }
+
         try {
             this.bukkitPlayer = player;
             this.userId = bukkitPlayer.getUniqueId();
@@ -92,6 +104,21 @@ public class WarriorUser {
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException e) {
             e.printStackTrace();
         }
+    }
+
+    public void removeEffects(Collection<PotionEffect> potionEffects) {
+        for(PotionEffect effect : potionEffects) {
+            if(bukkitPlayer.hasPotionEffect(effect.getType()))
+                bukkitPlayer.removePotionEffect(effect.getType());
+        }
+    }
+
+    public void removeEffects(PotionEffect... potionEffects) {
+        removeEffects(Arrays.asList(potionEffects));
+    }
+
+    public void removeEffects() {
+        removeEffects(bukkitPlayer.getActivePotionEffects());
     }
 
     public void setSession(Session session) {

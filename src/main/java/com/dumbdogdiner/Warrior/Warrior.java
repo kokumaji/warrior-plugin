@@ -22,7 +22,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -91,6 +90,13 @@ public class Warrior extends JavaPlugin {
 
     }
 
+    @Override
+    public void onDisable() {
+        if(Bukkit.getScoreboardManager().getMainScoreboard().getTeam(specTeam.getName()) != null) {
+            specTeam.unregister();
+        }
+    }
+
     private void registerEvents() {
         Bukkit.getPluginManager().registerEvents(new ArenaListener(), this);
         Bukkit.getPluginManager().registerEvents(new ArenaSessionListener(), this);
@@ -103,9 +109,9 @@ public class Warrior extends JavaPlugin {
 
     private static void registerTeams() {
         Scoreboard sb = Bukkit.getScoreboardManager().getMainScoreboard();
-        Team team = sb.getTeam("spectating");
+        Team team = sb.getTeam("warrior_spectating");
         if(team == null) {
-            team = sb.registerNewTeam("spectating");
+            team = sb.registerNewTeam("warrior_spectating");
             team.setPrefix("§c§lSPEC §7");
             team.setAllowFriendlyFire(false);
             team.setCanSeeFriendlyInvisibles(true);
