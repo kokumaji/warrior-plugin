@@ -14,8 +14,13 @@ public class PaceMakerAbility extends Ability {
 
     private final int duration = 30 * 20;
 
-    public PaceMakerAbility(String name, int cost, int minStreak, boolean availableOnStart, String... description) {
-        super(name, cost, minStreak, availableOnStart, description);
+    private static final String[] desc = {
+            "&7Grants &fSpeed 1 &7and &fJump Boost 1",
+            "&7for 30 seconds"
+    };
+
+    public PaceMakerAbility(String name, int cost, int minStreak) {
+        super(name, cost, minStreak, false, desc);
     }
 
     @Override

@@ -29,7 +29,7 @@ public class ArcherKit extends BaseKit {
     }
 
     @Override
-    public void giveKit(Player p) {
+    public BaseKit giveKit(Player p) {
         p.getInventory().clear();
 
         p.getInventory().setHelmet(new ItemStack(Material.LEATHER_HELMET));
@@ -94,6 +94,9 @@ public class ArcherKit extends BaseKit {
                 }
             }
         }.runTaskTimer(Warrior.getInstance(), 0L, 20L);
+
+        withAbility(p);
+        return this;
 
     }
 

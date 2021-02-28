@@ -25,11 +25,11 @@ public class WarriorKit extends BaseKit {
     };
 
     public WarriorKit(String name, int cost, String permission, Material icon) {
-        super(name, cost, permission, icon, SpecialAbilities.PACEMAKER, desc);
+        super(name, cost, permission, icon, SpecialAbilities.MEDIC, desc);
     }
 
     @Override
-    public void giveKit(Player p) {
+    public BaseKit giveKit(Player p) {
         p.getInventory().clear();
 
         p.getInventory().setHelmet(new ItemStack(Material.LEATHER_HELMET));
@@ -52,5 +52,8 @@ public class WarriorKit extends BaseKit {
                             .build();
 
         p.getInventory().setItem(8, special);
+
+        withAbility(p);
+        return this;
     }
 }

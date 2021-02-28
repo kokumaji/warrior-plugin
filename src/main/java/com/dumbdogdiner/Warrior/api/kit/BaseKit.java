@@ -1,10 +1,12 @@
 package com.dumbdogdiner.Warrior.api.kit;
 
 import com.dumbdogdiner.Warrior.api.WarriorUser;
+import com.dumbdogdiner.Warrior.api.util.ItemBuilder;
 import lombok.Data;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 @Data
 public abstract class BaseKit {
@@ -42,6 +44,27 @@ public abstract class BaseKit {
         if (hasAbility()) ability.run(user).run();
     }
 
-    public abstract void giveKit(Player p);
+    public BaseKit giveKit(Player p) {
+        withAbility(p);
+        return this;
+    }
+
+    public BaseKit withAbility(Player p) {
+        Material m = Material.FIREWORK_STAR;
+        String decorator = Ability.DEACTIVATED_ABILITY_STRING;
+        if(getAbility().availableOnStart()) {
+            m = Material.MAGMA_CREAM;
+            decorator = Ability.ACTIVE_ABILITY_STRING;
+        }
+
+        ItemStack special = new ItemBuilder(m)
+                .setName(decorator)
+                .setLore("&7Activate your Special Ability")
+                .build();
+
+        p.getInventory().setItem(8, special);
+
+        return this;
+    }
 
 }

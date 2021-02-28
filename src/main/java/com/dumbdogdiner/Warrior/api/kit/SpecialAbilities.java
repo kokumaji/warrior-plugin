@@ -7,11 +7,12 @@ import java.util.HashMap;
 public class SpecialAbilities {
 
     private static final HashMap<Integer, Ability> abilities = new HashMap<>();
-
-    public static final Ability PACEMAKER = new PaceMakerAbility("Pacemaker", 0, 3, false, "Grants Speed 1 and Jump Boost 1 for 30 seconds.");
+    public static final Ability PACEMAKER = new PaceMakerAbility("Pacemaker", 0, 3);
+    public static final Ability MEDIC = new PaceMakerAbility("Medic", 0, 3);
 
     public static void registerAbility() {
         abilities.put(abilities.size(), PACEMAKER);
+        abilities.put(abilities.size(), MEDIC);
     }
 
     public static Ability fromString(String s) {
