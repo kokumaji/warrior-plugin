@@ -6,6 +6,7 @@ import com.dumbdogdiner.Warrior.api.sesssions.LobbySession;
 import com.dumbdogdiner.Warrior.api.util.ItemBuilder;
 import com.dumbdogdiner.Warrior.managers.LobbyManager;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +21,7 @@ public class SessionChangeListener implements Listener {
         if(e.getNext() instanceof LobbySession) {
             Player p = e.getPlayer();
             p.teleport(LobbyManager.getLobbySpawn());
+            p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20D);
         } else if(e.getNext() instanceof ArenaSession) {
             //e.getPlayer().sendMessage("Teleporting to Arena...");
         }

@@ -1,5 +1,10 @@
 package com.dumbdogdiner.Warrior.api.arena;
 
+import com.dumbdogdiner.Warrior.api.arena.gameflags.FlagContainer;
+import com.dumbdogdiner.Warrior.api.arena.gameflags.GameFlag;
+import com.dumbdogdiner.Warrior.api.arena.gameflags.implementation.BlockBreakFlag;
+import com.dumbdogdiner.Warrior.api.arena.gameflags.implementation.BlockPlaceFlag;
+import com.dumbdogdiner.Warrior.api.arena.gameflags.implementation.MaxHealthFlag;
 import com.dumbdogdiner.Warrior.api.models.ArenaModel;
 import com.dumbdogdiner.Warrior.api.models.LocationModel;
 import com.dumbdogdiner.Warrior.api.models.RegionModel;
@@ -16,10 +21,10 @@ import org.bukkit.Location;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Arena {
-
-    private static final Gson GSON = new Gson();
 
     @Getter
     private String name;
@@ -36,6 +41,9 @@ public class Arena {
     @Getter
     private int id;
 
+    @Getter
+    private FlagContainer flags;
+
     public Arena(String arenaName, Region region, Location spawn, boolean enabled, int id) {
         if(ArenaManager.get(arenaName) != null) throw new IllegalStateException("Duplicate Arena in ArenaManager");
         else if(JSONUtil.fileExists(DataType.ARENA, arenaName)) throw new IllegalStateException("Can't create Arena, JSON data already exists");
@@ -45,6 +53,11 @@ public class Arena {
         this.enabled = enabled;
 
         this.id = id;
+
+        this.flags = new FlagContainer();
+        flags.addFlag(BlockBreakFlag.BREAK_DENY);
+        flags.addFlag(BlockPlaceFlag.PLACE_DENY);
+        flags.addFlag(MaxHealthFlag.DEFAULT_HEALTH);
 
     }
 
@@ -59,6 +72,11 @@ public class Arena {
             this.bounds = new Region(rgm);
             this.enabled = model.isEnabled();
             this.id = id;
+
+            this.flags = new FlagContainer();
+            flags.addFlag(BlockBreakFlag.BREAK_DENY);
+            flags.addFlag(BlockPlaceFlag.PLACE_DENY);
+            flags.addFlag(new MaxHealthFlag(10D));
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -16,11 +16,15 @@ public class ArenaJoinEvent extends Event {
     private final Player player;
 
     @Getter
-    private Session session;
+    private final ArenaSession session;
+
+    @Getter
+    private final Arena arena;
 
     public ArenaJoinEvent(ArenaSession arenaSession, Player player) {
         this.player = player;
         this.session = arenaSession;
+        this.arena = arenaSession.getArena();
     }
 
     @NotNull

@@ -73,7 +73,8 @@ public class Warrior extends JavaPlugin {
                 .addSubCommand(new ArenaJoinCommand())
                 .addSubCommand(new ArenaSetupCommand())
                 .addSubCommand(new ArenaSpectateCommand())
-                .addSubCommand(new ArenaLeaveCommand()));
+                .addSubCommand(new ArenaLeaveCommand())
+                .addSubCommand(new ArenaFlagsCommand()));
         cmds.add(new KitCommand("kit")
                 .addSubCommand(new KitCreateCommand()));
         cMap.registerAll(this.getName().toLowerCase(), cmds);
@@ -106,6 +107,7 @@ public class Warrior extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RegionExitListener(), this);
         Bukkit.getPluginManager().registerEvents(new SessionChangeListener(), this);
         Bukkit.getPluginManager().registerEvents(new ItemInteractListener(), this);
+        Bukkit.getPluginManager().registerEvents(new GameFlagListener(), this);
     }
 
     private static void registerTeams() {

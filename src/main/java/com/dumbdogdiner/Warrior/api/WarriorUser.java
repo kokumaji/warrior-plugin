@@ -28,6 +28,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -80,7 +81,7 @@ public class WarriorUser {
 
     public WarriorUser(Player player) {
 
-        player.setHealth(20D);
+        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         player.setLevel(0);
 
         if(player.getActivePotionEffects().size() > 0)

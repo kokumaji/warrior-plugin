@@ -1,8 +1,11 @@
 package com.dumbdogdiner.Warrior.listeners;
 
-import com.destroystokyo.paper.event.entity.ProjectileCollideEvent;
 import com.dumbdogdiner.Warrior.Warrior;
 import com.dumbdogdiner.Warrior.api.WarriorUser;
+import com.dumbdogdiner.Warrior.api.arena.Arena;
+import com.dumbdogdiner.Warrior.api.arena.gameflags.FlagContainer;
+import com.dumbdogdiner.Warrior.api.arena.gameflags.implementation.BlockBreakFlag;
+import com.dumbdogdiner.Warrior.api.arena.gameflags.implementation.BlockPlaceFlag;
 import com.dumbdogdiner.Warrior.api.events.KillStreakChangeEvent;
 import com.dumbdogdiner.Warrior.api.kit.kits.ArcherKit;
 import com.dumbdogdiner.Warrior.api.sesssions.ArenaSession;
@@ -11,33 +14,31 @@ import com.dumbdogdiner.Warrior.api.sesssions.LobbySession;
 import com.dumbdogdiner.Warrior.api.translation.Constants;
 import com.dumbdogdiner.Warrior.api.util.HologramBuilder;
 import com.dumbdogdiner.Warrior.api.util.Note;
-import com.dumbdogdiner.Warrior.gui.KitGUI;
 import com.dumbdogdiner.Warrior.managers.ArenaManager;
-import com.dumbdogdiner.Warrior.managers.GUIManager;
-import com.dumbdogdiner.Warrior.managers.KitManager;
+
 import com.dumbdogdiner.Warrior.managers.PlayerManager;
 import com.dumbdogdiner.Warrior.utils.TranslationUtil;
-import com.dumbdogdiner.stickyapi.common.util.MathUtil;
-import net.md_5.bungee.api.chat.hover.content.Item;
-import org.bukkit.*;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.NoteBlock;
-import org.bukkit.entity.ArmorStand;
+
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -142,21 +143,39 @@ public class ArenaSessionListener implements Listener {
 
         if(!(user.getSession() instanceof ArenaSession)) return;
         ArenaSession session = (ArenaSession) user.getSession();
+
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                e.getEntity().setFireTicks(0);
+            }
+        }.runTaskLater(Warrior.getInstance(), 2L);
+
         if(session.getState() == GameState.SPECTATING) ((ArenaSession) user.getSession()).setState(GameState.PRE_GAME);
         if(session.getState() == GameState.PRE_GAME) {
             ((ArenaSession) user.getSession()).setState(GameState.PRE_GAME);
             e.setCancelled(true);
             e.getDrops().clear();
+
+            new BukkitRunnable() {
+
+                @Override
+                public void run() {
+                    e.getEntity().teleport(session.getArena().getSpawn());
+                }
+            }.runTaskLater(Warrior.getInstance(), 2L);
+
         }
         if(session.getState() == GameState.IN_GAME) {
             e.setCancelled(true);
+
             ((ArenaSession) user.getSession()).setState(GameState.SPECTATING);
             ((ArenaSession) user.getSession()).setKillStreak(0);
             user.setSpectating(true);
             user.getBukkitPlayer().setVelocity(user.getBukkitPlayer().getVelocity().add(new Vector(0, 1, 0)));
             user.addDeath();
 
-            // Play Custom Death Sound + Particles???
             Location loc = user.getBukkitPlayer().getLocation();
             loc.getWorld().playSound(loc, user.getDeathSound().getSound(), 1f, 1f);
             loc.getWorld().spawnParticle(user.getDeathParticle(), e.getEntity().getLocation(), 15, 0.35, 0.35, 0.35);
@@ -198,16 +217,30 @@ public class ArenaSessionListener implements Listener {
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
-        e.setCancelled(true);
+        Arena a = ((ArenaSession)user.getSession()).getArena();
+
+        FlagContainer container = a.getFlags();
+
+        BlockBreakFlag breakFlag = container.getFlag(BlockBreakFlag.class);
+        if(breakFlag == null) return;
+
+        e.setCancelled(!breakFlag.getValue());
     }
 
     @EventHandler
-    public void onBlockBreak(BlockPlaceEvent e) {
+    public void onBlockPlace(BlockPlaceEvent e) {
         WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
-        e.setCancelled(true);
+        Arena a = ((ArenaSession)user.getSession()).getArena();
+
+        FlagContainer container = a.getFlags();
+
+        BlockPlaceFlag breakFlag = container.getFlag(BlockPlaceFlag.class);
+        if(breakFlag == null) return;
+
+        e.setCancelled(!breakFlag.getValue());
     }
 
     @EventHandler
