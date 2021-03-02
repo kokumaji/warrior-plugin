@@ -1,4 +1,7 @@
 general-settings:
   plugin-prefix: "&3&lWarrior &8»"
+  debug-mode: true
 arena-settings:
   prevent-region-exit: true
+  min-coins: 5
+  max-coins: 50

@@ -2,8 +2,8 @@ package com.dumbdogdiner.warrior.commands.arena;
 
 import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
-import com.dumbdogdiner.warrior.api.sesssions.LobbySession;
-import com.dumbdogdiner.warrior.api.sesssions.SessionType;
+import com.dumbdogdiner.warrior.api.sessions.LobbySession;
+import com.dumbdogdiner.warrior.api.sessions.SessionType;
 
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import org.bukkit.command.CommandSender;

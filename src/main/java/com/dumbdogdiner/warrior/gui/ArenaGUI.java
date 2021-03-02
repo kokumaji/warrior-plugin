@@ -3,7 +3,7 @@ package com.dumbdogdiner.warrior.gui;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.arena.Arena;
-import com.dumbdogdiner.warrior.api.sesssions.ArenaSession;
+import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.api.util.ItemBuilder;
 import com.dumbdogdiner.warrior.managers.ArenaManager;

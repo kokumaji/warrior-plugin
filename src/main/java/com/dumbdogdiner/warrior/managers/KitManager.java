@@ -68,14 +68,12 @@ public class KitManager {
         kits.add(kit);
     }
 
-
     public static BaseKit get(String n) {
         for(BaseKit k : kits) {
             if(k.getName().equalsIgnoreCase(n)) return k;
         }
         return kits.get(0);
     }
-
 
     public static List<BaseKit> getKits() {
         return kits;

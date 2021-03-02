@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.sesssions;
+package com.dumbdogdiner.warrior.api.sessions;
 
 import com.dumbdogdiner.warrior.api.util.ItemBuilder;
 import com.google.common.base.Preconditions;

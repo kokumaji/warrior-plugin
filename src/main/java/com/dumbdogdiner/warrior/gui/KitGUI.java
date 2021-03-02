@@ -4,8 +4,8 @@ import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 
 import com.dumbdogdiner.warrior.api.kit.BaseKit;
-import com.dumbdogdiner.warrior.api.sesssions.ArenaSession;
-import com.dumbdogdiner.warrior.api.sesssions.GameState;
+import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
+import com.dumbdogdiner.warrior.api.sessions.GameState;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.api.util.ItemBuilder;
 

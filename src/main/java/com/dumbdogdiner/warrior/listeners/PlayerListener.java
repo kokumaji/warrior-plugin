@@ -2,7 +2,7 @@ package com.dumbdogdiner.warrior.listeners;
 
 
 import com.dumbdogdiner.warrior.api.WarriorUser;
-import com.dumbdogdiner.warrior.api.sesssions.LobbySession;
+import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

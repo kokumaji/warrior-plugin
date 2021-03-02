@@ -1,8 +1,8 @@
 package com.dumbdogdiner.warrior.listeners;
 
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
-import com.dumbdogdiner.warrior.api.sesssions.ArenaSession;
-import com.dumbdogdiner.warrior.api.sesssions.LobbySession;
+import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
+import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.managers.LobbyManager;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;

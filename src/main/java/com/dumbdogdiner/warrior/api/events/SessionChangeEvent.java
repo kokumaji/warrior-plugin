@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.events;
 
-import com.dumbdogdiner.warrior.api.sesssions.Session;
+import com.dumbdogdiner.warrior.api.sessions.Session;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 

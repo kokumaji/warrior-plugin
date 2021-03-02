@@ -1,9 +1,9 @@
 package com.dumbdogdiner.warrior.listeners;
 
 import com.dumbdogdiner.warrior.api.WarriorUser;
-import com.dumbdogdiner.warrior.api.sesssions.ArenaSession;
-import com.dumbdogdiner.warrior.api.sesssions.GameState;
-import com.dumbdogdiner.warrior.api.sesssions.LobbySession;
+import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
+import com.dumbdogdiner.warrior.api.sessions.GameState;
+import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.api.util.FieldUtil;
 import com.dumbdogdiner.warrior.gui.ArenaGUI;
 import com.dumbdogdiner.warrior.gui.DeathSoundGUI;

@@ -1,6 +1,5 @@
-package com.dumbdogdiner.warrior.api.sesssions;
+package com.dumbdogdiner.warrior.api.sessions;
 
-import com.dumbdogdiner.stickyapi.common.cache.Cacheable;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.events.ArenaJoinEvent;

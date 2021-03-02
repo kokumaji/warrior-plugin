@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.listeners;
 
 import com.dumbdogdiner.warrior.api.events.GameStateChangeEvent;
-import com.dumbdogdiner.warrior.api.sesssions.ArenaSession;
+import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;

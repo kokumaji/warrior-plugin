@@ -1,6 +1,5 @@
-package com.dumbdogdiner.warrior.api.sesssions;
+package com.dumbdogdiner.warrior.api.sessions;
 
-import com.dumbdogdiner.stickyapi.common.cache.Cacheable;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 

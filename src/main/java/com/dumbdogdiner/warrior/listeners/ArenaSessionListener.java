@@ -1,5 +1,6 @@
 package com.dumbdogdiner.warrior.listeners;
 
+import com.dumbdogdiner.stickyapi.common.util.MathUtil;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.arena.Arena;
@@ -8,9 +9,9 @@ import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.BlockBreakFla
 import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.BlockPlaceFlag;
 import com.dumbdogdiner.warrior.api.events.KillStreakChangeEvent;
 import com.dumbdogdiner.warrior.api.kit.kits.ArcherKit;
-import com.dumbdogdiner.warrior.api.sesssions.ArenaSession;
-import com.dumbdogdiner.warrior.api.sesssions.GameState;
-import com.dumbdogdiner.warrior.api.sesssions.LobbySession;
+import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
+import com.dumbdogdiner.warrior.api.sessions.GameState;
+import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.api.util.HologramBuilder;
 import com.dumbdogdiner.warrior.api.util.Note;
@@ -19,6 +20,7 @@ import com.dumbdogdiner.warrior.managers.ArenaManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -176,9 +178,8 @@ public class ArenaSessionListener implements Listener {
             user.getBukkitPlayer().setVelocity(user.getBukkitPlayer().getVelocity().add(new Vector(0, 1, 0)));
             user.addDeath();
 
-            Location loc = user.getBukkitPlayer().getLocation();
-            loc.getWorld().playSound(loc, user.getDeathSound().getSound(), 1f, 1f);
-            loc.getWorld().spawnParticle(user.getDeathParticle(), e.getEntity().getLocation(), 15, 0.35, 0.35, 0.35);
+            user.playDeathSound();
+            user.showDeathParticles();
 
             new BukkitRunnable() {
 
@@ -252,7 +253,8 @@ public class ArenaSessionListener implements Listener {
         e.setCancelled(true);
     }
 
-    //private static int MAX_COINS = Warrior.getConfig().getInt("arena-settings.max-coins");
+    private static final int MIN_COINS = Warrior.getInstance().getConfig().getInt("arena-settings.min-coins");
+    private static final int MAX_COINS = Warrior.getInstance().getConfig().getInt("arena-settings.max-coins");
 
     @EventHandler
     public void onKill(PlayerDeathEvent e) {
@@ -263,6 +265,10 @@ public class ArenaSessionListener implements Listener {
         if(!(killerUser.getSession() instanceof ArenaSession)) return;
 
         ((ArenaSession)killerUser.getSession()).addKill();
+        Preconditions.checkState(MIN_COINS > 0 && MIN_COINS < MAX_COINS, "Invalid value for property MIN_COINS");
+        int coins = MathUtil.randomInt(MIN_COINS, MAX_COINS);
+
+        killerUser.addCoins(coins);
 
         Location loc = e.getEntity().getLocation();
 
