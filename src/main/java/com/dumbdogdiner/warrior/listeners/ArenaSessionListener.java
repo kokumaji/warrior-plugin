@@ -8,27 +8,27 @@ import com.dumbdogdiner.warrior.api.arena.gameflags.FlagContainer;
 import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.BlockBreakFlag;
 import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.BlockPlaceFlag;
 import com.dumbdogdiner.warrior.api.events.KillStreakChangeEvent;
+import com.dumbdogdiner.warrior.api.events.KillStreakResetEvent;
 import com.dumbdogdiner.warrior.api.kit.kits.ArcherKit;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.GameState;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.api.translation.Constants;
-import com.dumbdogdiner.warrior.api.util.HologramBuilder;
+import com.dumbdogdiner.warrior.api.util.*;
 import com.dumbdogdiner.warrior.api.util.Note;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
 
+import com.dumbdogdiner.warrior.managers.GameBarManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.NoteBlock;
 
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -173,7 +173,7 @@ public class ArenaSessionListener implements Listener {
             e.setCancelled(true);
 
             ((ArenaSession) user.getSession()).setState(GameState.SPECTATING);
-            ((ArenaSession) user.getSession()).setKillStreak(0);
+            ((ArenaSession) user.getSession()).resetStreak();
             user.setSpectating(true);
             user.getBukkitPlayer().setVelocity(user.getBukkitPlayer().getVelocity().add(new Vector(0, 1, 0)));
             user.addDeath();
@@ -272,8 +272,13 @@ public class ArenaSessionListener implements Listener {
 
         Location loc = e.getEntity().getLocation();
 
+        Object nmsHead = new ItemBuilder(Material.PLAYER_HEAD)
+                .setOwner(e.getEntity().getName())
+                .asNMSCopy();
+
         new HologramBuilder(loc)
-        .setText("&c+1 Kill", "&7+69 Coins")
+        .setText("&c+1 Kill", String.format("§7+%d Coins", coins))
+        .withItem(nmsHead)
         .removeAfter(2)
         .sendTo(killerUser);
     }
@@ -317,6 +322,17 @@ public class ArenaSessionListener implements Listener {
     }
 
     @EventHandler
+    public void onStreakReset(KillStreakResetEvent e) {
+        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
+        if(user == null) return;
+
+        if(!(user.getSession() instanceof ArenaSession)) return;
+        ArenaSession session = (ArenaSession) user.getSession();
+
+        if(GameBarManager.getBossBar(user) != null) GameBarManager.removePlayer(user);
+    }
+
+    @EventHandler
     public void onKillStreak(KillStreakChangeEvent e) {
         WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
         if(user == null) return;
@@ -324,24 +340,53 @@ public class ArenaSessionListener implements Listener {
         if(!(user.getSession() instanceof ArenaSession)) return;
         ArenaSession session = (ArenaSession) user.getSession();
 
-        user.getBukkitPlayer().sendActionBar("§7Your Killstreak: §3" + e.getStreak());
+        String barMsg = "§8» §7Killstreak §3§l" + e.getStreak() + " §8«";
+        String actionMsg = "§3§l+1 Kill §7(" + e.getStreak() + " Total)";
+        user.getBukkitPlayer().sendActionBar(actionMsg);
+
+        int abilityMin = session.getKit().getAbility().getMinStreak();
+        int streak = session.getKillStreak();
+
+        double percent = getPercent(streak, abilityMin);
+
+        if(GameBarManager.getBossBar(user) == null) {
+            GameBossBar bossBar = new GameBossBar(barMsg, BarColor.WHITE, BarStyle.SOLID)
+                    .setProgress(percent);
+            GameBarManager.addPlayer(user, bossBar);
+        } else {
+            if(!session.canUseAbility()) {
+                GameBarManager.updateTitle(user, barMsg);
+                GameBarManager.updateProgress(user, percent);
+                GameBarManager.updateColor(user, BarColor.WHITE);
+            }
+        }
+
         if(user.isAbilityActive()) return;
 
         if(!session.canUseAbility()) {
             if(session.getKit().getAbility() == null) return;
-            int abilityMin = session.getKit().getAbility().getMinStreak();
-            int streak = session.getKillStreak();
 
             if(streak == 0) return;
 
             if(streak % abilityMin == 0) {
+                Song melody = new Song(Instrument.XYLOPHONE, 2L, 2f, Note.C2, Note.E2, Note.G2);
+                melody.play(user.getBukkitPlayer());
+
                 session.getKit().getAbility().canExecute(user, true);
                 String msg = Warrior.getTranslator().translate(Constants.Lang.ABILITY_READY);
                 user.sendMessage(TranslationUtil.getPrefix() + msg);
-                user.playSound(Sound.BLOCK_NOTE_BLOCK_PLING, 1f, 0.5f);
+
+                GameBarManager.updateColor(user, BarColor.BLUE);
+                GameBarManager.updateTitle(user, "§3§lSpecial Ability is Ready!");
             }
 
         }
+    }
+
+    public double getPercent(double streak, double abilityMin) {
+        if (streak == 0) return 0.0;
+        double v = (streak % abilityMin)/abilityMin;
+        return v == 0 ? 1.0 : v;
     }
 
     @EventHandler

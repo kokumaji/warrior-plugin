@@ -5,6 +5,7 @@ import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.events.ArenaJoinEvent;
 import com.dumbdogdiner.warrior.api.events.GameStateChangeEvent;
 import com.dumbdogdiner.warrior.api.events.KillStreakChangeEvent;
+import com.dumbdogdiner.warrior.api.events.KillStreakResetEvent;
 import com.dumbdogdiner.warrior.api.kit.BaseKit;
 import com.dumbdogdiner.warrior.api.util.ItemBuilder;
 
@@ -58,7 +59,7 @@ public class ArenaSession extends Session {
     @Getter
     private GameState state;
 
-    @Getter @Setter
+    @Getter
     private int killStreak;
 
     @Getter @Setter
@@ -108,6 +109,9 @@ public class ArenaSession extends Session {
 
     public void resetStreak() {
         killStreak = 0;
+
+        KillStreakResetEvent e = new KillStreakResetEvent(this);
+        Bukkit.getPluginManager().callEvent(e);
     }
 
     public void setupInventory(Player player) {

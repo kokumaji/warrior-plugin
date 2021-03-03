@@ -66,6 +66,8 @@ dependencies {
 
     compileOnly 'io.netty:netty-all:4.0.23.Final'
 
+    compileOnly files('libs/server.jar')
+
     shadow "com.dumbdogdiner:stickyapi:2.1.0"
 
     /* for later

@@ -1,5 +1,6 @@
 package com.dumbdogdiner.warrior.api.util;
 
+import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -10,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -91,6 +93,20 @@ public class ItemBuilder {
             item.setItemMeta(m);
         }
         return item;
+    }
+
+    public Object asNMSCopy() {
+        Object nmsCopy = null;
+        try {
+            Class<?> craftItem = BukkitHandler.getCraftClass("inventory.CraftItemStack");
+            ItemStack item = build();
+
+            nmsCopy = craftItem.getMethod("asNMSCopy", ItemStack.class).invoke(null, item);
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        return nmsCopy;
     }
 
 }

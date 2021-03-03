@@ -28,7 +28,7 @@ public class DebugCommand implements CommandExecutor {
 
         List<DeathSound> sounds = DeathSounds.getDeathSounds(user);
         System.out.println(Arrays.toString(sounds.stream().map(DeathSound::name).toArray(String[]::new)));
-        user.setDeathSound(sounds.get(sounds.size() - 1));
+        user.setActiveSound(sounds.get(sounds.size() - 1));
 
         user.getBukkitPlayer().getInventory().addItem(new ItemStack(Material.MUSHROOM_STEW, 16));
         return true;
