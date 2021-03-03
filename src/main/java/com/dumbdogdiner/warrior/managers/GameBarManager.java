@@ -1,10 +1,8 @@
 package com.dumbdogdiner.warrior.managers;
 
 import com.dumbdogdiner.warrior.api.WarriorUser;
-import com.dumbdogdiner.warrior.api.util.GameBossBar;
-import com.google.common.base.Preconditions;
+import com.dumbdogdiner.warrior.api.builders.GameBossBar;
 import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BossBar;
 
 import java.util.HashMap;
 

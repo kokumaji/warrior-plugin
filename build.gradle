@@ -51,10 +51,13 @@ repositories {
     maven { url = "https://raw.githubusercontent.com/JorelAli/CommandAPI/mvn-repo/" }
     maven { url = "https://repo.codemc.org/repository/maven-public/" }
 
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/public/' }
+
 }
 
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
+    implementation 'junit:junit:4.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
     compileOnly 'org.projectlombok:lombok:1.18.16'
 
@@ -66,14 +69,18 @@ dependencies {
 
     compileOnly 'io.netty:netty-all:4.0.23.Final'
 
-    compileOnly files('libs/server.jar')
+    compileOnly files("libs/server.jar")
 
     shadow "com.dumbdogdiner:stickyapi:2.1.0"
 
-    /* for later
-    compileOnly "dev.jorel:commandapi-annotations:5.3"
-    annotationProcessor "dev.jorel:commandapi-annotations:5.3"
-    */
+    // Tests - JUnit 5
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+
+    // Tests - Mocking Suite (eg. mocking Bukkit for tests)
+    testImplementation("org.mockito:mockito-core:3.7.7")
+    testImplementation 'com.github.seeseemelk:MockBukkit-v1.16:0.25.0'
 
 }
 
@@ -90,6 +97,14 @@ shadowJar {
     configurations = [project.configurations.shadow]
 
     minimize()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+configurations {
+    testCompile.extendsFrom compileOnly
 }
 
 spigot {

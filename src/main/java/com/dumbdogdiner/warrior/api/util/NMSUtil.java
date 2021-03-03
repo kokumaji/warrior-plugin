@@ -1,9 +1,12 @@
 package com.dumbdogdiner.warrior.api.util;
 
 import com.dumbdogdiner.warrior.api.WarriorUser;
+
 import io.netty.channel.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class NMSUtil {
     public static final String NMS_VERSION = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
@@ -15,11 +18,10 @@ public class NMSUtil {
     public static Class<?> getCraftClass(String classname) {
         if (NMS_VERSION == null)
             return null;
-        String classpath = String.format("org.bukkit.craftbukkit.%s.%2s", NMS_VERSION, classname);
+        String classpath = String.format(CRAFT_PACKAGE, NMS_VERSION, classname);
         try {
             return Class.forName(classpath);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -27,11 +29,10 @@ public class NMSUtil {
     public static Class<?> getNMSClass(String classname) {
         if (NMS_VERSION == null)
             return null;
-        String classpath = String.format("net.minecraft.server.%s.%2s", NMS_VERSION, classname);
+        String classpath = String.format(NMS_PACKAGE, NMS_VERSION, classname);
         try {
             return Class.forName(classpath);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -41,7 +42,7 @@ public class NMSUtil {
             Class<?> cs = getCraftClass("CraftServer");
             Object csInstance = cs.cast(Bukkit.getServer());
             return csInstance.getClass().getMethod("getServer").invoke(csInstance);
-        } catch (NoSuchMethodException|java.lang.reflect.InvocationTargetException|IllegalAccessException e) {
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
             return null;
         }
@@ -71,7 +72,7 @@ public class NMSUtil {
         }
     }
 
-    public static interface InjectionService {
+    public interface InjectionService {
         void run(ChannelHandlerContext ctx, Packet packet);
     }
 

@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.util;
+package com.dumbdogdiner.warrior.api.builders;
 
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.WarriorUser;
@@ -6,7 +6,6 @@ import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import lombok.SneakyThrows;
 
-import net.minecraft.server.v1_16_R3.Vec3D;
 import org.bukkit.Location;
 
 import org.bukkit.scheduler.BukkitRunnable;

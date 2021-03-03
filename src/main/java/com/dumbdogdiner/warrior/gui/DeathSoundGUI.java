@@ -4,7 +4,7 @@ import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.kit.effects.DeathSound;
 import com.dumbdogdiner.warrior.api.kit.effects.DeathSounds;
-import com.dumbdogdiner.warrior.api.util.ItemBuilder;
+import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot;
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;

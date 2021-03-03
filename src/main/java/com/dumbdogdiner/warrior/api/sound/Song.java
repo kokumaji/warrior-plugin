@@ -1,6 +1,7 @@
-package com.dumbdogdiner.warrior.api.util;
+package com.dumbdogdiner.warrior.api.sound;
 
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.sound.Note;
 import lombok.Getter;
 import org.bukkit.Instrument;
 import org.bukkit.Location;

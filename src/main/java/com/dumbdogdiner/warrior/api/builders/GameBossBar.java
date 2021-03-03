@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.util;
+package com.dumbdogdiner.warrior.api.builders;
 
 import lombok.Getter;
 import org.bukkit.Bukkit;

@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
-import com.dumbdogdiner.warrior.api.util.Note;
+import com.dumbdogdiner.warrior.api.sound.Note;
 import com.google.common.base.Preconditions;
 import io.netty.channel.Channel;
 import lombok.Getter;

@@ -7,7 +7,7 @@ import com.dumbdogdiner.warrior.api.events.GameStateChangeEvent;
 import com.dumbdogdiner.warrior.api.events.KillStreakChangeEvent;
 import com.dumbdogdiner.warrior.api.events.KillStreakResetEvent;
 import com.dumbdogdiner.warrior.api.kit.BaseKit;
-import com.dumbdogdiner.warrior.api.util.ItemBuilder;
+import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.google.common.base.Preconditions;

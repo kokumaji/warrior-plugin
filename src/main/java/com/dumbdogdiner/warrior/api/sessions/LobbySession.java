@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.sessions;
 
-import com.dumbdogdiner.warrior.api.util.ItemBuilder;
+import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
