@@ -3,6 +3,7 @@ package com.dumbdogdiner.warrior.api.util;
 import java.util.List;
 
 public class Packet {
+
     private Object packet;
 
     public Packet(Object packet) {

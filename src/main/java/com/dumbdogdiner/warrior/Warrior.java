@@ -19,11 +19,11 @@ import com.dumbdogdiner.warrior.api.translation.Translator;
 import kr.entree.spigradle.annotations.PluginMain;
 import lombok.Getter;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -91,6 +91,10 @@ public class Warrior extends JavaPlugin {
         LobbyManager.loadData();
         GUIManager.registerGUIs();
         KitManager.registerKits();
+
+        if(usePlaceholderAPI()) {
+            new WarriorPlaceholders().register();
+        }
 
     }
 
