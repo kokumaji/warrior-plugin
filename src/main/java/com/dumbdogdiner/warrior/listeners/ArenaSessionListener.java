@@ -16,6 +16,7 @@ import com.dumbdogdiner.warrior.api.kit.kits.ArcherKit;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.GameState;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
+import com.dumbdogdiner.warrior.api.sound.InstrumentSound;
 import com.dumbdogdiner.warrior.api.sound.Song;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.api.sound.Note;
@@ -434,8 +435,8 @@ public class ArenaSessionListener implements Listener {
             projectile.getWorld().spawnParticle(Particle.BLOCK_CRACK, projectile.getLocation(), 10, b.getBlockData());
 
             if(e.getHitBlock().getType().equals(Material.NOTE_BLOCK)) {
-                String soundString = String.format("BLOCK_NOTE_BLOCK_%s", ((NoteBlock)b.getBlockData()).getInstrument().toString());
-                Sound sound = Sound.valueOf(soundString);
+                Instrument instrument = ((NoteBlock)e.getHitBlock().getBlockData()).getInstrument();
+                Sound sound = InstrumentSound.fromInstrument(instrument);
 
                 if(pointer > easter_egg.length - 1) pointer = 0;
                 projectile.getWorld().playSound(projectile.getLocation(), sound, 2f, (float) easter_egg[pointer].getPitch());
