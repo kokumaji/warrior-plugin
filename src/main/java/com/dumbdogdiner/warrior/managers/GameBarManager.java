@@ -4,11 +4,11 @@ import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.builders.GameBossBar;
 import org.bukkit.boss.BarColor;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class GameBarManager {
 
-    private static final HashMap<WarriorUser, GameBossBar> bossBars = new HashMap<>();
+    private static final TreeMap<WarriorUser, GameBossBar> bossBars = new TreeMap<>();
 
     public static void addPlayer(WarriorUser user, GameBossBar bossBar) {
         if(bossBars.get(user) != null)

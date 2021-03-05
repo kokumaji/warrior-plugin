@@ -1,11 +1,16 @@
 package com.dumbdogdiner.warrior.api.util;
 
+import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 
 import io.netty.channel.*;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 public class NMSUtil {
@@ -46,6 +51,31 @@ public class NMSUtil {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static Object toVec3d(@NotNull Vector vector) {
+        try {
+            Class<?> vec3d = BukkitHandler.getNMSClass("Vec3D");
+            Constructor<?> vec3dConst = vec3d.getDeclaredConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
+
+            return vec3dConst.newInstance(vector.getX(), vector.getY(), vector.getZ());
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | ClassNotFoundException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static Object getWorldServer(World world) {
+        try {
+            return world.getClass()
+                    .getMethod("getHandle")
+                    .invoke(world);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static void injectPlayer(final InjectionService service, WarriorUser player, Plugin pl) {

@@ -11,7 +11,6 @@ public class ArenaModel {
     @Getter
     private boolean enabled;
 
-
     @Getter
     private LocationModel spawn;
     @Getter

@@ -6,3 +6,5 @@ arena-settings:
   prevent-region-exit: true
   min-coins: 5
   max-coins: 50
+lobby-settings:
+  custom-spawn: true

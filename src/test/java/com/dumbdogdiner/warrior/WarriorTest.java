@@ -3,43 +3,7 @@
  */
 package com.dumbdogdiner.warrior;
 
-import com.dumbdogdiner.warrior.api.util.NMSUtil;
-import com.dumbdogdiner.warrior.api.util.ReflectionUtil;
-import org.bukkit.craftbukkit.v1_16_R3.CraftServer;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
-
-import static org.mockito.Mockito.*;
-
-import org.bukkit.Bukkit;
-
-import java.util.function.Consumer;
-
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class WarriorTest {
-
-    private void getMockedBukkit(Consumer<?> func) {
-        // Mock the Bukkit server
-        CraftServer server = mock(CraftServer.class);
-
-        try (MockedStatic<Bukkit> mocked = mockStatic(Bukkit.class)) {
-            // When Bukkit.getServer().getOnlinePlayers() is called return the new collection
-            mocked.when(Bukkit::getServer).thenReturn(server);
-            func.accept(null);
-        }
-    }
-
-    @Test
-    public void testReflectionUtil() {
-        getMockedBukkit(i -> {
-            Assertions.assertNull(NMSUtil.getNMSClass("Fuck"));
-            Assertions.assertNotNull(NMSUtil.getNMSClass("Entity"));
-
-            Assertions.assertFalse(ReflectionUtil.isSuperclassRecursive(NMSUtil.getNMSClass("PacketPlayOutNamedEntitySpawn"), NMSUtil.getNMSClass("Entity")));
-            Assertions.assertTrue(ReflectionUtil.classImplements(NMSUtil.getNMSClass("PacketPlayOutNamedEntitySpawn"), NMSUtil.getNMSClass("Packet")));
-        });
-    }
 
 }

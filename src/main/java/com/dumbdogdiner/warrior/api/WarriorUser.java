@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
  * plugin specific functionalities.
  */
 
-public class WarriorUser {
+public class WarriorUser implements Comparable<WarriorUser> {
 
     /**
      * used for reflection
@@ -473,4 +473,25 @@ public class WarriorUser {
         Preconditions.checkState(amount > 0, "Cannot remove a negative amount of coins!");
         this.coins = Math.max(0, coins - amount);
     }
+
+    /**
+     * Compares the Entity ID of this User with the Entity ID
+     * of another user. <b>Currently only used</b> for more
+     * efficient caching of Players. Future releases may
+     * have comparators for all data values.
+     *
+     * @param user Other WarriorUser instance that
+     *             should be compared.
+     *
+     * @return A value greater than 0 if Entity ID of
+     *         this user > than Entity ID of compared
+     *         user, a value less than 0 if Entity ID
+     *         of this user < than Entity ID of compared
+     *         user, or 0 if Entity ID is identical.
+     */
+    @Override
+    public int compareTo(@NotNull WarriorUser user) {
+        return Integer.compare(getEntityId(), user.getEntityId());
+    }
+
 }
