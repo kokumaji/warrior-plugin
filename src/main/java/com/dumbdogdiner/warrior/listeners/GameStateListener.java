@@ -20,6 +20,7 @@ public class GameStateListener implements Listener {
                     p.setFireTicks(0);
                     p.setGameMode(GameMode.ADVENTURE);
                     p.setFlying(false);
+                    break;
                 case SPECTATING:
                     e.getContext().setupInventory(p); // might not be necessary?
                     p.teleport(((ArenaSession)e.getContext()).getArena().getSpawn());

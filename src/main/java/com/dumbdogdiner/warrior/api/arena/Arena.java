@@ -1,5 +1,6 @@
 package com.dumbdogdiner.warrior.api.arena;
 
+import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.arena.gameflags.FlagContainer;
 import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.BlockBreakFlag;
 import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.BlockPlaceFlag;
@@ -16,6 +17,8 @@ import com.google.gson.stream.JsonReader;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 
 import java.io.File;
 import java.io.FileReader;
@@ -64,8 +67,16 @@ public class Arena {
             LocationModel sm = model.getSpawn();
             RegionModel rgm = model.getBounds();
 
+            World world = Bukkit.getServer().getWorld(rgm.getWorld());
+            if(world == null) {
+                Warrior.getPluginLogger().warn(String.format("Could not find world %s, attempting to load it.", rgm.getWorld()));
+                Bukkit.createWorld(new WorldCreator(rgm.getWorld()));
+                world = Bukkit.getWorld(rgm.getWorld());
+            }
+            Warrior.getPluginLogger().debug(String.format("Loading Arena %s in World %2s", model.getName(), world.getName()));
+
             this.name = model.getName();
-            this.spawn = new Location(Bukkit.getWorld(sm.getWorld()), sm.getX(), sm.getY(), sm.getZ(), sm.getYaw(), sm.getPitch());
+            this.spawn = new Location(world, sm.getX(), sm.getY(), sm.getZ(), sm.getYaw(), sm.getPitch());
             this.bounds = new Region(rgm);
             this.enabled = model.isEnabled();
             this.id = id;
@@ -73,7 +84,6 @@ public class Arena {
             this.flags = new FlagContainer();
             flags.addFlag(BlockBreakFlag.BREAK_DENY);
             flags.addFlag(BlockPlaceFlag.PLACE_DENY);
-            flags.addFlag(new MaxHealthFlag(10D));
 
         } catch (IOException e) {
             e.printStackTrace();

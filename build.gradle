@@ -69,7 +69,8 @@ dependencies {
 
     compileOnly 'io.netty:netty-all:4.0.23.Final'
 
-    compileOnly files("libs/server.jar")
+    // used for debugging!
+    //compileOnly files("libs/server.jar")
 
     shadow "com.dumbdogdiner:stickyapi:2.1.0"
 
@@ -111,6 +112,8 @@ spigot {
     description 'A KitPvP Plugin'
     authors 'Kokumaji'
     apiVersion '1.13'
+
+    softDepends("Multiverse", "PlaceholderAPI")
 
     commands {
         debug {
