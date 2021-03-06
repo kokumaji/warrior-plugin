@@ -17,7 +17,7 @@ import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.GameState;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.api.sound.InstrumentSound;
-import com.dumbdogdiner.warrior.api.sound.Song;
+import com.dumbdogdiner.warrior.api.sound.Melody;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.api.sound.Note;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
@@ -373,7 +373,7 @@ public class ArenaSessionListener implements Listener {
             if(streak == 0) return;
 
             if(streak % abilityMin == 0) {
-                Song melody = new Song(Instrument.XYLOPHONE, 2L, 2f, Note.C2, Note.E2, Note.G2);
+                Melody melody = new Melody(Instrument.XYLOPHONE, 2L, 2f, Note.C2, Note.E2, Note.G2);
                 melody.play(user.getBukkitPlayer());
 
                 session.getKit().getAbility().canExecute(user, true);

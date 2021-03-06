@@ -97,7 +97,6 @@ public class WarriorUser implements Comparable<WarriorUser> {
     @Getter
     private Player bukkitPlayer;
 
-
     /**
      *
      * START OF DATA STORAGE
