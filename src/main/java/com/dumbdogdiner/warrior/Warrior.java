@@ -1,6 +1,7 @@
 package com.dumbdogdiner.warrior;
 
 import com.dumbdogdiner.warrior.api.WarriorLogger;
+import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.kit.SpecialAbilities;
 
 import com.dumbdogdiner.warrior.commands.DebugCommand;
@@ -9,10 +10,8 @@ import com.dumbdogdiner.warrior.commands.kit.KitCommand;
 import com.dumbdogdiner.warrior.commands.kit.KitCreateCommand;
 import com.dumbdogdiner.warrior.commands.warrior.*;
 import com.dumbdogdiner.warrior.listeners.*;
-import com.dumbdogdiner.warrior.managers.ArenaManager;
-import com.dumbdogdiner.warrior.managers.GUIManager;
-import com.dumbdogdiner.warrior.managers.KitManager;
-import com.dumbdogdiner.warrior.managers.LobbyManager;
+import com.dumbdogdiner.warrior.managers.*;
+import com.dumbdogdiner.warrior.utils.DatabaseConnection;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import com.dumbdogdiner.warrior.api.translation.Translator;
 
@@ -30,6 +29,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +45,9 @@ public class Warrior extends JavaPlugin {
     private static Translator translator;
 
     @Getter
+    private static DatabaseConnection connection;
+
+    @Getter
     private static Team specTeam;
 
     private static WarriorLogger logger;
@@ -55,7 +58,8 @@ public class Warrior extends JavaPlugin {
         saveDefaultConfig();
         try {
             translator = new Translator(this, getConfig());
-        } catch (IOException e) {
+            connection = new DatabaseConnection(this, getConfig());
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }
@@ -103,6 +107,9 @@ public class Warrior extends JavaPlugin {
         if(Bukkit.getScoreboardManager().getMainScoreboard().getTeam(specTeam.getName()) != null) {
             specTeam.unregister();
         }
+
+        for(WarriorUser user : PlayerManager.getList()) user.saveData();
+
     }
 
     private void registerEvents() {

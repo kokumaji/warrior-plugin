@@ -1,16 +1,19 @@
 package com.dumbdogdiner.warrior.api.sound;
 
+import com.dumbdogdiner.stickyapi.common.util.MathUtil;
 import com.dumbdogdiner.warrior.Warrior;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 public class SoundEffect {
 
     public enum SoundEffectType {
         ASCENDING,
         DESCENDING,
+        RANDOM,
         NORMAL;
     }
 
@@ -49,6 +52,17 @@ public class SoundEffect {
         return this;
     }
 
+    public SoundEffect randomPitch() {
+        this.effectType = SoundEffectType.RANDOM;
+
+        return this;
+    }
+
+    public SoundEffect setEffectType(SoundEffectType type) {
+        this.effectType = type;
+        return this;
+    }
+
     public void play(Player... players) {
         for(Player p : players) {
             if(repeatTimes == 0) p.playSound(p.getLocation(), sound, volume, (float) note.getPitch());
@@ -57,26 +71,21 @@ public class SoundEffect {
                 new BukkitRunnable() {
 
                     int current = 0;
+                    final int baseNote = Arrays.asList(Note.values()).indexOf(note);
+                    float pitch = (float) note.getPitch();
 
                     @Override
                     public void run() {
                         if(!p.isOnline()) cancel();
                         else {
-                            if(current == repeatTimes - 1) {
+                            if(current == repeatTimes - 1 || (baseNote + current) > Note.values().length || (baseNote - current) < 0) {
                                 cancel();
                                 return;
                             }
 
-                            if(effectType == SoundEffectType.ASCENDING) {
-                                if(current > Note.values().length - 1) {
-                                    cancel();
-                                    return;
-                                }
-                            }
-
-                            float pitch = (float) note.getPitch();
-                            if(effectType == SoundEffectType.ASCENDING) pitch = (float) Note.values()[current].getPitch();
-                            if(effectType == SoundEffectType.DESCENDING) pitch = (float) Note.values()[(Note.values().length - current) - 1].getPitch();
+                            if(effectType == SoundEffectType.ASCENDING) pitch = (float) Note.values()[baseNote + current].getPitch();
+                            if(effectType == SoundEffectType.DESCENDING) pitch = (float) Note.values()[(baseNote - current)].getPitch();
+                            if(effectType == SoundEffectType.RANDOM) pitch = (float) MathUtil.randomElement(Note.values()).getPitch();
 
                             p.playSound(p.getLocation(), sound, volume, pitch);
                             current++;

@@ -1,9 +1,11 @@
 package com.dumbdogdiner.warrior.api;
 
+import com.dumbdogdiner.stickyapi.common.command.ExitCode;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
 import com.dumbdogdiner.warrior.api.kit.effects.DeathSound;
 import com.dumbdogdiner.warrior.api.kit.effects.DeathSounds;
+import com.dumbdogdiner.warrior.api.models.WarriorData;
 import com.dumbdogdiner.warrior.api.sessions.Session;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 
@@ -11,6 +13,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
@@ -18,6 +21,7 @@ import java.util.UUID;
 
 import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.api.sound.Note;
+import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import com.google.common.base.Preconditions;
 import io.netty.channel.Channel;
 import lombok.Getter;
@@ -491,6 +495,31 @@ public class WarriorUser implements Comparable<WarriorUser> {
     @Override
     public int compareTo(@NotNull WarriorUser user) {
         return Integer.compare(getEntityId(), user.getEntityId());
+    }
+
+    /**
+     * Gets the user data from a connected database
+     */
+    public void loadData() {
+
+        WarriorData data = Warrior.getConnection().getData(this.userId);
+        if(data.isSuccessful()) {
+            String msg = String.format("%s Successfully loaded your player data!", TranslationUtil.getPrefix());
+            sendMessage(msg);
+
+            playSound(Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+        }
+
+        this.kills = data.getKills();
+        this.deaths = data.getDeaths();
+        this.coins = data.getCoins();
+        this.deathSounds = data.getDeathSounds();
+
+    }
+
+    public void saveData() {
+        WarriorData data = new WarriorData(this);
+        Warrior.getConnection().saveData(data);
     }
 
 }

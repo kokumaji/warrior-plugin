@@ -18,7 +18,7 @@ plugins {
 
 // Setting some variables for our plugin!
 group 'me.kokumaji'
-version '1.2.4-alpha'
+version '1.3.0-alpha'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -60,6 +60,8 @@ dependencies {
     implementation 'junit:junit:4.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
     compileOnly 'org.projectlombok:lombok:1.18.16'
+
+    shadow group: 'com.zaxxer', name: 'HikariCP', version: '4.0.3'
 
     // Since this is a PaperMC plugin, there is
     // no need to shadow anything into the final jar

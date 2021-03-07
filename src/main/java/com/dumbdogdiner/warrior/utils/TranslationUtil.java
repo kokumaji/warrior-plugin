@@ -5,6 +5,7 @@ import com.dumbdogdiner.warrior.api.translation.DefaultFontInfo;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -91,6 +92,44 @@ public class TranslationUtil {
     public static String translateColor(String str) {
         if(str == null) return null;
         return ChatColor.translateAlternateColorCodes('&', str);
+    }
+
+    public static String applyColorGradient(String string, Color start, Color end, int steps) {
+        return applyColorGradient(string, getColorGradient(start, end, steps), steps);
+    }
+
+    public static String applyColorGradient(String string, List<Color> colors, int steps) {
+        if((string.length() / steps) < 1) steps = string.length();
+        List<String> strings = new ArrayList<String>();
+        int index = 0;
+        int i = 0;
+
+        while (index < string.length()) {
+            Color c = colors.get(Math.min(i, colors.size() - 1));
+            strings.add(net.md_5.bungee.api.ChatColor.of(c) + string.substring(index, Math.min(index + (string.length() / steps), string.length())));
+            index += (string.length() / steps);
+
+            i++;
+        }
+
+        return String.join("", strings);
+    }
+
+    public static ArrayList<Color> getColorGradient(Color start, Color end, int steps) {
+        ArrayList<Color> colors = new ArrayList<>();
+        int stepR = ((end.getRed() - start.getRed()) / (steps - 1));
+        int stepG = ((end.getGreen() - start.getGreen()) / (steps - 1));
+        int stepB = ((end.getBlue() - start.getBlue()) / (steps - 1));
+
+        for (int i = 0; i < steps; i++)
+        {
+
+            colors.add(new Color(start.getRed() + (stepR * i),
+                    start.getGreen() + (stepG * i),
+                    start.getBlue() + (stepB * i)));
+        }
+
+        return colors;
     }
 
     public static String readableLocation(Location location, boolean showVar, boolean showWorld) {

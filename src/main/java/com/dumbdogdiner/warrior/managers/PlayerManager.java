@@ -40,6 +40,9 @@ public class PlayerManager {
 
     public static void remove(@NotNull UUID userId) {
         if(users.containsKey(userId)) {
+            WarriorUser user = users.get(userId);
+            user.saveData();
+
             users.remove(userId);
         } else {
             String msg = String.format("Failed to remove WarriorUser %s from cache.", userId);

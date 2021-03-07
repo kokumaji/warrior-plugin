@@ -21,7 +21,7 @@ public class PlayerListener implements Listener {
 
         if(!PlayerManager.contains(uuid)) {
             WarriorUser user = PlayerManager.addUser(uuid);
-
+            user.loadData();
             user.setSession(new LobbySession(user.getUserId()));
         }
     }

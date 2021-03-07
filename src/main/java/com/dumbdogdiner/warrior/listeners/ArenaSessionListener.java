@@ -265,6 +265,8 @@ public class ArenaSessionListener implements Listener {
         if(e.getEntity().getKiller() == null) return;
         Player killer = e.getEntity().getKiller();
 
+        if(killer.equals(e.getEntity())) return;
+
         WarriorUser killerUser = PlayerManager.get(killer.getUniqueId());
         if(!(killerUser.getSession() instanceof ArenaSession)) return;
 

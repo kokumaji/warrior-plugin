@@ -8,3 +8,9 @@ arena-settings:
   max-coins: 50
 lobby-settings:
   custom-spawn: true
+mysql-settings:
+  db-host: "localhost"
+  db-port: 3306
+  db-name: "warrior"
+  db-user: "user"
+  db-pass: "passwd"
