@@ -20,8 +20,23 @@ public class WarriorData {
     @Getter @Setter
     public int deathSounds;
 
+    @Getter @Setter
+    public int deathParticles;
+
+    @Getter @Setter
+    public int titles;
+
     @Getter
     public UUID userId;
+
+    @Getter @Setter
+    public long firstJoin;
+
+    @Getter @Setter
+    public long lastJoin;
+
+    @Getter @Setter
+    public long totalTime;
 
     @Getter @Setter
     public boolean successful;
@@ -35,6 +50,14 @@ public class WarriorData {
         this.deaths = user.getDeaths();
         this.coins = user.getCoins();
         this.deathSounds = user.getDeathSounds();
+        this.deathParticles = user.getDeathParticles();
+        this.titles = user.getTitles();
+
         this.userId = user.getUserId();
+
+        this.firstJoin = user.getFirstJoin();
+        this.lastJoin = user.getLastJoin();
+
+        this.totalTime = user.getTotalTime() + (System.currentTimeMillis() - user.getLastJoin());
     }
 }

@@ -26,4 +26,11 @@ public enum DeathSound {
         this.friendlyName = s;
     }
 
+    public static DeathSound fromString(String name) {
+        for(DeathSound sound : DeathSound.values()) {
+            if(sound.name().equalsIgnoreCase(name)) return sound;
+        }
+
+        return WATERSPLASH;
+    }
 }

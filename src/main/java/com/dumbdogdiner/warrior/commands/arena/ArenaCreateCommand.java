@@ -41,7 +41,7 @@ public class ArenaCreateCommand implements SubCommand {
         }
 
         Player player = (Player) sender;
-        String name = args[1];
+        String name = TranslationUtil.capitalize(args[1]);
         ArenaBuilderSession session = new ArenaBuilderSession(new WarriorUser(player), name);
 
         Arena arena = ArenaManager.get(args[1]);

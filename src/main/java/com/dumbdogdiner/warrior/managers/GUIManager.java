@@ -5,6 +5,7 @@ import com.dumbdogdiner.warrior.gui.ArenaGUI;
 import com.dumbdogdiner.warrior.gui.DeathSoundGUI;
 import com.dumbdogdiner.warrior.gui.KitGUI;
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
+import com.dumbdogdiner.warrior.gui.SettingsGUI;
 
 import java.util.HashMap;
 
@@ -16,6 +17,7 @@ public class GUIManager {
         map.put(ArenaGUI.class, new ArenaGUI(5, "Select Arena", Warrior.getInstance()));
         map.put(KitGUI.class, new KitGUI(5, "Select a Kit", Warrior.getInstance()));
         map.put(DeathSoundGUI.class, new DeathSoundGUI());
+        map.put(SettingsGUI.class, new SettingsGUI());
     }
 
     public static  <T> T get(Class<T> guiClass) {

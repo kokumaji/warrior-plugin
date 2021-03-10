@@ -1,14 +1,18 @@
 package com.dumbdogdiner.warrior;
 
 import com.dumbdogdiner.warrior.api.WarriorUser;
+
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.Session;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.Duration;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class WarriorPlaceholders extends PlaceholderExpansion {
 
@@ -43,19 +47,20 @@ public class WarriorPlaceholders extends PlaceholderExpansion {
                 case "name":
                     return user.getName();
                 case "timeplayed":
-                    Duration d = Duration.ofMillis((System.currentTimeMillis() - user.getTimeJoined()));
-                    return d.toString()
-                            .substring(2)
-                            .replaceAll("(\\d[HMS])(?!$)", "$1 ")
-                            .toLowerCase();
+                    long time = user.getTotalTime() + (System.currentTimeMillis() - user.getLastJoin());
+                    return TranslationUtil.formatDuration(time);
+                case "firstjoin":
+                    return TranslationUtil.toDate(user.getFirstJoin());
                 case "id":
                 case "userid":
                 case "uuid":
                     return user.getUserId().toString();
                 case "ping":
                     return user.getPing() + "ms";
+                case "title":
+                    return user.getSettings().getTitle().getTitle();
                 case "deathsound":
-                    return user.getActiveSound().friendlyName();
+                    return user.getGameplaySettings().getActiveSound().friendlyName();
                 case "kills":
                     return Integer.toString(user.getKills());
                 case "deaths":

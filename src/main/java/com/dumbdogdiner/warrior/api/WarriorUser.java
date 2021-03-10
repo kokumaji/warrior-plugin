@@ -3,10 +3,15 @@ package com.dumbdogdiner.warrior.api;
 import com.dumbdogdiner.stickyapi.common.command.ExitCode;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
+import com.dumbdogdiner.warrior.api.kit.effects.DeathParticle;
 import com.dumbdogdiner.warrior.api.kit.effects.DeathSound;
 import com.dumbdogdiner.warrior.api.kit.effects.DeathSounds;
+import com.dumbdogdiner.warrior.api.kit.effects.WarriorTitle;
 import com.dumbdogdiner.warrior.api.models.WarriorData;
+import com.dumbdogdiner.warrior.api.models.WarriorGameSettings;
+import com.dumbdogdiner.warrior.api.models.WarriorUserSettings;
 import com.dumbdogdiner.warrior.api.sessions.Session;
+import com.dumbdogdiner.warrior.api.translation.Symbols;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 
 import java.lang.reflect.Field;
@@ -68,7 +73,13 @@ public class WarriorUser implements Comparable<WarriorUser> {
     private UUID userId;
 
     @Getter
-    private final long timeJoined;
+    private long firstJoin;
+
+    @Getter
+    private long lastJoin;
+
+    @Getter
+    private long totalTime;
 
     @Getter
     private Session session;
@@ -79,11 +90,11 @@ public class WarriorUser implements Comparable<WarriorUser> {
     @Getter @Setter
     private boolean abilityActive;
 
-    @Getter @Setter
-    private DeathSound activeSound = DeathSound.WATERSPLASH;
-
     @Getter
-    private final Particle activeParticle = Particle.HEART;
+    private DeathParticle activeParticle = DeathParticle.HEART;
+
+    @Getter @Setter
+    private WarriorTitle activeTitle;
 
     /**
      *  REFLECTION SPECIFIC THINGS
@@ -124,6 +135,15 @@ public class WarriorUser implements Comparable<WarriorUser> {
     @Getter
     private int deathParticles;
 
+    @Getter
+    private int titles;
+
+    @Getter
+    private WarriorUserSettings settings;
+
+    @Getter
+    private WarriorGameSettings gameplaySettings;
+
     /**
      * Creates a WarriorUser instance to access
      * plugin specific functionalities.
@@ -147,8 +167,6 @@ public class WarriorUser implements Comparable<WarriorUser> {
             player.setFlying(false);
             player.setGameMode(GameMode.ADVENTURE);
         }
-
-        this.timeJoined = System.currentTimeMillis();
 
         try {
             // Let's create a few nms related objects!
@@ -293,6 +311,14 @@ public class WarriorUser implements Comparable<WarriorUser> {
         bukkitPlayer.playSound(bukkitPlayer.getLocation(), sound, volume, (float) note.getPitch());
     }
 
+    public void setActiveSound(DeathSound sound) {
+        this.gameplaySettings.setActiveSound(sound);
+    }
+
+    public void setActiveParticle(DeathParticle particle) {
+        this.gameplaySettings.setActiveParticle(particle);
+    }
+
     /**
      * Experimental method to unlock a sound for a player.
      * May be removed/replaced in future releases.
@@ -302,7 +328,35 @@ public class WarriorUser implements Comparable<WarriorUser> {
     public void unlockSound(DeathSound sound) {
         this.deathSounds = deathSounds | sound.getUnlockValue();
         playSound(Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.2f, 1f);
-        bukkitPlayer.sendTitle("§3§lNew Unlock!", "§7You've unlocked DeathSound §f" + sound.friendlyName(), 10, 80, 10);
+        bukkitPlayer.sendTitle("§3§lNew Unlock!", "§7You've unlocked Sound §f" + sound.friendlyName(), 10, 80, 10);
+        bukkitPlayer.spawnParticle(Particle.HEART, bukkitPlayer.getLocation(), 30, 2, 2, 2);
+    }
+
+    /**
+     * Experimental method to unlock a sound for a player.
+     * May be removed/replaced in future releases.
+     *
+     * @param particle The {@link DeathParticle} that should be unlocked
+     */
+    public void unlockParticle(DeathParticle particle) {
+        this.deathParticles = deathParticles | particle.getUnlockValue();
+        playSound(Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.2f, 1f);
+        bukkitPlayer.sendTitle("§3§lNew Unlock!", "§7You've unlocked Particle §f" + particle.friendlyName(), 10, 80, 10);
+        bukkitPlayer.spawnParticle(Particle.HEART, bukkitPlayer.getLocation(), 30, 2, 2, 2);
+    }
+
+    /**
+     * Experimental method to unlock a sound for a player.
+     * May be removed/replaced in future releases.
+     *
+     * @param title The {@link WarriorTitle} that should be unlocked
+     */
+    public void unlockTitle(WarriorTitle title) {
+        if(!WarriorTitle.canUnlock(title)) return;
+
+        this.titles = titles | title.getUnlockValue();
+        playSound(Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.2f, 1f);
+        bukkitPlayer.sendTitle("§3§lNew Unlock!", "§7You've unlocked Title §f" + title.getTitle(), 10, 80, 10);
         bukkitPlayer.spawnParticle(Particle.HEART, bukkitPlayer.getLocation(), 30, 2, 2, 2);
     }
 
@@ -311,7 +365,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
      */
     public void playDeathSound() {
         Location loc = bukkitPlayer.getLocation();
-        loc.getWorld().playSound(loc, getActiveSound().getSound(), 1f, 1f);
+        loc.getWorld().playSound(loc, gameplaySettings.getActiveSound().getSound(), 1f, 1f);
     }
 
     /**
@@ -319,7 +373,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
      */
     public void showDeathParticles() {
         Location loc = bukkitPlayer.getLocation();
-        loc.getWorld().spawnParticle(getActiveParticle(), loc, 15, 0.35, 0.35, 0.35);
+        loc.getWorld().spawnParticle(gameplaySettings.getActiveParticle().getParticle(), loc, 15, 0.35, 0.35, 0.35);
     }
 
     /**
@@ -503,23 +557,35 @@ public class WarriorUser implements Comparable<WarriorUser> {
     public void loadData() {
 
         WarriorData data = Warrior.getConnection().getData(this.userId);
+        this.settings = Warrior.getConnection().getUserSettings(this.userId);
+        this.gameplaySettings = Warrior.getConnection().getGameplaySettings(this.userId);
         if(data.isSuccessful()) {
-            String msg = String.format("%s Successfully loaded your player data!", TranslationUtil.getPrefix());
-            sendMessage(msg);
-
+            String msg = String.format("&2%1$s &aPlayer Data Loaded &2%1$s", Symbols.HEAVY_CHECK_MARK);
+            sendActionBar(TranslationUtil.translateColor(msg));
             playSound(Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
         }
 
         this.kills = data.getKills();
         this.deaths = data.getDeaths();
         this.coins = data.getCoins();
+
         this.deathSounds = data.getDeathSounds();
+        this.deathParticles = data.getDeathParticles();
+        this.titles = data.getTitles();
+
+        this.firstJoin = data.getFirstJoin();
+        this.lastJoin = System.currentTimeMillis();
+        this.totalTime = data.getTotalTime();
+
+        this.activeTitle = settings.getTitle();
 
     }
 
     public void saveData() {
         WarriorData data = new WarriorData(this);
         Warrior.getConnection().saveData(data);
+        Warrior.getConnection().saveSettings(this.settings);
+        Warrior.getConnection().saveGameplaySettings(this.gameplaySettings);
     }
 
 }

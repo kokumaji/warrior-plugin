@@ -24,6 +24,7 @@ public class PlayerManager {
 
         if(!users.containsKey(userId)) {
             WarriorUser user = new WarriorUser(userId);
+            Warrior.getConnection().insertUser(user);
             users.put(userId, user);
 
             return user;

@@ -88,19 +88,21 @@ public class HologramBuilder {
                     user.sendPacket(velocityPacket);
                     user.sendPacket(metadataPacket);
 
-                    new BukkitRunnable() {
 
-                        @SneakyThrows
-                        @Override
-                        public void run() {
-                            Object entityDestroyPacket = BukkitHandler.getNMSClass("PacketPlayOutEntityDestroy")
-                                    .getDeclaredConstructor(int[].class)
-                                    .newInstance(new int[]{(int)entityItem.getClass().getMethod("getId").invoke(entityItem)});
+                    if(deleteAfter > 0) {
+                        new BukkitRunnable() {
 
-                            user.sendPacket(entityDestroyPacket);
-                        }
-                    }.runTaskLater(Warrior.getInstance(), deleteAfter);
+                            @SneakyThrows
+                            @Override
+                            public void run() {
+                                Object entityDestroyPacket = BukkitHandler.getNMSClass("PacketPlayOutEntityDestroy")
+                                        .getDeclaredConstructor(int[].class)
+                                        .newInstance(new int[]{(int)entityItem.getClass().getMethod("getId").invoke(entityItem)});
 
+                                user.sendPacket(entityDestroyPacket);
+                            }
+                        }.runTaskLater(Warrior.getInstance(), deleteAfter);
+                    }
                 }
 
                 for(String line : text) {
@@ -133,18 +135,20 @@ public class HologramBuilder {
                     user.sendPacket(entitySpawnPacket);
                     user.sendPacket(metadataPacket);
 
-                    new BukkitRunnable() {
+                    if(deleteAfter > 0) {
+                        new BukkitRunnable() {
 
-                        @SneakyThrows
-                        @Override
-                        public void run() {
-                            Object entityDestroyPacket = BukkitHandler.getNMSClass("PacketPlayOutEntityDestroy")
-                                    .getDeclaredConstructor(int[].class)
-                                    .newInstance(new int[]{(int)asClass.getMethod("getId").invoke(entityArmorStand)});
+                            @SneakyThrows
+                            @Override
+                            public void run() {
+                                Object entityDestroyPacket = BukkitHandler.getNMSClass("PacketPlayOutEntityDestroy")
+                                        .getDeclaredConstructor(int[].class)
+                                        .newInstance(new int[]{(int)asClass.getMethod("getId").invoke(entityArmorStand)});
 
-                            user.sendPacket(entityDestroyPacket);
-                        }
-                    }.runTaskLater(Warrior.getInstance(), deleteAfter);
+                                user.sendPacket(entityDestroyPacket);
+                            }
+                        }.runTaskLater(Warrior.getInstance(), deleteAfter);
+                    }
                 }
 
             } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {

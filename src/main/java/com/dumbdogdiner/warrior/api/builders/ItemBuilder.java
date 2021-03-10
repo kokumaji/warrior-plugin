@@ -1,7 +1,10 @@
 package com.dumbdogdiner.warrior.api.builders;
 
 import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
+import com.dumbdogdiner.warrior.api.util.HeadTexture;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
@@ -11,8 +14,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ItemBuilder {
@@ -30,6 +35,13 @@ public class ItemBuilder {
         this.item = new ItemStack(material);
         this.meta = item.getItemMeta();
         item.setAmount(amount);
+    }
+
+    public ItemBuilder(ItemStack stack) {
+        this.item = stack;
+        this.material = stack.getType();
+        this.amount = stack.getAmount();
+        this.meta = stack.getItemMeta();
     }
 
     public Item asEntity() {
@@ -81,6 +93,26 @@ public class ItemBuilder {
 
     public ItemBuilder addFlags(ItemFlag... flags) {
         meta.addItemFlags(flags);
+        return this;
+    }
+
+    public ItemBuilder setTexture(HeadTexture texture) {
+        if(material.equals(Material.PLAYER_HEAD)) {
+            GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+
+            profile.getProperties().put("textures", new Property("textures", texture.getTexture()));
+
+            try {
+                Field profileField = ((SkullMeta)meta).getClass().getDeclaredField("profile");
+                profileField.setAccessible(true);
+                profileField.set((SkullMeta)meta, profile);
+
+            } catch (IllegalArgumentException | NoSuchFieldException | SecurityException | IllegalAccessException error) {
+                error.printStackTrace();
+            }
+
+        }
+
         return this;
     }
 
