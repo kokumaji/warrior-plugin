@@ -3,6 +3,9 @@ package com.dumbdogdiner.warrior.api.util;
 import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 
+import com.dumbdogdiner.warrior.api.nms.Packet;
+import com.dumbdogdiner.warrior.api.nms.PacketListener;
+import com.dumbdogdiner.warrior.api.nms.ServerPacket;
 import io.netty.channel.*;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -78,16 +81,20 @@ public class NMSUtil {
         return null;
     }
 
-    public static void injectPlayer(final InjectionService service, WarriorUser player, Plugin pl) {
+    public static void injectPlayer(final PacketListener service, WarriorUser player, Plugin pl) {
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             public void channelRead(ChannelHandlerContext ctx, Object packet) throws Exception {
-                service.run(ctx, new Packet(packet));
+                service.onReceive(ctx, new Packet(packet));
                 super.channelRead(ctx, packet);
             }
 
             public void write(ChannelHandlerContext ctx, Object packet, ChannelPromise promise) throws Exception {
-                service.run(ctx, new Packet(packet));
-                super.write(ctx, packet, promise);
+                ServerPacket serverPacket = new ServerPacket(packet);
+
+                service.onSend(ctx, serverPacket, promise);
+                if(!serverPacket.isCancelled()) {
+                    super.write(ctx, serverPacket.getPacket(), promise);
+                }
             }
         };
         try {
@@ -100,10 +107,6 @@ public class NMSUtil {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-    }
-
-    public interface InjectionService {
-        void run(ChannelHandlerContext ctx, Packet packet);
     }
 
     public static void removeInjection(WarriorUser player, Plugin pl) {

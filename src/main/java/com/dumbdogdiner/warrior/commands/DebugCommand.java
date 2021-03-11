@@ -1,12 +1,8 @@
 package com.dumbdogdiner.warrior.commands;
 
-import com.dumbdogdiner.warrior.api.WarriorUser;
-import com.dumbdogdiner.warrior.api.kit.effects.DeathSound;
-import com.dumbdogdiner.warrior.api.kit.effects.WarriorTitle;
+import com.dumbdogdiner.warrior.api.nms.objects.SoundEffect;
 
-import com.dumbdogdiner.warrior.gui.SettingsGUI;
-import com.dumbdogdiner.warrior.managers.GUIManager;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,12 +15,16 @@ public class DebugCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
-        SettingsGUI settingsGUI = GUIManager.get(SettingsGUI.class);
+        /*SettingsGUI settingsGUI = GUIManager.get(SettingsGUI.class);
         settingsGUI.open((Player) sender);
 
         WarriorUser user = PlayerManager.get(((Player)sender).getUniqueId());
-        user.setActiveTitle(WarriorTitle.LVL_30);
-        user.setActiveSound(DeathSound.THUNDERSTORM);
+        user.unlockSound(DeathSound.DOG_BARK);
+        user.unlockSound(DeathSound.CAT_MEOW);
+        user.unlockSound(DeathSound.GHAST_DEATH);*/
+
+        SoundEffect sound = SoundEffect.fromBukkit(Sound.BLOCK_DISPENSER_LAUNCH);
+        System.out.println(sound.getKey().toString());
 
         /*
         WarriorUser user = PlayerManager.get(((Player)sender).getUniqueId());

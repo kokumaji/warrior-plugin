@@ -1,6 +1,7 @@
 package com.dumbdogdiner.warrior.api;
 
 import com.dumbdogdiner.stickyapi.common.command.ExitCode;
+import com.dumbdogdiner.stickyapi.common.util.TimeUtil;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
 import com.dumbdogdiner.warrior.api.kit.effects.DeathParticle;
@@ -23,6 +24,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.api.sound.Note;
@@ -45,6 +50,8 @@ import org.jetbrains.annotations.NotNull;
  */
 
 public class WarriorUser implements Comparable<WarriorUser> {
+
+    private static ExecutorService userPool = Executors.newFixedThreadPool(1);
 
     /**
      * used for reflection
@@ -326,10 +333,17 @@ public class WarriorUser implements Comparable<WarriorUser> {
      * @param sound The {@link DeathSound} that should be unlocked
      */
     public void unlockSound(DeathSound sound) {
-        this.deathSounds = deathSounds | sound.getUnlockValue();
-        playSound(Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.2f, 1f);
-        bukkitPlayer.sendTitle("§3§lNew Unlock!", "§7You've unlocked Sound §f" + sound.friendlyName(), 10, 80, 10);
-        bukkitPlayer.spawnParticle(Particle.HEART, bukkitPlayer.getLocation(), 30, 2, 2, 2);
+        userPool.submit(() -> {
+            this.deathSounds = deathSounds | sound.getUnlockValue();
+            playSound(Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.2f, 1f);
+            bukkitPlayer.sendTitle("§3§lNew Unlock!", "§7You've unlocked Sound §f" + sound.friendlyName(), 10, 80, 10);
+            bukkitPlayer.spawnParticle(Particle.HEART, bukkitPlayer.getLocation(), 30, 2, 2, 2);
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**

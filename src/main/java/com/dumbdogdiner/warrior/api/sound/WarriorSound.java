@@ -8,7 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 
-public class SoundEffect {
+public class WarriorSound {
 
     public enum SoundEffectType {
         ASCENDING,
@@ -27,38 +27,38 @@ public class SoundEffect {
     private float volume;
     private Note note;
 
-    public SoundEffect(Sound sound, float volume, Note note) {
+    public WarriorSound(Sound sound, float volume, Note note) {
         this.sound = sound;
         this.volume = volume;
         this.note = note;
     }
 
-    public SoundEffect repeat(int times, long delay) {
+    public WarriorSound repeat(int times, long delay) {
         this.repeatTimes = times;
         this.repeatDelay = delay;
 
         return this;
     }
 
-    public SoundEffect ascending() {
+    public WarriorSound ascending() {
         this.effectType = SoundEffectType.ASCENDING;
 
         return this;
     }
 
-    public SoundEffect descending() {
+    public WarriorSound descending() {
         this.effectType = SoundEffectType.DESCENDING;
 
         return this;
     }
 
-    public SoundEffect randomPitch() {
+    public WarriorSound randomPitch() {
         this.effectType = SoundEffectType.RANDOM;
 
         return this;
     }
 
-    public SoundEffect setEffectType(SoundEffectType type) {
+    public WarriorSound setEffectType(SoundEffectType type) {
         this.effectType = type;
         return this;
     }

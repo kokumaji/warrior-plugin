@@ -2,6 +2,7 @@ package com.dumbdogdiner.warrior.api.builders;
 
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.nms.Packet;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
