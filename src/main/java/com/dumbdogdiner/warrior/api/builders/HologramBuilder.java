@@ -3,6 +3,8 @@ package com.dumbdogdiner.warrior.api.builders;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.nms.Packet;
+import com.dumbdogdiner.warrior.api.nms.entity.NMSEntity;
+import com.dumbdogdiner.warrior.api.nms.entity.NMSEntityType;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
@@ -108,30 +110,23 @@ public class HologramBuilder {
 
                 for(String line : text) {
 
-                    Object entityArmorStand = BukkitHandler.getNMSClass("EntityArmorStand")
-                            .getDeclaredConstructor(BukkitHandler.getNMSClass("World"), Double.TYPE, Double.TYPE, Double.TYPE)
-                            .newInstance(nmsWorld, location.getX(), location.getY(), location.getZ());
+                    NMSEntity armorStand = new NMSEntity(location, NMSUtil.getNMSClass("EntityArmorStand"), NMSEntityType.ARMOR_STAND);
+                    armorStand.setCustomName(line);
+                    armorStand.setCustomNameVisible(true);
+                    armorStand.setInvisible(true);
+                    armorStand.setNoGravity(true);
+
                     location.subtract(0, HOLOGRAM_OFFSET, 0);
 
-                    Class<?> asClass = entityArmorStand.getClass();
+                    Class<?> asClass = armorStand.getEntity().getClass();
+                    asClass.getMethod("setSmall", Boolean.TYPE).invoke(armorStand.getEntity(), true);
+                    asClass.getMethod("setBasePlate", Boolean.TYPE).invoke(armorStand.getEntity(), false);
 
-                    Object chatComponentText = BukkitHandler.getNMSClass("ChatComponentText")
-                            .getDeclaredConstructor(String.class)
-                            .newInstance(line);
-
-                    asClass.getMethod("setCustomName", BukkitHandler.getNMSClass("IChatBaseComponent")).invoke(entityArmorStand, chatComponentText);
-                    asClass.getMethod("setCustomNameVisible", Boolean.TYPE).invoke(entityArmorStand, true);
-                    asClass.getMethod("setInvisible", Boolean.TYPE).invoke(entityArmorStand, true);
-                    asClass.getMethod("setSmall", Boolean.TYPE).invoke(entityArmorStand, true);
-                    asClass.getMethod("setBasePlate", Boolean.TYPE).invoke(entityArmorStand, false);
-                    asClass.getMethod("setNoGravity", Boolean.TYPE).invoke(entityArmorStand, true);
-
-                    Class<?> entity = BukkitHandler.getNMSClass("Entity");
-                    Object entitySpawnPacket = BukkitHandler.getNMSClass("PacketPlayOutSpawnEntity").getDeclaredConstructor(entity).newInstance(entityArmorStand);
+                    Object entitySpawnPacket = BukkitHandler.getNMSClass("PacketPlayOutSpawnEntity").getDeclaredConstructor(NMSEntity.ENTITY_CLASS).newInstance(armorStand.getEntity());
 
                     Object metadataPacket = BukkitHandler.getNMSClass("PacketPlayOutEntityMetadata")
                             .getDeclaredConstructor(Integer.TYPE, BukkitHandler.getNMSClass("DataWatcher"), Boolean.TYPE)
-                            .newInstance((int)asClass.getMethod("getId").invoke(entityArmorStand), asClass.getMethod("getDataWatcher").invoke(entityArmorStand), false);
+                            .newInstance(armorStand.getId(), armorStand.getDataWatcher(), false);
 
                     user.sendPacket(entitySpawnPacket);
                     user.sendPacket(metadataPacket);
@@ -144,7 +139,7 @@ public class HologramBuilder {
                             public void run() {
                                 Object entityDestroyPacket = BukkitHandler.getNMSClass("PacketPlayOutEntityDestroy")
                                         .getDeclaredConstructor(int[].class)
-                                        .newInstance(new int[]{(int)asClass.getMethod("getId").invoke(entityArmorStand)});
+                                        .newInstance(new int[]{armorStand.getId()});
 
                                 user.sendPacket(entityDestroyPacket);
                             }

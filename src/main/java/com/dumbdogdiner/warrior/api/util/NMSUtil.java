@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 
 public class NMSUtil {
     public static final String NMS_VERSION = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
@@ -34,15 +35,18 @@ public class NMSUtil {
         }
     }
 
-    public static Class<?> getNMSClass(String classname) {
+    public static @NotNull Class<?> getNMSClass(String classname) {
+        Class<?> clazz = null;
         if (NMS_VERSION == null)
-            return null;
+            throw new IllegalStateException("Could not get server version");
         String classpath = String.format(NMS_PACKAGE, NMS_VERSION, classname);
         try {
-            return Class.forName(classpath);
+            clazz = Class.forName(classpath);
         } catch (ClassNotFoundException e) {
-            return null;
+            e.printStackTrace();
         }
+
+        return Objects.requireNonNull(clazz);
     }
 
     public static Object getNMSServer() {
