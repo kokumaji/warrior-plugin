@@ -1,7 +1,13 @@
 package com.dumbdogdiner.warrior.commands;
 
+import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.nms.Packet;
+import com.dumbdogdiner.warrior.api.nms.PacketType;
+import com.dumbdogdiner.warrior.api.nms.objects.SoundCategory;
 import com.dumbdogdiner.warrior.api.nms.objects.SoundEffect;
 
+import com.dumbdogdiner.warrior.managers.PlayerManager;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,8 +29,22 @@ public class DebugCommand implements CommandExecutor {
         user.unlockSound(DeathSound.CAT_MEOW);
         user.unlockSound(DeathSound.GHAST_DEATH);*/
 
-        SoundEffect sound = SoundEffect.fromBukkit(Sound.BLOCK_DISPENSER_LAUNCH);
-        System.out.println(sound.getKey().toString());
+        Location loc = ((Player) sender).getLocation();
+
+        Packet soundEffect = new Packet(PacketType.Server.NAMED_SOUND);
+
+        soundEffect.setDeclared("a", SoundEffect.fromBukkit(Sound.ENTITY_FOX_HURT).toNMS());
+        soundEffect.setDeclared("b", SoundCategory.toNMS(SoundCategory.AMBIENT));
+
+        soundEffect.setInteger(0, (int) (loc.getX() * 8.0D));
+        soundEffect.setInteger(1, (int) (loc.getY() * 8.0D));
+        soundEffect.setInteger(2, (int) (loc.getZ() * 8.0D));
+
+        soundEffect.setFloat(0, 1f);
+        soundEffect.setFloat(1, 1f);
+
+        WarriorUser user = PlayerManager.get(((Player) sender).getUniqueId());
+        user.sendPacket(soundEffect.getPacket());
 
         /*
         WarriorUser user = PlayerManager.get(((Player)sender).getUniqueId());

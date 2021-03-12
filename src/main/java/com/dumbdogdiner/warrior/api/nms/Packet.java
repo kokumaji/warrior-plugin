@@ -9,6 +9,7 @@ import org.bukkit.Sound;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class Packet {
@@ -18,6 +19,15 @@ public class Packet {
 
     public Packet(Object packet) {
         this.packet = packet;
+    }
+
+    public Packet(PacketType<PacketType.Server> packetType) {
+        Class<?> packetClass = NMSUtil.getNMSClass(packetType.getName());
+        try {
+            this.packet = packetClass.getDeclaredConstructor().newInstance();
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setDeclared(String fieldName, Object value) {
@@ -67,6 +77,17 @@ public class Packet {
             Field f = fields.get(pos);
             f.setAccessible(true);
             f.set(packet, d);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setFloat(int pos, float fl) {
+        List<Field> fields = FieldUtil.getDeclaredFields(Float.TYPE, this.packet.getClass());
+        try {
+            Field f = fields.get(pos);
+            f.setAccessible(true);
+            f.set(packet, fl);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
