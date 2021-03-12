@@ -2,7 +2,6 @@ package com.dumbdogdiner.warrior.commands.warrior;
 
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
-
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.utils.DefaultMessages;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;

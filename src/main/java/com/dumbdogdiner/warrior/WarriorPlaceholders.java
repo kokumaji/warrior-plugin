@@ -1,7 +1,6 @@
 package com.dumbdogdiner.warrior;
 
 import com.dumbdogdiner.warrior.api.WarriorUser;
-
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.Session;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
@@ -9,10 +8,6 @@ import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class WarriorPlaceholders extends PlaceholderExpansion {
 

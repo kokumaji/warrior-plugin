@@ -1,17 +1,14 @@
 package com.dumbdogdiner.warrior.api.builders;
 
+import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.WarriorUser;
-import com.dumbdogdiner.warrior.api.nms.Packet;
 import com.dumbdogdiner.warrior.api.nms.entity.NMSEntity;
 import com.dumbdogdiner.warrior.api.nms.entity.NMSEntityType;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
-import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import lombok.SneakyThrows;
-
 import org.bukkit.Location;
-
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 

@@ -18,19 +18,16 @@ import com.dumbdogdiner.warrior.api.sessions.GameState;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.api.sound.InstrumentSound;
 import com.dumbdogdiner.warrior.api.sound.Melody;
-import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.api.sound.Note;
+import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
-
 import com.dumbdogdiner.warrior.managers.GameBarManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
-
 import com.google.common.base.Preconditions;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.NoteBlock;
-
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Arrow;

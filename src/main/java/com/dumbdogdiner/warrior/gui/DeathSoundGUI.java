@@ -1,14 +1,13 @@
 package com.dumbdogdiner.warrior.gui;
 
-import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.WarriorUser;
-import com.dumbdogdiner.warrior.api.kit.effects.DeathSound;
-import com.dumbdogdiner.warrior.api.kit.effects.DeathSounds;
-import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot;
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
-
+import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
+import com.dumbdogdiner.warrior.api.kit.effects.DeathSound;
+import com.dumbdogdiner.warrior.api.kit.effects.DeathSounds;
+import com.dumbdogdiner.warrior.managers.PlayerManager;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;

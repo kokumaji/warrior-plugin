@@ -1,7 +1,6 @@
 package com.dumbdogdiner.warrior.api;
 
-import com.dumbdogdiner.stickyapi.common.command.ExitCode;
-import com.dumbdogdiner.stickyapi.common.util.TimeUtil;
+import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
 import com.dumbdogdiner.warrior.api.kit.effects.DeathParticle;
@@ -12,25 +11,9 @@ import com.dumbdogdiner.warrior.api.models.WarriorData;
 import com.dumbdogdiner.warrior.api.models.WarriorGameSettings;
 import com.dumbdogdiner.warrior.api.models.WarriorUserSettings;
 import com.dumbdogdiner.warrior.api.sessions.Session;
+import com.dumbdogdiner.warrior.api.sound.Note;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
-import com.dumbdogdiner.warrior.api.sound.Note;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import com.google.common.base.Preconditions;
 import io.netty.channel.Channel;
@@ -43,6 +26,17 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Creates a WarriorUser instance to access

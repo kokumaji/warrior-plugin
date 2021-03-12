@@ -3,7 +3,7 @@ package com.dumbdogdiner.warrior;
 import com.dumbdogdiner.warrior.api.WarriorLogger;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.kit.SpecialAbilities;
-
+import com.dumbdogdiner.warrior.api.translation.Translator;
 import com.dumbdogdiner.warrior.commands.DebugCommand;
 import com.dumbdogdiner.warrior.commands.arena.*;
 import com.dumbdogdiner.warrior.commands.kit.KitCommand;
@@ -14,16 +14,11 @@ import com.dumbdogdiner.warrior.listeners.*;
 import com.dumbdogdiner.warrior.managers.*;
 import com.dumbdogdiner.warrior.utils.DatabaseConnection;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
-import com.dumbdogdiner.warrior.api.translation.Translator;
-
 import kr.entree.spigradle.annotations.PluginMain;
 import lombok.Getter;
-
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
-
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;

@@ -2,7 +2,6 @@ package com.dumbdogdiner.warrior.commands.misc;
 
 import com.dumbdogdiner.stickyapi.bukkit.util.PlayerSelector;
 import com.dumbdogdiner.stickyapi.common.util.MathUtil;
-
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.command.AsyncCommandLegacy;
 import com.dumbdogdiner.warrior.api.command.ExitStatus;
@@ -21,9 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.Duration;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

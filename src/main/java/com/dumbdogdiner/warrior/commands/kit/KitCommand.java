@@ -4,7 +4,6 @@ import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.command.AsyncCommand;
 import com.dumbdogdiner.warrior.api.command.CommandType;
 import com.dumbdogdiner.warrior.api.command.ExitStatus;
-
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

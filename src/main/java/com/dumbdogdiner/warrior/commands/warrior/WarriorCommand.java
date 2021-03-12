@@ -5,9 +5,9 @@ import com.dumbdogdiner.warrior.api.command.AsyncCommand;
 import com.dumbdogdiner.warrior.api.command.ExitStatus;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.translation.ConsoleColor;
+import com.dumbdogdiner.warrior.api.translation.Translator;
 import com.dumbdogdiner.warrior.utils.DefaultMessages;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
-import com.dumbdogdiner.warrior.api.translation.Translator;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,7 +15,10 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class WarriorCommand extends AsyncCommand implements TabCompleter {

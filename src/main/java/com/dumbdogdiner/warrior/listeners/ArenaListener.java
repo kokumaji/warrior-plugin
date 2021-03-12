@@ -4,7 +4,6 @@ import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.arena.gameflags.FlagContainer;
 import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.MaxHealthFlag;
 import com.dumbdogdiner.warrior.api.events.ArenaJoinEvent;
-
 import org.bukkit.attribute.Attribute;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

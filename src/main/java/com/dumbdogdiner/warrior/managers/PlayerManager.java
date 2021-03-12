@@ -7,7 +7,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 

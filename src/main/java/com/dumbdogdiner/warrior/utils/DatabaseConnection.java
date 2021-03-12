@@ -10,11 +10,9 @@ import com.dumbdogdiner.warrior.api.models.WarriorGameSettings;
 import com.dumbdogdiner.warrior.api.models.WarriorUserSettings;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.sql.*;
-import java.util.Locale;
 import java.util.UUID;
 
 public class DatabaseConnection {

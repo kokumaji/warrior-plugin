@@ -1,16 +1,16 @@
 package com.dumbdogdiner.warrior.gui;
 
+import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot;
+import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.arena.Arena;
+import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.translation.Constants;
-import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
-import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot;
-import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.event.inventory.InventoryClickEvent;

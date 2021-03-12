@@ -2,11 +2,13 @@ package com.dumbdogdiner.warrior.api.util;
 
 import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.api.WarriorUser;
-
 import com.dumbdogdiner.warrior.api.nms.Packet;
 import com.dumbdogdiner.warrior.api.nms.PacketListener;
 import com.dumbdogdiner.warrior.api.nms.ServerPacket;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelDuplexHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPromise;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;

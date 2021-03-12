@@ -5,7 +5,6 @@ import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.arena.ArenaBuilder;
 import com.dumbdogdiner.warrior.api.arena.ArenaBuilderSession;
-
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.managers.ArenaManager;

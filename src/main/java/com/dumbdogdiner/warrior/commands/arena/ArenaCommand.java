@@ -1,7 +1,10 @@
 package com.dumbdogdiner.warrior.commands.arena;
 
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.command.*;
+import com.dumbdogdiner.warrior.api.command.AsyncCommand;
+import com.dumbdogdiner.warrior.api.command.CommandType;
+import com.dumbdogdiner.warrior.api.command.ExitStatus;
+import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.translation.ConsoleColor;
 import com.dumbdogdiner.warrior.api.translation.Translator;
 import com.dumbdogdiner.warrior.utils.DefaultMessages;
@@ -13,7 +16,10 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class ArenaCommand extends AsyncCommand implements TabCompleter {

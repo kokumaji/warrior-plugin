@@ -1,10 +1,10 @@
 package com.dumbdogdiner.warrior.managers;
 
+import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.gui.ArenaGUI;
 import com.dumbdogdiner.warrior.gui.DeathSoundGUI;
 import com.dumbdogdiner.warrior.gui.KitGUI;
-import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.gui.SettingsGUI;
 
 import java.util.HashMap;

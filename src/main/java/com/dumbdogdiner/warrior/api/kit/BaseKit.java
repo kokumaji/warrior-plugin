@@ -3,7 +3,6 @@ package com.dumbdogdiner.warrior.api.kit;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import lombok.Data;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

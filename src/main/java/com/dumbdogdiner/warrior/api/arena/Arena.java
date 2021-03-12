@@ -12,7 +12,6 @@ import com.dumbdogdiner.warrior.api.util.DataType;
 import com.dumbdogdiner.warrior.api.util.JSONUtil;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
 import com.google.gson.Gson;
-
 import com.google.gson.stream.JsonReader;
 import lombok.Getter;
 import org.bukkit.Bukkit;

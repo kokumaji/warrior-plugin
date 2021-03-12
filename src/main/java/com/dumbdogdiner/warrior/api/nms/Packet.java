@@ -17,17 +17,32 @@ public class Packet {
     @Getter
     private Object packet;
 
+    @Getter
+    private final Protocol protocol;
+
     public Packet(Object packet) {
         this.packet = packet;
+        this.protocol = guessProtocol(packet.getClass().getSimpleName());
     }
 
     public Packet(PacketType<PacketType.Server> packetType) {
         Class<?> packetClass = NMSUtil.getNMSClass(packetType.getName());
+        this.protocol = packetType.getProtocol();
         try {
             this.packet = packetClass.getDeclaredConstructor().newInstance();
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    private Protocol guessProtocol(String packetName) {
+        packetName = packetName.replace("Packet", "");
+        if(packetName.startsWith("Play")) return Protocol.PLAY;
+        else if(packetName.startsWith("Handshaking")) return Protocol.HANDSHAKE;
+        else if(packetName.startsWith("Status")) return Protocol.STATUS;
+        else if(packetName.startsWith("Login")) return Protocol.LOGIN;
+
+        return Protocol.PLAY;
     }
 
     public void setDeclared(String fieldName, Object value) {
@@ -115,6 +130,10 @@ public class Packet {
         } catch (IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean equals(PacketType<?> type) {
+        return this.getName().equals(type.getName());
     }
 
     public String getName() {

@@ -2,7 +2,6 @@ package com.dumbdogdiner.warrior.api.models;
 
 import com.dumbdogdiner.warrior.api.kit.effects.DeathParticle;
 import com.dumbdogdiner.warrior.api.kit.effects.DeathSound;
-import com.dumbdogdiner.warrior.api.kit.effects.WarriorTitle;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;

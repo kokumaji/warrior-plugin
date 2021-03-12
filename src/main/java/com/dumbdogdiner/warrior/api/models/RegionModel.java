@@ -1,7 +1,6 @@
 package com.dumbdogdiner.warrior.api.models;
 
 import lombok.Getter;
-
 import org.bukkit.util.Vector;
 
 public class RegionModel {
