@@ -99,7 +99,7 @@ public class NMSUtil {
 
                 service.onSend(ctx, serverPacket, promise);
                 if(!serverPacket.isCancelled()) {
-                    super.write(ctx, serverPacket.getPacket(), promise);
+                    super.write(ctx, serverPacket.getHandle(), promise);
                 }
             }
         };

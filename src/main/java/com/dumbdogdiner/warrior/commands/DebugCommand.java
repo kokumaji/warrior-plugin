@@ -42,7 +42,7 @@ public class DebugCommand implements CommandExecutor {
         soundEffect.setFloat(1, 1f);
 
         WarriorUser user = PlayerManager.get(((Player) sender).getUniqueId());
-        user.sendPacket(soundEffect.getPacket());
+        user.sendPacket(soundEffect.getHandle());
 
         /*
         WarriorUser user = PlayerManager.get(((Player)sender).getUniqueId());

@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.util;
+package com.dumbdogdiner.warrior.api.reflection;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

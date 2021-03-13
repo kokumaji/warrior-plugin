@@ -23,7 +23,7 @@ public class ServerPacket extends Packet {
             Class<?> packetSerializerClass = NMSUtil.getNMSClass("PacketDataSerializer");
             Object packetSerializer = packetSerializerClass.getDeclaredConstructor(ByteBuf.class)
                                         .newInstance(Unpooled.buffer(0));
-            this.getPacket().getClass().getMethod("b", packetSerializerClass).invoke(this.getPacket(), packetSerializer);
+            this.getHandle().getClass().getMethod("b", packetSerializerClass).invoke(this.getHandle(), packetSerializer);
             buf = (ByteBuf) packetSerializerClass.getMethod("copy").invoke(packetSerializer);
 
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

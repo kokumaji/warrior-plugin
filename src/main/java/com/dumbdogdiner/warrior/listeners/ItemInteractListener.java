@@ -4,7 +4,7 @@ import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.GameState;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
-import com.dumbdogdiner.warrior.api.util.FieldUtil;
+import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
 import com.dumbdogdiner.warrior.gui.ArenaGUI;
 import com.dumbdogdiner.warrior.gui.DeathSoundGUI;
 import com.dumbdogdiner.warrior.gui.KitGUI;

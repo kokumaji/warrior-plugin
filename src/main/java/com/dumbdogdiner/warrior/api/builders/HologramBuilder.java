@@ -3,6 +3,8 @@ package com.dumbdogdiner.warrior.api.builders;
 import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.nms.Packet;
+import com.dumbdogdiner.warrior.api.nms.PacketType;
 import com.dumbdogdiner.warrior.api.nms.entity.NMSEntity;
 import com.dumbdogdiner.warrior.api.nms.entity.NMSEntityType;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
@@ -134,11 +136,10 @@ public class HologramBuilder {
                             @SneakyThrows
                             @Override
                             public void run() {
-                                Object entityDestroyPacket = BukkitHandler.getNMSClass("PacketPlayOutEntityDestroy")
-                                        .getDeclaredConstructor(int[].class)
-                                        .newInstance(new int[]{armorStand.getId()});
+                                Packet destroyArmorStand = new Packet(PacketType.Server.ENTITY_DESTROY);
+                                destroyArmorStand.set(int[].class, new int[]{armorStand.getId()});
 
-                                user.sendPacket(entityDestroyPacket);
+                                user.sendPacket(destroyArmorStand.getHandle());
                             }
                         }.runTaskLater(Warrior.getInstance(), deleteAfter);
                     }

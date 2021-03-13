@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.util;
+package com.dumbdogdiner.warrior.api.reflection;
 
 import org.jetbrains.annotations.NotNull;
 

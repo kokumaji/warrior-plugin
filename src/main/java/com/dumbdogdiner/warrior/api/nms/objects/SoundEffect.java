@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.api.nms.objects;
 
 import com.dumbdogdiner.warrior.api.nms.Packet;
-import com.dumbdogdiner.warrior.api.util.FieldUtil;
+import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import org.bukkit.Sound;
 
@@ -43,7 +43,7 @@ public class SoundEffect {
     }
 
     public static SoundEffect fromPacket(Packet packet) {
-        Object sound = FieldUtil.getWithType(SOUNDEFFECT_CLASS, packet.getPacket().getClass(), packet.getPacket()).get(0);
+        Object sound = FieldUtil.getWithType(SOUNDEFFECT_CLASS, packet.getHandle().getClass(), packet.getHandle()).get(0);
         return new SoundEffect(sound);
     }
 

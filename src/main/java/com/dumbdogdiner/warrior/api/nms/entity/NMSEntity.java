@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.api.nms.entity;
 
 import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
-import com.dumbdogdiner.warrior.api.util.FieldUtil;
+import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import lombok.Getter;
 import org.bukkit.Location;
