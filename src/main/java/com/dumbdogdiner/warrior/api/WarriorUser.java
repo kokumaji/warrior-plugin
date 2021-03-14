@@ -2,6 +2,7 @@ package com.dumbdogdiner.warrior.api;
 
 import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
 import com.dumbdogdiner.warrior.api.kit.effects.DeathParticle;
 import com.dumbdogdiner.warrior.api.kit.effects.DeathSound;
@@ -37,6 +38,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * Creates a WarriorUser instance to access
@@ -45,7 +47,7 @@ import java.util.concurrent.TimeUnit;
 
 public class WarriorUser implements Comparable<WarriorUser> {
 
-    private static ExecutorService userPool = Executors.newFixedThreadPool(1);
+    private static ExecutorService userPool = Executors.newCachedThreadPool();
 
     /**
      * used for reflection
@@ -136,6 +138,14 @@ public class WarriorUser implements Comparable<WarriorUser> {
     @Getter
     private int deathParticles;
 
+
+    /**
+     * Compact data storage for Titles.
+     * Each bit represents one title and
+     * its unlock state for this player.
+     *
+     * (0 = locked, 1 = unlocked)
+     */
     @Getter
     private int titles;
 
@@ -154,6 +164,9 @@ public class WarriorUser implements Comparable<WarriorUser> {
     public WarriorUser(@NotNull Player player) {
         Preconditions.checkNotNull(player, "Player cannot be null!");
 
+        this.bukkitPlayer = player;
+        this.userId = bukkitPlayer.getUniqueId();
+
         // Resetting our player
         player.setHealth(Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue());
         player.setFireTicks(0);
@@ -161,6 +174,10 @@ public class WarriorUser implements Comparable<WarriorUser> {
 
         if(player.getActivePotionEffects().size() > 0)
             removeEffects();
+
+        // if the player disconnects while in spectator
+        // we have to remove them from the spectator team
+        setSpectating(false);
 
         // if our player doesn't have bypass perms, apply adventure mode
         // to possibly remove spectator mode side-effects.
@@ -171,8 +188,6 @@ public class WarriorUser implements Comparable<WarriorUser> {
 
         try {
             // Let's create a few nms related objects!
-            this.bukkitPlayer = player;
-            this.userId = bukkitPlayer.getUniqueId();
             this.craftPlayer = player.getClass().getMethod("getHandle").invoke(player);
 
             Field conField = ENTITYPLAYER_CLASS.getField("playerConnection");
@@ -182,7 +197,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
             this.networkManager = nmField.get(this.playerConnection);
 
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException e) {
-            String msg = String.format("Oh no! Something went wrong while trying to create WarriorUser instance! %s", e.getMessage());
+            String msg = String.format("Oh no! Something went wrong while trying to create a WarriorUser instance! %s", e.getMessage());
             Warrior.getPluginLogger().error(msg);
 
             if(Warrior.getInstance().getConfig().getBoolean("general-settings.debug-mode"))
@@ -222,6 +237,23 @@ public class WarriorUser implements Comparable<WarriorUser> {
     }
 
     /**
+     * See {@link Player#getWorld()}.
+     * @return the world this user
+     *         is currently in.
+     */
+    public World getWorld() {
+        return this.bukkitPlayer.getWorld();
+    }
+
+    /**
+     * See {@link Player#getLocation()}.
+     * @return the location of this player
+     */
+    public Location getLocation() {
+        return this.bukkitPlayer.getLocation();
+    }
+
+    /**
      * Sends an action bar message using reflection
      * @param msg the message that should be displayed.
      */
@@ -244,6 +276,18 @@ public class WarriorUser implements Comparable<WarriorUser> {
             e.printStackTrace();
         }
 
+    }
+
+    public void spawnEffect(Consumer<WarriorUser> func) {
+        this.executeAsync(func);
+    }
+
+    public void debugEffects() {
+        userPool.submit(() -> WarriorEffects.CONFETTI.accept(this));
+    }
+
+    public void executeAsync(Consumer<WarriorUser> func) {
+        userPool.submit(() -> func.accept(this));
     }
 
     /**
@@ -331,7 +375,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
             this.deathSounds = deathSounds | sound.getUnlockValue();
             playSound(Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.2f, 1f);
             bukkitPlayer.sendTitle("§3§lNew Unlock!", "§7You've unlocked Sound §f" + sound.friendlyName(), 10, 80, 10);
-            bukkitPlayer.spawnParticle(Particle.HEART, bukkitPlayer.getLocation(), 30, 2, 2, 2);
+            spawnEffect(WarriorEffects.CONFETTI);
             try {
                 TimeUnit.SECONDS.sleep(5);
             } catch (InterruptedException e) {

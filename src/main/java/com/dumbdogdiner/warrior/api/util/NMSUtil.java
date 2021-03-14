@@ -2,9 +2,9 @@ package com.dumbdogdiner.warrior.api.util;
 
 import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.api.WarriorUser;
-import com.dumbdogdiner.warrior.api.nms.Packet;
 import com.dumbdogdiner.warrior.api.nms.PacketListener;
-import com.dumbdogdiner.warrior.api.nms.ServerPacket;
+import com.dumbdogdiner.warrior.api.nms.networking.packets.ClientPacket;
+import com.dumbdogdiner.warrior.api.nms.networking.packets.ServerPacket;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -90,7 +90,7 @@ public class NMSUtil {
     public static void injectPlayer(final PacketListener service, WarriorUser player, Plugin pl) {
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             public void channelRead(ChannelHandlerContext ctx, Object packet) throws Exception {
-                service.onReceive(ctx, new Packet(packet));
+                service.onReceive(ctx, new ClientPacket(packet));
                 super.channelRead(ctx, packet);
             }
 

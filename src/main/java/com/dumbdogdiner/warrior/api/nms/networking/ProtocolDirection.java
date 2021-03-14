@@ -6,12 +6,12 @@ import com.dumbdogdiner.warrior.api.util.NMSUtil;
 public enum ProtocolDirection {
 
     /**
-     * Packet is sent to server.
+     * SERVER -> CLIENT
      */
     CLIENTBOUND,
 
     /**
-     * Packet is sent to client.
+     * CLIENT -> SERVER
      */
     SERVERBOUND;
 

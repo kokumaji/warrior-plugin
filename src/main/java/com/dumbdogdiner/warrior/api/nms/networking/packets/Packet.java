@@ -1,11 +1,11 @@
-package com.dumbdogdiner.warrior.api.nms;
+package com.dumbdogdiner.warrior.api.nms.networking.packets;
 
+import com.dumbdogdiner.warrior.api.nms.PacketType;
 import com.dumbdogdiner.warrior.api.nms.networking.Protocol;
 import com.dumbdogdiner.warrior.api.nms.networking.ProtocolDirection;
 import com.dumbdogdiner.warrior.api.nms.objects.SoundEffect;
 import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
-import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import org.bukkit.Sound;
 import org.bukkit.util.Vector;
@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
@@ -63,7 +62,7 @@ public class Packet {
         Method method = null;
 
         try {
-            method = NMSUtil.NMS_PACKET_CLASS.getMethod("b", ByteBuf.class);
+            method = NMSUtil.NMS_PACKET_CLASS.getMethod("b", NMSUtil.getNMSClass("PacketDataSerializer"));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

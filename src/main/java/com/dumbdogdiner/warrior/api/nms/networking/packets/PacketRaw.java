@@ -1,9 +1,8 @@
 package com.dumbdogdiner.warrior.api.nms.networking.packets;
 
-import com.dumbdogdiner.warrior.api.nms.Packet;
 import com.dumbdogdiner.warrior.api.nms.PacketType;
-import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import com.dumbdogdiner.warrior.api.reflection.ReflectionUtil;
+import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
@@ -24,6 +23,10 @@ public class PacketRaw {
     public PacketRaw(PacketType type, byte[] data) {
         this.id = type.getPacketId();
         this.bytes = data;
+    }
+
+    public String getHexId() {
+        return String.format("0x%02X", id);
     }
 
     /**
@@ -68,7 +71,11 @@ public class PacketRaw {
         Method writeData = Packet.getWriteMethod();
 
         try {
-            writeData.invoke(packet, buffer);
+            Object packetSerializer = NMSUtil.getNMSClass("PacketDataSerializer")
+                                        .getDeclaredConstructor(ByteBuf.class).newInstance(buffer);
+            writeData.invoke(packet, packetSerializer);
+
+            buffer = (ByteBuf) packetSerializer.getClass().getMethod("copy").invoke(packetSerializer);
         } catch (ReflectiveOperationException e) {
             e.printStackTrace();
         }
