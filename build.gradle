@@ -35,8 +35,11 @@ repositories {
     }
 
     maven {
-        url = "https://maven.pkg.github.com/DumbDogDiner/StickyAPI"
-    }
+        credentials {
+            username "$ghUser"
+            password "$ghPass"
+        }
+        url = "https://maven.pkg.github.com/DumbDogDiner/StickyAPI" }
 
     // This is for bStats... cuz PlaceholderAPI doesnt like
     // being shadow jar'd without it...
