@@ -1,6 +1,5 @@
 package com.dumbdogdiner.warrior.listeners;
 
-import com.dumbdogdiner.stickyapi.common.util.MathUtil;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.arena.Arena;
@@ -20,6 +19,7 @@ import com.dumbdogdiner.warrior.api.sound.InstrumentSound;
 import com.dumbdogdiner.warrior.api.sound.Melody;
 import com.dumbdogdiner.warrior.api.sound.Note;
 import com.dumbdogdiner.warrior.api.translation.Constants;
+import com.dumbdogdiner.warrior.api.util.MathUtil;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
 import com.dumbdogdiner.warrior.managers.GameBarManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;

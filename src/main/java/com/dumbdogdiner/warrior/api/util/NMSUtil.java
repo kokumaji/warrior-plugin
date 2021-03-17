@@ -1,6 +1,5 @@
 package com.dumbdogdiner.warrior.api.util;
 
-import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.nms.PacketListener;
 import com.dumbdogdiner.warrior.api.nms.networking.packets.ClientPacket;
@@ -64,11 +63,11 @@ public class NMSUtil {
 
     public static Object toVec3d(@NotNull Vector vector) {
         try {
-            Class<?> vec3d = BukkitHandler.getNMSClass("Vec3D");
+            Class<?> vec3d = getNMSClass("Vec3D");
             Constructor<?> vec3dConst = vec3d.getDeclaredConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
 
             return vec3dConst.newInstance(vector.getX(), vector.getY(), vector.getZ());
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | ClassNotFoundException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
 

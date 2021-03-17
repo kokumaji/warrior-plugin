@@ -1,13 +1,13 @@
 package com.dumbdogdiner.warrior.commands.misc;
 
 import com.dumbdogdiner.stickyapi.bukkit.util.PlayerSelector;
-import com.dumbdogdiner.stickyapi.common.util.MathUtil;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.command.AsyncCommandLegacy;
 import com.dumbdogdiner.warrior.api.command.ExitStatus;
 import com.dumbdogdiner.warrior.api.models.WarriorData;
 import com.dumbdogdiner.warrior.api.models.WarriorUserSettings;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
+import com.dumbdogdiner.warrior.api.util.MathUtil;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import org.bukkit.Bukkit;

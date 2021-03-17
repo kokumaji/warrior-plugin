@@ -1,6 +1,5 @@
 package com.dumbdogdiner.warrior.api.builders;
 
-import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.WarriorUser;
 import com.dumbdogdiner.warrior.api.nms.PacketType;
@@ -65,23 +64,23 @@ public class HologramBuilder {
             try {
                 Object nmsWorld = NMSUtil.getWorldServer(location.getWorld());
                 if(nmsItem != null) {
-                    Object entityItem = BukkitHandler.getNMSClass("EntityItem")
-                            .getDeclaredConstructor(BukkitHandler.getNMSClass("World"), Double.TYPE, Double.TYPE, Double.TYPE, BukkitHandler.getNMSClass("ItemStack"))
+                    Object entityItem = NMSUtil.getNMSClass("EntityItem")
+                            .getDeclaredConstructor(NMSUtil.getNMSClass("World"), Double.TYPE, Double.TYPE, Double.TYPE, NMSUtil.getNMSClass("ItemStack"))
                             .newInstance(nmsWorld, location.getX(), location.getY() + 1.5, location.getZ(), nmsItem);
 
                     entityItem.getClass().getMethod("setNoGravity", Boolean.TYPE).invoke(entityItem, true);
 
-                    Object velocityPacket = BukkitHandler.getNMSClass("PacketPlayOutEntityVelocity")
-                            .getDeclaredConstructor(Integer.TYPE, BukkitHandler.getNMSClass("Vec3D"))
+                    Object velocityPacket = NMSUtil.getNMSClass("PacketPlayOutEntityVelocity")
+                            .getDeclaredConstructor(Integer.TYPE, NMSUtil.getNMSClass("Vec3D"))
                             .newInstance((int)entityItem.getClass().getMethod("getId")
                             .invoke(entityItem), NMSUtil.toVec3d(new Vector(0, 0, 0)));
 
-                    Class<?> entity = BukkitHandler.getNMSClass("Entity");
-                    Object entitySpawnPacket = BukkitHandler.getNMSClass("PacketPlayOutSpawnEntity")
+                    Class<?> entity = NMSUtil.getNMSClass("Entity");
+                    Object entitySpawnPacket = NMSUtil.getNMSClass("PacketPlayOutSpawnEntity")
                             .getDeclaredConstructor(entity).newInstance(entityItem);
 
-                    Object metadataPacket = BukkitHandler.getNMSClass("PacketPlayOutEntityMetadata")
-                            .getDeclaredConstructor(Integer.TYPE, BukkitHandler.getNMSClass("DataWatcher"), Boolean.TYPE)
+                    Object metadataPacket = NMSUtil.getNMSClass("PacketPlayOutEntityMetadata")
+                            .getDeclaredConstructor(Integer.TYPE, NMSUtil.getNMSClass("DataWatcher"), Boolean.TYPE)
                             .newInstance((int)entityItem.getClass().getMethod("getId").invoke(entityItem),
                                     entityItem.getClass().getMethod("getDataWatcher")
                                     .invoke(entityItem), false);
@@ -97,7 +96,7 @@ public class HologramBuilder {
                             @SneakyThrows
                             @Override
                             public void run() {
-                                Object entityDestroyPacket = BukkitHandler.getNMSClass("PacketPlayOutEntityDestroy")
+                                Object entityDestroyPacket = NMSUtil.getNMSClass("PacketPlayOutEntityDestroy")
                                         .getDeclaredConstructor(int[].class)
                                         .newInstance(new int[]{(int)entityItem.getClass().getMethod("getId").invoke(entityItem)});
 
@@ -121,10 +120,10 @@ public class HologramBuilder {
                     asClass.getMethod("setSmall", Boolean.TYPE).invoke(armorStand.getEntity(), true);
                     asClass.getMethod("setBasePlate", Boolean.TYPE).invoke(armorStand.getEntity(), false);
 
-                    Object entitySpawnPacket = BukkitHandler.getNMSClass("PacketPlayOutSpawnEntity").getDeclaredConstructor(NMSEntity.ENTITY_CLASS).newInstance(armorStand.getEntity());
+                    Object entitySpawnPacket = NMSUtil.getNMSClass("PacketPlayOutSpawnEntity").getDeclaredConstructor(NMSEntity.ENTITY_CLASS).newInstance(armorStand.getEntity());
 
-                    Object metadataPacket = BukkitHandler.getNMSClass("PacketPlayOutEntityMetadata")
-                            .getDeclaredConstructor(Integer.TYPE, BukkitHandler.getNMSClass("DataWatcher"), Boolean.TYPE)
+                    Object metadataPacket = NMSUtil.getNMSClass("PacketPlayOutEntityMetadata")
+                            .getDeclaredConstructor(Integer.TYPE, NMSUtil.getNMSClass("DataWatcher"), Boolean.TYPE)
                             .newInstance(armorStand.getId(), armorStand.getDataWatcher(), false);
 
                     user.sendPacket(entitySpawnPacket);
@@ -145,7 +144,7 @@ public class HologramBuilder {
                     }
                 }
 
-            } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         }

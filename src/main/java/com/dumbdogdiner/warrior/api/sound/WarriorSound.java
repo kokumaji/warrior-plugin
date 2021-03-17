@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.api.sound;
 
-import com.dumbdogdiner.stickyapi.common.util.MathUtil;
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.util.MathUtil;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

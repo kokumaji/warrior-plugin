@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.api.builders;
 
-import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.api.util.HeadTexture;
+import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -129,11 +130,11 @@ public class ItemBuilder {
     public Object asNMSCopy() {
         Object nmsCopy = null;
         try {
-            Class<?> craftItem = BukkitHandler.getCraftClass("inventory.CraftItemStack");
+            Class<?> craftItem = NMSUtil.getCraftClass("inventory.CraftItemStack");
             ItemStack item = build();
 
-            nmsCopy = craftItem.getMethod("asNMSCopy", ItemStack.class).invoke(null, item);
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            nmsCopy = Objects.requireNonNull(craftItem).getMethod("asNMSCopy", ItemStack.class).invoke(null, item);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
 

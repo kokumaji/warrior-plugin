@@ -35,10 +35,6 @@ repositories {
     }
 
     maven {
-        credentials {
-            username "$ghUser"
-            password "$ghPass"
-        }
         url = "https://maven.pkg.github.com/DumbDogDiner/StickyAPI"
     }
 

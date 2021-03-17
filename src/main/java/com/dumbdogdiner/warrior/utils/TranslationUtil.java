@@ -1,8 +1,8 @@
 package com.dumbdogdiner.warrior.utils;
 
-import com.dumbdogdiner.stickyapi.common.util.MathUtil;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.translation.DefaultFontInfo;
+import com.dumbdogdiner.warrior.api.util.MathUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 

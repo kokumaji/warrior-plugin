@@ -1,6 +1,5 @@
 package com.dumbdogdiner.warrior.api.nms.entity;
 
-import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import lombok.Getter;
@@ -40,12 +39,12 @@ public class NMSEntity {
 
     public void setCustomName(String name) {
         try {
-            Object chatComponentText = BukkitHandler.getNMSClass("ChatComponentText")
+            Object chatComponentText = NMSUtil.getNMSClass("ChatComponentText")
                     .getDeclaredConstructor(String.class)
                     .newInstance(name);
 
             ENTITY_CLASS.getMethod("setCustomName", NMSUtil.getNMSClass("IChatBaseComponent")).invoke(entity, chatComponentText);
-        } catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
             e.printStackTrace();
         }
     }

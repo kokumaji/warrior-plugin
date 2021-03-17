@@ -6,8 +6,9 @@ import lombok.experimental.Accessors;
 import org.bukkit.Particle;
 
 public enum DeathParticle {
-    HEART(Particle.HEART, 0x00000001, "Hearts");
 
+    HEART(Particle.HEART, 0x00000001, "Hearts"),
+    THUNDER(Particle.VILLAGER_ANGRY, 0x00000001, "Thunder");
 
     @Getter Particle particle;
     @Getter int unlockValue;

@@ -1,6 +1,5 @@
 package com.dumbdogdiner.warrior.api;
 
-import com.dumbdogdiner.stickyapi.bukkit.nms.BukkitHandler;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
@@ -259,20 +258,20 @@ public class WarriorUser implements Comparable<WarriorUser> {
      */
     public void sendActionBar(String msg) {
         try {
-            Object icbc = BukkitHandler.getNMSClass("IChatBaseComponent")
+            Object icbc = NMSUtil.getNMSClass("IChatBaseComponent")
                     .getDeclaredClasses()[0]
                     .getMethod("a", String.class)
-                    .invoke(BukkitHandler.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0], "{\"text\": \"" + msg + "\"}");
+                    .invoke(NMSUtil.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0], "{\"text\": \"" + msg + "\"}");
 
-            Object messageType = BukkitHandler.getNMSClass("ChatMessageType").getMethod("valueOf", String.class)
+            Object messageType = NMSUtil.getNMSClass("ChatMessageType").getMethod("valueOf", String.class)
                     .invoke(null, "GAME_INFO");
 
-            Object packetChat = BukkitHandler.getNMSClass("PacketPlayOutChat")
-                    .getConstructor(BukkitHandler.getNMSClass("IChatBaseComponent"), messageType.getClass(), UUID.class)
+            Object packetChat = NMSUtil.getNMSClass("PacketPlayOutChat")
+                    .getConstructor(NMSUtil.getNMSClass("IChatBaseComponent"), messageType.getClass(), UUID.class)
                     .newInstance(icbc, messageType, UUID.randomUUID());
 
             sendPacket(packetChat);
-        } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | ClassNotFoundException e) {
+        } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
