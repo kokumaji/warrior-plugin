@@ -15,6 +15,7 @@ import org.bukkit.util.Vector;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.UUID;
 
 public class HologramBuilder {
 
@@ -64,30 +65,28 @@ public class HologramBuilder {
             try {
                 Object nmsWorld = NMSUtil.getWorldServer(location.getWorld());
                 if(nmsItem != null) {
-                    Object entityItem = NMSUtil.getNMSClass("EntityItem")
-                            .getDeclaredConstructor(NMSUtil.getNMSClass("World"), Double.TYPE, Double.TYPE, Double.TYPE, NMSUtil.getNMSClass("ItemStack"))
-                            .newInstance(nmsWorld, location.getX(), location.getY() + 1.5, location.getZ(), nmsItem);
+                    Location itemLoc = location.add(new Vector(0, 1.5, 0));
+                    NMSEntity entityItem = new NMSEntity(itemLoc, NMSUtil.getNMSClass("EntityItem"), NMSEntityType.ITEM);
+                    entityItem.setNoGravity(true);
 
-                    entityItem.getClass().getMethod("setNoGravity", Boolean.TYPE).invoke(entityItem, true);
+                    Class<?> itemClass = NMSUtil.getNMSClass("EntityItem");
+                    itemClass.getMethod("setItemStack", NMSUtil.getNMSClass("ItemStack")).invoke(entityItem.getEntity(), nmsItem);
 
-                    Object velocityPacket = NMSUtil.getNMSClass("PacketPlayOutEntityVelocity")
-                            .getDeclaredConstructor(Integer.TYPE, NMSUtil.getNMSClass("Vec3D"))
-                            .newInstance((int)entityItem.getClass().getMethod("getId")
-                            .invoke(entityItem), NMSUtil.toVec3d(new Vector(0, 0, 0)));
+                    Packet velocity = new Packet(PacketType.Play.Server.ENTITY_VELOCITY);
+                    velocity.setInteger(0, entityItem.getId());
+                    velocity.setInteger(1, 0);
+                    velocity.setInteger(2, 0);
+                    velocity.setInteger(3, 0);
 
-                    Class<?> entity = NMSUtil.getNMSClass("Entity");
-                    Object entitySpawnPacket = NMSUtil.getNMSClass("PacketPlayOutSpawnEntity")
-                            .getDeclaredConstructor(entity).newInstance(entityItem);
+                    Packet spawnItem = _constructSpawnPacket(entityItem, itemLoc);
 
-                    Object metadataPacket = NMSUtil.getNMSClass("PacketPlayOutEntityMetadata")
-                            .getDeclaredConstructor(Integer.TYPE, NMSUtil.getNMSClass("DataWatcher"), Boolean.TYPE)
-                            .newInstance((int)entityItem.getClass().getMethod("getId").invoke(entityItem),
-                                    entityItem.getClass().getMethod("getDataWatcher")
-                                    .invoke(entityItem), false);
+                    Packet metadata = new Packet(PacketType.Play.Server.ENTITY_METADATA);
+                    metadata.setInteger(0, entityItem.getId());
+                    metadata.setDataWatcherItems(entityItem.getDataWatcher());
 
-                    user.sendPacket(entitySpawnPacket);
-                    user.sendPacket(velocityPacket);
-                    user.sendPacket(metadataPacket);
+                    user.sendPacket(spawnItem);
+                    user.sendPacket(velocity);
+                    user.sendPacket(metadata);
 
 
                     if(deleteAfter > 0) {
@@ -96,11 +95,10 @@ public class HologramBuilder {
                             @SneakyThrows
                             @Override
                             public void run() {
-                                Object entityDestroyPacket = NMSUtil.getNMSClass("PacketPlayOutEntityDestroy")
-                                        .getDeclaredConstructor(int[].class)
-                                        .newInstance(new int[]{(int)entityItem.getClass().getMethod("getId").invoke(entityItem)});
+                                Packet destroyItem = new Packet(PacketType.Play.Server.DESTROY_ENTITIES);
+                                destroyItem.set(int[].class, new int[]{entityItem.getId()});
 
-                                user.sendPacket(entityDestroyPacket);
+                                user.sendPacket(destroyItem);
                             }
                         }.runTaskLater(Warrior.getInstance(), deleteAfter);
                     }
@@ -114,20 +112,19 @@ public class HologramBuilder {
                     armorStand.setInvisible(true);
                     armorStand.setNoGravity(true);
 
-                    location.subtract(0, HOLOGRAM_OFFSET, 0);
-
                     Class<?> asClass = armorStand.getEntity().getClass();
                     asClass.getMethod("setSmall", Boolean.TYPE).invoke(armorStand.getEntity(), true);
                     asClass.getMethod("setBasePlate", Boolean.TYPE).invoke(armorStand.getEntity(), false);
 
-                    Object entitySpawnPacket = NMSUtil.getNMSClass("PacketPlayOutSpawnEntity").getDeclaredConstructor(NMSEntity.ENTITY_CLASS).newInstance(armorStand.getEntity());
+                    Packet spawnEntity = _constructSpawnPacket(armorStand, location);
+                    location.subtract(0, HOLOGRAM_OFFSET, 0);
 
-                    Object metadataPacket = NMSUtil.getNMSClass("PacketPlayOutEntityMetadata")
-                            .getDeclaredConstructor(Integer.TYPE, NMSUtil.getNMSClass("DataWatcher"), Boolean.TYPE)
-                            .newInstance(armorStand.getId(), armorStand.getDataWatcher(), false);
+                    Packet metadata = new Packet(PacketType.Play.Server.ENTITY_METADATA);
+                    metadata.setInteger(0, armorStand.getId());
+                    metadata.setDataWatcherItems(armorStand.getDataWatcher());
 
-                    user.sendPacket(entitySpawnPacket);
-                    user.sendPacket(metadataPacket);
+                    user.sendPacket(spawnEntity);
+                    user.sendPacket(metadata);
 
                     if(deleteAfter > 0) {
                         new BukkitRunnable() {
@@ -135,21 +132,47 @@ public class HologramBuilder {
                             @SneakyThrows
                             @Override
                             public void run() {
-                                Packet destroyArmorStand = new Packet(PacketType.Server.ENTITY_DESTROY);
+                                Packet destroyArmorStand = new Packet(PacketType.Play.Server.DESTROY_ENTITIES);
                                 destroyArmorStand.set(int[].class, new int[]{armorStand.getId()});
 
-                                user.sendPacket(destroyArmorStand.getHandle());
+                                user.sendPacket(destroyArmorStand);
                             }
                         }.runTaskLater(Warrior.getInstance(), deleteAfter);
                     }
                 }
 
-            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         }
 
         return this;
+    }
+
+    private Packet _constructSpawnPacket(NMSEntity entity, Location loc) {
+        Packet spawnPacket = new Packet(PacketType.Play.Server.SPAWN_ENTITY);
+        spawnPacket.setInteger(0, entity.getId());
+        spawnPacket.setUUID(UUID.randomUUID());
+
+        // set the location
+        spawnPacket.setDouble(0, loc.getX());
+        spawnPacket.setDouble(1, loc.getY());
+        spawnPacket.setDouble(2, loc.getZ());
+        spawnPacket.setInteger(4, (int) loc.getPitch());
+        spawnPacket.setInteger(5, (int) loc.getYaw());
+
+        // setting entity velocity to zero
+        // to make minecraft ignore this
+        spawnPacket.setInteger(1, 0);
+        spawnPacket.setInteger(2, 0);
+        spawnPacket.setInteger(3, 0);
+
+        // set the entity type
+        spawnPacket.setDeclared("k", entity.getType());
+        // data
+        spawnPacket.setInteger(6, 0);
+
+        return spawnPacket;
     }
 
 }

@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Objects;
 
 public class NMSUtil {
@@ -112,6 +113,23 @@ public class NMSUtil {
         } catch (Throwable t) {
             t.printStackTrace();
         }
+    }
+
+    public static @NotNull Object makeChatComponent(String s) {
+        Method toMutableComponent = null;
+        Class<?> chatSerializer = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0];
+        Object chatComponent = null;
+        try {
+            toMutableComponent = chatSerializer.getMethod("a", String.class);
+            chatComponent = toMutableComponent.invoke(chatSerializer, "{\"text\": \"" + s + "\"}");
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        if(chatComponent == null)
+            throw new IllegalStateException("Could not create IChatMutableComponent object.");
+
+        return chatComponent;
     }
 
     public static void removeInjection(WarriorUser player, Plugin pl) {

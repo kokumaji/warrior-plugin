@@ -17,11 +17,16 @@ public class NMSEntity {
     @Getter
     private Object entity;
 
+    @Getter
+    private Object type;
+
     public NMSEntity(Location loc, Class<?> entityClass, NMSEntityType type) {
         Class<?> typesClass = Objects.requireNonNull(NMSUtil.getNMSClass("EntityTypes"));
         try {
             Constructor<?> entityConstructor = entityClass.getConstructor(typesClass, NMSUtil.getNMSClass("World"));
-            this.entity = entityConstructor.newInstance(FieldUtil.getConstant(type.name(), typesClass), NMSUtil.getWorldServer(loc.getWorld()));
+            Object entityType = FieldUtil.getConstant(type.name(), typesClass);
+            this.type = entityType;
+            this.entity = entityConstructor.newInstance(entityType, NMSUtil.getWorldServer(loc.getWorld()));
             this.setPosition(loc);
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();

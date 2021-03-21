@@ -78,7 +78,7 @@ dependencies {
     // used for debugging!
     //compileOnly files("libs/server.jar")
 
-    shadow "com.dumbdogdiner:stickyapi:2.1.0"
+    shadow files("libs/stickyapi-2.1.0.jar")
 
     // Tests - JUnit 5
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")

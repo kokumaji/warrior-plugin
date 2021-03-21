@@ -10,6 +10,9 @@ import com.dumbdogdiner.warrior.api.kit.effects.WarriorTitle;
 import com.dumbdogdiner.warrior.api.models.WarriorData;
 import com.dumbdogdiner.warrior.api.models.WarriorGameSettings;
 import com.dumbdogdiner.warrior.api.models.WarriorUserSettings;
+import com.dumbdogdiner.warrior.api.nms.PacketType;
+import com.dumbdogdiner.warrior.api.nms.enums.MessageType;
+import com.dumbdogdiner.warrior.api.nms.networking.packets.Packet;
 import com.dumbdogdiner.warrior.api.sessions.Session;
 import com.dumbdogdiner.warrior.api.sound.Note;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
@@ -98,19 +101,29 @@ public class WarriorUser implements Comparable<WarriorUser> {
     @Getter @Setter
     private WarriorTitle activeTitle;
 
-    /**
-     *  REFLECTION SPECIFIC THINGS
-     */
+    // REFLECTION STUFF
 
+    /**
+     * Get the CraftPlayer instance of this player.
+     */
     @Getter
     private Object craftPlayer;
 
+    /**
+     * Get the NetworkManager instance of this player.
+     */
     @Getter
     private Object networkManager;
 
+    /**
+     * Get the current active connection of this player.
+     */
     @Getter
     private Object playerConnection;
 
+    /**
+     * Get the {@link Player} instance of this player.
+     */
     @Getter
     private Player bukkitPlayer;
 
@@ -148,9 +161,17 @@ public class WarriorUser implements Comparable<WarriorUser> {
     @Getter
     private int titles;
 
+    /**
+     * Get the general user settings
+     * for this player.
+     */
     @Getter
     private WarriorUserSettings settings;
 
+    /**
+     * Get the gameplay specific settings
+     * for this player.
+     */
     @Getter
     private WarriorGameSettings gameplaySettings;
 
@@ -167,9 +188,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
         this.userId = bukkitPlayer.getUniqueId();
 
         // Resetting our player
-        player.setHealth(Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue());
-        player.setFireTicks(0);
-        player.setLevel(0);
+        reset();
 
         if(player.getActivePotionEffects().size() > 0)
             removeEffects();
@@ -257,23 +276,14 @@ public class WarriorUser implements Comparable<WarriorUser> {
      * @param msg the message that should be displayed.
      */
     public void sendActionBar(String msg) {
-        try {
-            Object icbc = NMSUtil.getNMSClass("IChatBaseComponent")
-                    .getDeclaredClasses()[0]
-                    .getMethod("a", String.class)
-                    .invoke(NMSUtil.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0], "{\"text\": \"" + msg + "\"}");
+        Object messageType = MessageType.toNMS(MessageType.GAME_INFO);
 
-            Object messageType = NMSUtil.getNMSClass("ChatMessageType").getMethod("valueOf", String.class)
-                    .invoke(null, "GAME_INFO");
+        Packet actionMessage = new Packet(PacketType.Play.Server.CHAT_MESSAGE_CLIENTBOUND);
+        actionMessage.setChatComponent(0, TranslationUtil.translateColor(msg));
+        actionMessage.set(messageType.getClass(), messageType);
+        actionMessage.setUUID(new UUID(0, 0));
 
-            Object packetChat = NMSUtil.getNMSClass("PacketPlayOutChat")
-                    .getConstructor(NMSUtil.getNMSClass("IChatBaseComponent"), messageType.getClass(), UUID.class)
-                    .newInstance(icbc, messageType, UUID.randomUUID());
-
-            sendPacket(packetChat);
-        } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        sendPacket(actionMessage);
 
     }
 
@@ -287,6 +297,18 @@ public class WarriorUser implements Comparable<WarriorUser> {
 
     public void executeAsync(Consumer<WarriorUser> func) {
         userPool.submit(() -> func.accept(this));
+    }
+
+    public void reset() {
+        // if the bukkit player is somehow null
+        if(bukkitPlayer == null) return;
+
+        // instead of setting the users health to 20, use the max allowed health as reference
+        bukkitPlayer.setHealth(Objects.requireNonNull(bukkitPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue());
+
+        bukkitPlayer.setFireTicks(0);
+        bukkitPlayer.setLevel(0);
+        bukkitPlayer.setExhaustion(0);
     }
 
     /**
@@ -434,10 +456,17 @@ public class WarriorUser implements Comparable<WarriorUser> {
      *
      * @param packet the packet.
      */
-    public void sendPacket(Object packet) {
+    public void sendPacket(Packet packet) {
+        _sendPacket(packet);
+    }
+
+    /**
+     * handles the internal reflection part for
+     * sending packets
+     */
+    private void _sendPacket(Object packet) {
         try {
             Class<?> nmsPacket = NMSUtil.NMS_PACKET_CLASS;
-            //if(!ReflectionUtil.isSuperclassRecursive(packet.getClass(), nmsPacket)) return;
 
             Object conn = getPlayerConnection();
             Method sendPacket = conn.getClass().getMethod("sendPacket", nmsPacket);

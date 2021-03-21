@@ -14,8 +14,10 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Packet {
 
@@ -110,6 +112,16 @@ public class Packet {
         }
     }
 
+    public void setUUID(UUID uuid) {
+        try {
+            Field f = FieldUtil.getDeclaredField(UUID.class, this.handle.getClass());
+            f.setAccessible(true);
+            f.set(handle, uuid);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setSound(Sound sound) {
         try {
             Field f = FieldUtil.getDeclaredField(SoundEffect.SOUNDEFFECT_CLASS, this.handle.getClass());
@@ -123,8 +135,9 @@ public class Packet {
     public void setDataWatcherItems(Object dataWatcher) {
         try {
             Object dataWatcherItems = dataWatcher.getClass().getMethod("b").invoke(dataWatcher);
-            Field f = FieldUtil.getDeclaredField(dataWatcherItems.getClass(), this.handle.getClass());
+            Field f = FieldUtil.getDeclaredField(List.class, this.handle.getClass());
             f.setAccessible(true);
+
             f.set(handle, dataWatcherItems);
         } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
