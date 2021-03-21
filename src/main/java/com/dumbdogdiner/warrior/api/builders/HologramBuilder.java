@@ -65,7 +65,7 @@ public class HologramBuilder {
             try {
                 Object nmsWorld = NMSUtil.getWorldServer(location.getWorld());
                 if(nmsItem != null) {
-                    Location itemLoc = location.add(new Vector(0, 1.5, 0));
+                    Location itemLoc = location.clone().add(new Vector(0, 1.5, 0));
                     NMSEntity entityItem = new NMSEntity(itemLoc, NMSUtil.getNMSClass("EntityItem"), NMSEntityType.ITEM);
                     entityItem.setNoGravity(true);
 
