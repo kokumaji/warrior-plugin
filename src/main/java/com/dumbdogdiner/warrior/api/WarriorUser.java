@@ -457,7 +457,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
      * @param packet the packet.
      */
     public void sendPacket(Packet packet) {
-        _sendPacket(packet);
+        _sendPacket(packet.getHandle());
     }
 
     /**
