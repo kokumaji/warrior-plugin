@@ -1,6 +1,6 @@
-package com.dumbdogdiner.warrior.api.kit.effects;
+package com.dumbdogdiner.warrior.api.user.cosmetics;
 
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 
 import java.util.ArrayList;
 import java.util.List;

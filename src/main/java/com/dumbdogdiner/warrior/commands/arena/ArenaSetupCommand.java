@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.commands.arena;
 
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.arena.ArenaBuilder;
 import com.dumbdogdiner.warrior.api.arena.ArenaBuilderSession;
 import com.dumbdogdiner.warrior.api.command.SubCommand;

@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.api.builders;
 
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.nms.PacketType;
 import com.dumbdogdiner.warrior.api.nms.entity.NMSEntity;
 import com.dumbdogdiner.warrior.api.nms.entity.NMSEntityType;

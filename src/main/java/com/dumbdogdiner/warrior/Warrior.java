@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior;
 
 import com.dumbdogdiner.warrior.api.WarriorLogger;
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.kit.SpecialAbilities;
 import com.dumbdogdiner.warrior.api.translation.Translator;
 import com.dumbdogdiner.warrior.commands.DebugCommand;

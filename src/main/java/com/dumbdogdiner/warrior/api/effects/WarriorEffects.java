@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.effects;
 
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.sound.Sounds;
 import org.bukkit.Particle;
 import org.bukkit.Sound;

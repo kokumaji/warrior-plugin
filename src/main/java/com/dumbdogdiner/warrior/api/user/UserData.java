@@ -1,12 +1,12 @@
-package com.dumbdogdiner.warrior.api.models;
+package com.dumbdogdiner.warrior.api.user;
 
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.UUID;
 
-public class WarriorData {
+public class UserData {
 
     @Getter @Setter
     public int kills;
@@ -41,11 +41,11 @@ public class WarriorData {
     @Getter @Setter
     public boolean successful;
 
-    public WarriorData(UUID uuid) {
+    public UserData(UUID uuid) {
         this.userId = uuid;
     }
 
-    public WarriorData(WarriorUser user) {
+    public UserData(WarriorUser user) {
         this.kills = user.getKills();
         this.deaths = user.getDeaths();
         this.coins = user.getCoins();

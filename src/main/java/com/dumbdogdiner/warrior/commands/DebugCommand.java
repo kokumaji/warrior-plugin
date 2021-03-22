@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.commands;
 
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.builders.HologramBuilder;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.managers.PlayerManager;

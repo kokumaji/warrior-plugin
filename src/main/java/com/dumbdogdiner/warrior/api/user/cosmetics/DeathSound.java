@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.kit.effects;
+package com.dumbdogdiner.warrior.api.user.cosmetics;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;

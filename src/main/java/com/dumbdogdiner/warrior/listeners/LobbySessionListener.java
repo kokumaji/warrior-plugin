@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.listeners;
 
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import org.bukkit.GameMode;

@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.kit;
 
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import lombok.Getter;
 import lombok.experimental.Accessors;

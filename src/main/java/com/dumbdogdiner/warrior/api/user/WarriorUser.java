@@ -1,15 +1,14 @@
-package com.dumbdogdiner.warrior.api;
+package com.dumbdogdiner.warrior.api.user;
 
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
-import com.dumbdogdiner.warrior.api.kit.effects.DeathParticle;
-import com.dumbdogdiner.warrior.api.kit.effects.DeathSound;
-import com.dumbdogdiner.warrior.api.kit.effects.DeathSounds;
-import com.dumbdogdiner.warrior.api.kit.effects.WarriorTitle;
-import com.dumbdogdiner.warrior.api.models.WarriorData;
-import com.dumbdogdiner.warrior.api.models.WarriorGameSettings;
-import com.dumbdogdiner.warrior.api.models.WarriorUserSettings;
+import com.dumbdogdiner.warrior.api.user.cosmetics.DeathParticle;
+import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSound;
+import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSounds;
+import com.dumbdogdiner.warrior.api.user.cosmetics.WarriorTitle;
+import com.dumbdogdiner.warrior.api.user.settings.GameplaySettings;
+import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.nms.PacketType;
 import com.dumbdogdiner.warrior.api.nms.enums.MessageType;
 import com.dumbdogdiner.warrior.api.nms.networking.packets.Packet;
@@ -166,14 +165,14 @@ public class WarriorUser implements Comparable<WarriorUser> {
      * for this player.
      */
     @Getter
-    private WarriorUserSettings settings;
+    private GeneralSettings settings;
 
     /**
      * Get the gameplay specific settings
      * for this player.
      */
     @Getter
-    private WarriorGameSettings gameplaySettings;
+    private GameplaySettings gameplaySettings;
 
     /**
      * Creates a WarriorUser instance to access
@@ -636,7 +635,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
      */
     public void loadData() {
 
-        WarriorData data = Warrior.getConnection().getData(this.userId);
+        UserData data = Warrior.getConnection().getData(this.userId);
         this.settings = Warrior.getConnection().getUserSettings(this.userId);
         this.gameplaySettings = Warrior.getConnection().getGameplaySettings(this.userId);
         if(data.isSuccessful()) {
@@ -662,7 +661,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
     }
 
     public void saveData() {
-        WarriorData data = new WarriorData(this);
+        UserData data = new UserData(this);
         Warrior.getConnection().saveData(data);
         Warrior.getConnection().saveSettings(this.settings);
         Warrior.getConnection().saveGameplaySettings(this.gameplaySettings);

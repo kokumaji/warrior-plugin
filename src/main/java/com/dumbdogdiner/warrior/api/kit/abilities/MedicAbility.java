@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.kit.abilities;
 
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.kit.Ability;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;

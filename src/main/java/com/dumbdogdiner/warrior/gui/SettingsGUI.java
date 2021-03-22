@@ -2,10 +2,10 @@ package com.dumbdogdiner.warrior.gui;
 
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
-import com.dumbdogdiner.warrior.api.kit.effects.WarriorTitle;
-import com.dumbdogdiner.warrior.api.models.WarriorUserSettings;
+import com.dumbdogdiner.warrior.api.user.cosmetics.WarriorTitle;
+import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.util.HeadTexture;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import org.bukkit.Material;
@@ -37,7 +37,7 @@ public class SettingsGUI extends GUI {
             return;
         }
 
-        WarriorUserSettings settings = user.getSettings();
+        GeneralSettings settings = user.getSettings();
 
         String walkType = settings.canFly() ? "Flying" : "Walking";
         String visibilityType = settings.getPlayerVisibility() > 0 ? settings.getPlayerVisibility() < 2 ? "Semi-Transparent" : "Hidden" : "Visible";

@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.api.kit.kits;
 
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.kit.Ability;
 import com.dumbdogdiner.warrior.api.kit.BaseKit;

@@ -4,8 +4,8 @@ import com.dumbdogdiner.stickyapi.bukkit.util.PlayerSelector;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.command.AsyncCommandLegacy;
 import com.dumbdogdiner.warrior.api.command.ExitStatus;
-import com.dumbdogdiner.warrior.api.models.WarriorData;
-import com.dumbdogdiner.warrior.api.models.WarriorUserSettings;
+import com.dumbdogdiner.warrior.api.user.UserData;
+import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
 import com.dumbdogdiner.warrior.api.util.MathUtil;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
@@ -48,12 +48,12 @@ public class StatisticsCommand extends AsyncCommandLegacy implements TabComplete
             return ExitStatus.ERROR_GENERAL;
         }
 
-        WarriorData data = player.isOnline() ? new WarriorData(PlayerManager.get(player.getUniqueId()))
+        UserData data = player.isOnline() ? new UserData(PlayerManager.get(player.getUniqueId()))
                                                 : Warrior.getConnection().getData(player.getUniqueId());
 
         if(data == null) return ExitStatus.ERROR_GENERAL;
 
-        WarriorUserSettings playerSettings = player.isOnline() ? PlayerManager.get(player.getUniqueId()).getSettings()
+        GeneralSettings playerSettings = player.isOnline() ? PlayerManager.get(player.getUniqueId()).getSettings()
                 : Warrior.getConnection().getUserSettings(player.getUniqueId());
 
         if(playerSettings.getPrivacyLevel() == 3) {

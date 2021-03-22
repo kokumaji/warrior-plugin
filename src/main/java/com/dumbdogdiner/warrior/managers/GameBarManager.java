@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.managers;
 
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.builders.GameBossBar;
 import org.bukkit.boss.BarColor;
 

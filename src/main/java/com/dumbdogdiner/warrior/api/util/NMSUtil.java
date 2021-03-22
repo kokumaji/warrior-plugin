@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.util;
 
-import com.dumbdogdiner.warrior.api.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.nms.PacketListener;
 import com.dumbdogdiner.warrior.api.nms.networking.packets.ClientPacket;
 import com.dumbdogdiner.warrior.api.nms.networking.packets.ServerPacket;

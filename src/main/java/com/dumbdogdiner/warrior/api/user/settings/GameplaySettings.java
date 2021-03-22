@@ -1,14 +1,14 @@
-package com.dumbdogdiner.warrior.api.models;
+package com.dumbdogdiner.warrior.api.user.settings;
 
-import com.dumbdogdiner.warrior.api.kit.effects.DeathParticle;
-import com.dumbdogdiner.warrior.api.kit.effects.DeathSound;
+import com.dumbdogdiner.warrior.api.user.cosmetics.DeathParticle;
+import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSound;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.UUID;
 
-public class WarriorGameSettings {
+public class GameplaySettings {
 
     @Getter
     private final UUID userId;
@@ -25,7 +25,7 @@ public class WarriorGameSettings {
     @Getter @Setter
     DeathSound activeSound;
 
-    public WarriorGameSettings(UUID uuid) {
+    public GameplaySettings(UUID uuid) {
         this.userId = uuid;
     }
 

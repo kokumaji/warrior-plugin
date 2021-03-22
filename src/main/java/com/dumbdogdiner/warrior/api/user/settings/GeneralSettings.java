@@ -1,13 +1,13 @@
-package com.dumbdogdiner.warrior.api.models;
+package com.dumbdogdiner.warrior.api.user.settings;
 
-import com.dumbdogdiner.warrior.api.kit.effects.WarriorTitle;
+import com.dumbdogdiner.warrior.api.user.cosmetics.WarriorTitle;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.UUID;
 
-public class WarriorUserSettings {
+public class GeneralSettings {
 
     @Accessors(fluent = true)
     @Getter @Setter
@@ -32,7 +32,7 @@ public class WarriorUserSettings {
     @Getter
     private final UUID userId;
 
-    public WarriorUserSettings(UUID uuid) {
+    public GeneralSettings(UUID uuid) {
         this.userId = uuid;
     }
 

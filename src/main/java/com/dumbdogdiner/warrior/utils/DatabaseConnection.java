@@ -1,13 +1,13 @@
 package com.dumbdogdiner.warrior.utils;
 
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.WarriorUser;
-import com.dumbdogdiner.warrior.api.kit.effects.DeathParticle;
-import com.dumbdogdiner.warrior.api.kit.effects.DeathSound;
-import com.dumbdogdiner.warrior.api.kit.effects.WarriorTitle;
-import com.dumbdogdiner.warrior.api.models.WarriorData;
-import com.dumbdogdiner.warrior.api.models.WarriorGameSettings;
-import com.dumbdogdiner.warrior.api.models.WarriorUserSettings;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.cosmetics.DeathParticle;
+import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSound;
+import com.dumbdogdiner.warrior.api.user.cosmetics.WarriorTitle;
+import com.dumbdogdiner.warrior.api.user.UserData;
+import com.dumbdogdiner.warrior.api.user.settings.GameplaySettings;
+import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -125,8 +125,8 @@ public class DatabaseConnection {
         }
     }
 
-    public WarriorData getData(UUID userId) {
-        WarriorData data = new WarriorData(userId);
+    public UserData getData(UUID userId) {
+        UserData data = new UserData(userId);
         try {
             if (this.ds == null) {
                 String msg = String.format("Could not get user data for %s! Is the connection alive?", userId);
@@ -164,8 +164,8 @@ public class DatabaseConnection {
 
     }
 
-    public WarriorUserSettings getUserSettings(UUID uuid) {
-        WarriorUserSettings settings = new WarriorUserSettings(uuid);
+    public GeneralSettings getUserSettings(UUID uuid) {
+        GeneralSettings settings = new GeneralSettings(uuid);
         try {
             if (this.ds == null) {
                 String msg = String.format("Could not get user data for %s! Is the connection alive?", uuid);
@@ -199,8 +199,8 @@ public class DatabaseConnection {
         return settings;
     }
 
-    public WarriorGameSettings getGameplaySettings(UUID userId) {
-        WarriorGameSettings settings = new WarriorGameSettings(userId);
+    public GameplaySettings getGameplaySettings(UUID userId) {
+        GameplaySettings settings = new GameplaySettings(userId);
         try {
             if (this.ds == null) {
                 String msg = String.format("Could not get user data for %s! Is the connection alive?", userId);
@@ -234,7 +234,7 @@ public class DatabaseConnection {
 
     // TODO: ADD METHODS FOR USER/GAMEPLAY SETTINGS SAVING
 
-    public void saveData(WarriorData data) {
+    public void saveData(UserData data) {
         try {
             if (this.ds == null) {
                 String msg = String.format("Could not save user data for %s! Is the connection alive?", data.getUserId());
@@ -264,7 +264,7 @@ public class DatabaseConnection {
         }
     }
 
-    public void saveSettings(WarriorUserSettings data) {
+    public void saveSettings(GeneralSettings data) {
         try {
             if (this.ds == null) {
                 String msg = String.format("Could not save user data for %s! Is the connection alive?", data.getUserId());
@@ -292,7 +292,7 @@ public class DatabaseConnection {
         }
     }
 
-    public void saveGameplaySettings(WarriorGameSettings data) {
+    public void saveGameplaySettings(GameplaySettings data) {
         try {
             if (this.ds == null) {
                 String msg = String.format("Could not save user data for %s! Is the connection alive?", data.getUserId());
