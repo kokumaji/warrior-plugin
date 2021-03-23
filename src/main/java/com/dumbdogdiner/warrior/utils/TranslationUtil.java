@@ -3,6 +3,10 @@ package com.dumbdogdiner.warrior.utils;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.translation.DefaultFontInfo;
 import com.dumbdogdiner.warrior.api.util.MathUtil;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
@@ -18,6 +22,27 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TranslationUtil {
+
+    protected static class URLPair {
+        String fullPath;
+        String shortened;
+
+        public URLPair(String fullUrl, String shortenedUrl) {
+            this.fullPath = fullUrl;
+            this.shortened = shortenedUrl;
+        }
+
+        public String getShortened() {
+            return shortened;
+        }
+
+        public String getFullPath() {
+            return fullPath;
+        }
+
+    }
+
+    private static final Pattern urlPattern = Pattern.compile("(https:\\/\\/|http:\\/\\/)((?:[-;:&=\\+\\$,\\w]+@)?[A-Za-z0-9.-]+|(www.|[-;:&=\\+\\$,\\w]+@)[A-Za-z0-9.-]+)((?:\\/[\\+~%\\/.\\w-_]*)?\\??(?:[-\\+=&;%@.\\w_]*)#?(?:[\\w]*))?");
 
     private static final String[] FULLWIDTH = {
             " ", "Ａ", "Ｂ", "Ｃ", "Ｄ", "Ｅ", "Ｆ", "Ｇ", "Ｈ", "Ｉ", "Ｊ", "Ｋ", "Ｌ", "Ｍ", "Ｎ", "Ｏ", "Ｐ", "Ｑ", "Ｒ", "Ｓ", "Ｔ", "Ｕ", "Ｖ", "Ｗ", "Ｘ", "Ｙ", "Ｚ",
@@ -276,4 +301,42 @@ public class TranslationUtil {
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(date);
     }
+
+    public static URLPair findURL(String text) {
+        Matcher matcher = urlPattern.matcher(text);
+
+        if(matcher.find()) {
+            return new URLPair(matcher.group(0), matcher.group(2));
+        }
+        return null;
+    }
+
+    public static net.md_5.bungee.api.chat.TextComponent convertURLs(String original) {
+        net.md_5.bungee.api.chat.TextComponent finalComp = new net.md_5.bungee.api.chat.TextComponent();
+        net.md_5.bungee.api.chat.TextComponent tmp = new net.md_5.bungee.api.chat.TextComponent();
+
+        String[] split = original.split(" ");
+        int i = 0;
+        for(String s : split) {
+            URLPair url = findURL(s + " ");
+            if((url) == null) {
+                tmp.setText(tmp.getText() + s + " ");
+                if(split.length == i + 1) finalComp.addExtra(tmp);
+            } else {
+                finalComp.addExtra(tmp);
+                tmp = new net.md_5.bungee.api.chat.TextComponent();
+
+                net.md_5.bungee.api.chat.TextComponent urlComponent = new TextComponent(url.getShortened() + " ");
+                urlComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url.getFullPath()));
+                urlComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§7Click to open URL"), new Text("\n§8" + url.getFullPath())));
+                urlComponent.setBold(true);
+                finalComp.addExtra(urlComponent);
+            }
+
+            i++;
+        }
+
+        return finalComp;
+    }
+
 }

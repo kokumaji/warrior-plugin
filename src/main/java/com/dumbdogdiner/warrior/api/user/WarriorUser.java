@@ -15,6 +15,7 @@ import com.dumbdogdiner.warrior.api.nms.networking.packets.Packet;
 import com.dumbdogdiner.warrior.api.sessions.Session;
 import com.dumbdogdiner.warrior.api.sound.Note;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
+import com.dumbdogdiner.warrior.api.user.settings.VisualSettings;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import com.google.common.base.Preconditions;
@@ -173,6 +174,14 @@ public class WarriorUser implements Comparable<WarriorUser> {
      */
     @Getter
     private GameplaySettings gameplaySettings;
+
+
+    /**
+     * Get the visuals specific settings
+     * for this player.
+     */
+    @Getter
+    private VisualSettings visualSettings;
 
     /**
      * Creates a WarriorUser instance to access
@@ -638,6 +647,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
         UserData data = Warrior.getConnection().getData(this.userId);
         this.settings = Warrior.getConnection().getUserSettings(this.userId);
         this.gameplaySettings = Warrior.getConnection().getGameplaySettings(this.userId);
+        this.visualSettings = Warrior.getConnection().getVisualSettings(this.userId);
         if(data.isSuccessful()) {
             String msg = String.format("&2%1$s &aPlayer Data Loaded &2%1$s", Symbols.HEAVY_CHECK_MARK);
             sendActionBar(TranslationUtil.translateColor(msg));
@@ -665,6 +675,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
         Warrior.getConnection().saveData(data);
         Warrior.getConnection().saveSettings(this.settings);
         Warrior.getConnection().saveGameplaySettings(this.gameplaySettings);
+        Warrior.getConnection().saveVisualSettings(this.visualSettings);
     }
 
 }

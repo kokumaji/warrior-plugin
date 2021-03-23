@@ -4,6 +4,7 @@ import com.dumbdogdiner.warrior.api.nms.PacketType;
 import com.dumbdogdiner.warrior.api.nms.networking.Protocol;
 import com.dumbdogdiner.warrior.api.nms.networking.ProtocolDirection;
 import com.dumbdogdiner.warrior.api.nms.objects.SoundEffect;
+import com.dumbdogdiner.warrior.api.reflection.EnumUtil;
 import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import lombok.Getter;

@@ -1,11 +1,8 @@
 package com.dumbdogdiner.warrior.listeners;
 
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
-import com.dumbdogdiner.warrior.api.arena.Arena;
-import com.dumbdogdiner.warrior.api.arena.gameflags.FlagContainer;
-import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.BlockBreakFlag;
-import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.BlockPlaceFlag;
 import com.dumbdogdiner.warrior.api.builders.GameBossBar;
 import com.dumbdogdiner.warrior.api.builders.HologramBuilder;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
@@ -31,15 +28,13 @@ import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
@@ -47,44 +42,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.Arrays;
 import java.util.WeakHashMap;
+import java.util.function.BiConsumer;
 
 public class ArenaSessionListener implements Listener {
-
-    @EventHandler
-    public void onItemDrop(PlayerDropItemEvent e) {
-        Player p = e.getPlayer();
-        if(ArenaManager.isPlaying(p)) {
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onItemDrop(EntityPickupItemEvent e) {
-        if(!(e.getEntity() instanceof Player)) return;
-        Player p = ((Player) e.getEntity()).getPlayer();
-        if(ArenaManager.isPlaying(p)) {
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onItemClick(InventoryClickEvent e) {
-        if(e.getWhoClicked() instanceof Player) {
-            Player p = (Player) e.getWhoClicked();
-            if(ArenaManager.isPlaying(p)) {
-                e.setCancelled(true);
-            }
-        }
-    }
-
-    @EventHandler
-    public void onSwapHand(PlayerSwapHandItemsEvent e) {
-        Player p = e.getPlayer();
-        if(ArenaManager.isPlaying(p)) {
-            e.setCancelled(true);
-        }
-    }
 
     WeakHashMap<Player, Integer> clickTime = new WeakHashMap<>();
 
@@ -128,15 +90,6 @@ public class ArenaSessionListener implements Listener {
 
             }
         }
-    }
-
-    @EventHandler
-    public void onDurability(PlayerItemDamageEvent e) {
-        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
-        if(user == null) return;
-
-        if(!(user.getSession() instanceof ArenaSession)) return;
-        e.setCancelled(true);
     }
 
     @EventHandler
@@ -213,47 +166,6 @@ public class ArenaSessionListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent e) {
-        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
-        if(user == null) return;
-
-        if(!(user.getSession() instanceof ArenaSession)) return;
-        Arena a = ((ArenaSession)user.getSession()).getArena();
-
-        FlagContainer container = a.getFlags();
-
-        BlockBreakFlag breakFlag = container.getFlag(BlockBreakFlag.class);
-        if(breakFlag == null) return;
-
-        e.setCancelled(!breakFlag.getValue());
-    }
-
-    @EventHandler
-    public void onBlockPlace(BlockPlaceEvent e) {
-        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
-        if(user == null) return;
-
-        if(!(user.getSession() instanceof ArenaSession)) return;
-        Arena a = ((ArenaSession)user.getSession()).getArena();
-
-        FlagContainer container = a.getFlags();
-
-        BlockPlaceFlag breakFlag = container.getFlag(BlockPlaceFlag.class);
-        if(breakFlag == null) return;
-
-        e.setCancelled(!breakFlag.getValue());
-    }
-
-    @EventHandler
-    public void onBlockBreak(PlayerPickupArrowEvent e) {
-        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
-        if(user == null) return;
-
-        if(!(user.getSession() instanceof ArenaSession)) return;
-        e.setCancelled(true);
-    }
-
     private static final int MIN_COINS = Warrior.getInstance().getConfig().getInt("arena-settings.min-coins");
     private static final int MAX_COINS = Warrior.getInstance().getConfig().getInt("arena-settings.max-coins");
 
@@ -284,6 +196,18 @@ public class ArenaSessionListener implements Listener {
         .withItem(nmsHead)
         .removeAfter(2)
         .sendTo(killerUser);
+
+        if(killerUser.getVisualSettings().getGoreLevel() == 2) {
+            double rnd = MathUtil.randomDouble(0, 1);
+
+            if(rnd > 0.99) {
+                Material[] sweetStuff = new Material[]{Material.COOKIE, Material.CAKE};
+                WarriorEffects.spawnExplosion(killerUser, Arrays.asList(sweetStuff), e.getEntity().getLocation(), 25);
+                killerUser.playSound(Sound.ENTITY_PLAYER_BURP, 1f, 1f);
+            }
+
+        }
+
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -319,8 +243,19 @@ public class ArenaSessionListener implements Listener {
         if(!(attacker.getSession() instanceof ArenaSession)) return;
         if(!(victim.getSession() instanceof ArenaSession)) return;
 
-        if(((ArenaSession)victim.getSession()).getState() != GameState.IN_GAME) e.setCancelled(true);
-        if(((ArenaSession)attacker.getSession()).getState() != GameState.IN_GAME) e.setCancelled(true);
+        GameState attackerState = ((ArenaSession)attacker.getSession()).getState();
+        GameState victimState = ((ArenaSession)victim.getSession()).getState();
+
+        if(victimState != GameState.IN_GAME || attackerState != GameState.IN_GAME) {
+            e.setCancelled(true);
+        } else {
+            int goreLevel = attacker.getVisualSettings().getGoreLevel();
+
+            BiConsumer<WarriorUser, Location> effect = WarriorEffects.getGoreEffect(goreLevel);
+
+            // if our shooter has blood/gore disabled, return.
+            if(effect != null) effect.accept(attacker, victim.getLocation());
+        }
 
     }
 
@@ -330,7 +265,6 @@ public class ArenaSessionListener implements Listener {
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
-        ArenaSession session = (ArenaSession) user.getSession();
 
         if(GameBarManager.getBossBar(user) != null) GameBarManager.removePlayer(user);
     }
@@ -386,7 +320,7 @@ public class ArenaSessionListener implements Listener {
         }
     }
 
-    public double getPercent(double streak, double abilityMin) {
+    private double getPercent(double streak, double abilityMin) {
         if (streak == 0) return 0.0;
         double v = (streak % abilityMin)/abilityMin;
         return v == 0 ? 1.0 : v;
@@ -421,11 +355,39 @@ public class ArenaSessionListener implements Listener {
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent e) {
         Projectile projectile = e.getEntity();
-        if(e.getHitEntity() != null) {
-            if(!(e.getHitEntity() instanceof Player)) return;
-            projectile.getWorld().spawnParticle(Particle.BLOCK_CRACK, projectile.getLocation(), 10, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
-            return;
-        };
+        Location loc = projectile.getLocation();
+        if (e.getHitEntity() != null) {
+            Entity shooter = (Entity) e.getEntity().getShooter();
+            Entity target = e.getHitEntity();
+
+            // particles can be annoying! so lets only
+            // display them to the *actual* shooter
+            if(target == shooter) return;
+
+            if(shooter instanceof Player) {
+                WarriorUser userShooter = PlayerManager.get(shooter.getUniqueId());
+                int goreLevel = userShooter.getVisualSettings().getGoreLevel();
+
+                BiConsumer<WarriorUser, Location> effect = WarriorEffects.getGoreEffect(goreLevel);
+
+                // if our shooter has blood/gore disabled, return.
+                if(effect == null) return;
+                else effect.accept(userShooter, loc);
+            }
+
+            if(target instanceof Player) {
+                WarriorUser userTarget = PlayerManager.get(target.getUniqueId());
+                int goreLevel = userTarget.getVisualSettings().getGoreLevel();
+
+                BiConsumer<WarriorUser, Location> effect = WarriorEffects.getGoreEffect(goreLevel);
+
+                // if our shooter has blood/gore disabled, return.
+                if(effect == null) return;
+                else effect.accept(userTarget, loc);
+            }
+
+            projectile.remove();
+        }
         if(e.getHitBlock() != null) {
             Block b = e.getHitBlock();
 
@@ -433,11 +395,11 @@ public class ArenaSessionListener implements Listener {
             projectile.remove();
             projectile.getWorld().spawnParticle(Particle.BLOCK_CRACK, projectile.getLocation(), 10, b.getBlockData());
 
-            if(e.getHitBlock().getType().equals(Material.NOTE_BLOCK)) {
-                Instrument instrument = ((NoteBlock)e.getHitBlock().getBlockData()).getInstrument();
+            if (e.getHitBlock().getType().equals(Material.NOTE_BLOCK)) {
+                Instrument instrument = ((NoteBlock) e.getHitBlock().getBlockData()).getInstrument();
                 Sound sound = InstrumentSound.fromInstrument(instrument);
 
-                if(pointer > easter_egg.length - 1) pointer = 0;
+                if (pointer > easter_egg.length - 1) pointer = 0;
                 projectile.getWorld().playSound(projectile.getLocation(), sound, 2f, (float) easter_egg[pointer].getPitch());
                 pointer++;
             }
