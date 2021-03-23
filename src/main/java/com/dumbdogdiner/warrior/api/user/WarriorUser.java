@@ -24,19 +24,18 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -383,6 +382,38 @@ public class WarriorUser implements Comparable<WarriorUser> {
      */
     public void playSound(Sound sound, float volume, Note note) {
         bukkitPlayer.playSound(bukkitPlayer.getLocation(), sound, volume, (float) note.getPitch());
+    }
+
+    public void spawnParticle(Particle particle, Location loc, int amount) {
+        this.spawnParticle(particle, loc, null, amount, null);
+    }
+
+    public void spawnParticle(Particle particle, Location loc, Vector offset, int amount, double extra) {
+        int particleLevel = this.visualSettings.getParticleMode();
+        if(particleLevel == 0) return; // 0 = disabled
+
+        else if(particleLevel == 1 && amount > 10) {
+            amount = amount / 2;
+        }
+
+        if(offset == null) this.bukkitPlayer.spawnParticle(particle, loc, amount, 0, 0, 0, extra);
+        else this.bukkitPlayer.spawnParticle(particle, loc, amount, offset.getX(), offset.getY(), offset.getZ(), extra);
+    }
+
+    public void spawnParticle(Particle particle, Location loc, Vector offset, int amount) {
+        this.spawnParticle(particle, loc, offset, amount, null);
+    }
+
+    public <T> void spawnParticle(Particle particle, Location loc, Vector offset, int amount, T data) {
+        int particleLevel = this.visualSettings.getParticleMode();
+        if(particleLevel == 0) return; // 0 = disabled
+
+        else if(particleLevel == 1 && amount > 10) {
+            amount = amount / 2;
+        }
+
+        if(offset == null) this.bukkitPlayer.spawnParticle(particle, loc, amount, data);
+        else this.bukkitPlayer.spawnParticle(particle, loc, amount, offset.getX(), offset.getY(), offset.getZ(), data);
     }
 
     public void setActiveSound(DeathSound sound) {

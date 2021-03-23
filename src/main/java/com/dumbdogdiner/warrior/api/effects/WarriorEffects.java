@@ -26,8 +26,8 @@ import java.util.function.Consumer;
 public class WarriorEffects {
 
     public static final Consumer<WarriorUser> CONFETTI = (user) -> {
-        user.getBukkitPlayer().spawnParticle(Particle.TOTEM, user.getLocation(), 100, 0.25, 0.25, 0.25, 0.85);
-        user.getBukkitPlayer().spawnParticle(Particle.FIREWORKS_SPARK, user.getLocation(), 100, 3, 3, 3, 0);
+        user.spawnParticle(Particle.TOTEM, user.getLocation(), new Vector(0.25, 0.25, 0.25), 100, 0.85);
+        user.spawnParticle(Particle.FIREWORKS_SPARK, user.getLocation(), new Vector( 3, 3, 3), 100, 0);
 
         Sounds.playSoundDelayed(Sound.ENTITY_FIREWORK_ROCKET_BLAST_FAR, user, 6L);
         Sounds.playSoundDelayed(Sound.ENTITY_FIREWORK_ROCKET_LARGE_BLAST_FAR, user, 12L);
@@ -46,10 +46,10 @@ public class WarriorEffects {
     // candygore easter egg uwu
     public static final BiConsumer<WarriorUser, Location> BLOOD_EASTEREGG = (user, location) -> {
         Vector offset = new Vector(0.15, 0.5, 0.15);
-        user.getBukkitPlayer().spawnParticle(Particle.BLOCK_CRACK, location, 2, offset.getX(), offset.getY(), offset.getZ(), Bukkit.createBlockData(Material.RED_WOOL));
-        user.getBukkitPlayer().spawnParticle(Particle.BLOCK_CRACK, location, 2, offset.getX(), offset.getY(), offset.getZ(), Bukkit.createBlockData(Material.LIME_CONCRETE));
-        user.getBukkitPlayer().spawnParticle(Particle.BLOCK_CRACK, location, 2, offset.getX(), offset.getY(), offset.getZ(), Bukkit.createBlockData(Material.YELLOW_WOOL));
-        user.getBukkitPlayer().spawnParticle(Particle.BLOCK_CRACK, location, 2, offset.getX(), offset.getY(), offset.getZ(), Bukkit.createBlockData(Material.CYAN_CONCRETE));
+        user.spawnParticle(Particle.BLOCK_CRACK, location, offset, 2, Bukkit.createBlockData(Material.RED_WOOL));
+        user.spawnParticle(Particle.BLOCK_CRACK, location, offset, 2, Bukkit.createBlockData(Material.LIME_CONCRETE));
+        user.spawnParticle(Particle.BLOCK_CRACK, location, offset, 2, Bukkit.createBlockData(Material.YELLOW_WOOL));
+        user.spawnParticle(Particle.BLOCK_CRACK, location, offset, 2, Bukkit.createBlockData(Material.CYAN_CONCRETE));
     };
 
     public static BiConsumer<WarriorUser, Location> getGoreEffect(int goreLevel) {
