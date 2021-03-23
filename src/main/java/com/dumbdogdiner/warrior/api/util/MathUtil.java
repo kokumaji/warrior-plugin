@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -149,6 +150,29 @@ public class MathUtil {
             throw new IllegalArgumentException("values must be of same type");
 
         return number.byteValue() >= min.byteValue() && number.byteValue() <= max.byteValue();
+    }
+
+    public static String generateId() {
+        return generateId(6);
+    }
+
+    public static String generateId(int length) {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        while (salt.length() < length) { // length of the random string.
+            int index = (int) (random.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        return salt.toString();
+    }
+    public static String generateId(Collection context) {
+        return generateId(context, 6);
+    }
+
+    public static String generateId(Collection context, int length) {
+        String generated = generateId(length);
+        if(context.contains(generated)) return generateId(context, length);
+        return generated;
     }
 
 }

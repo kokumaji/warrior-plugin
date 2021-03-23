@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class EnumUtil {
@@ -28,6 +30,20 @@ public class EnumUtil {
 
          return Objects.requireNonNull(method);
     }
+
+    public static String asString(Object enumObject) {
+        Method valueOf = null;
+        String str = "";
+        try {
+            valueOf = enumObject.getClass().getMethod("name");
+            str = (String) valueOf.invoke(enumObject);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        return str;
+    }
+
 
     public static Object asObject(Class<?> clazz, String enumName) {
         Object obj = null;
@@ -54,4 +70,12 @@ public class EnumUtil {
         return Objects.requireNonNull(en);
     }
 
+    public static List<String> asString(List<Object> values) {
+        List<String> enums = new ArrayList<>();
+        for(Object en : values) {
+            enums.add(asString(en));
+        }
+
+        return enums;
+    }
 }
