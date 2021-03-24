@@ -93,6 +93,8 @@ public class Warrior extends JavaPlugin {
         GUIManager.registerGUIs();
         KitManager.registerKits();
 
+        NotificationManager.start();
+
         if(usePlaceholderAPI()) {
             new WarriorPlaceholders().register();
         }

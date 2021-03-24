@@ -74,4 +74,7 @@ public class Translator {
         return translate(stringPath, values, null);
     }
 
+    public String[] getStrings(String s) {
+        return this.languageFile.getStringList(s).toArray(String[]::new);
+    }
 }

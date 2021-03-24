@@ -2,6 +2,7 @@ general-settings:
   plugin-prefix: "&3&lWarrior &8»"
   debug-mode: true
   use-placeholderapi: true
+  notification-interval: 60
 arena-settings:
   prevent-region-exit: true
   min-coins: 5

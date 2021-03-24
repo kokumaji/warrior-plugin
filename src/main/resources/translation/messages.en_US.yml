@@ -21,3 +21,7 @@ command-messages:
 
 gameplay:
   ability-ready: "&7Your special ability is ready!"
+notifications:
+  message-format: "&3&l(!) &7{MESSAGE}"
+  messages:
+    - "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in ex dui."
