@@ -697,4 +697,116 @@ public class Symbols {
     public static final char HALFWIDTH_IDEOGRAPHIC_COMMA = '､';
     public static final char HALFWIDTH_KATAKANA_MIDDLE_DOT = '･';
 
+
+    public static final char MULTIPLICATION_SIGN = '×';
+    public static final char LATIN_CAPITAL_LETTER_O_WITH_STROKE = 'Ø';
+    public static final char DIVISION_SIGN = '÷';
+    public static final char PERCENT_SIGN = '%';
+    public static final char PER_MILLE_SIGN = '‰';
+    public static final char PRIME = '′';
+    public static final char DOUBLE_PRIME = '″';
+    public static final char EQUALS_SIGN = '=';
+    public static final char DEGREE_SIGN = '°';
+    public static final char PLUS_MINUS_SIGN = '±';
+
+    public static final char SUPERSCRIPT_ONE = '¹';
+    public static final char SUPERSCRIPT_TWO = '²';
+    public static final char SUPERSCRIPT_THREE = '³';
+    public static final char SUPERSCRIPT_FOUR = '⁴';
+    public static final char SUPERSCRIPT_FIVE = '⁵';
+    public static final char SUPERSCRIPT_SIX = '⁶';
+    public static final char SUPERSCRIPT_SEVEN = '⁷';
+    public static final char SUPERSCRIPT_EIGHT = '⁸';
+    public static final char SUPERSCRIPT_NINE = '⁹';
+    public static final char SUPERSCRIPT_ZERO = '⁰';
+    public static final char SUPERSCRIPT_PLUS_SIGN = '⁺';
+    public static final char SUPERSCRIPT_MINUS = '⁻';
+    public static final char SUPERSCRIPT_EQUALS_SIGN = '⁼';
+    public static final char SUPERSCRIPT_LEFT_PARENTHESIS = '⁽';
+    public static final char SUPERSCRIPT_RIGHT_PARENTHESIS = '⁾';
+    public static final char SUPERSCRIPT_LATIN_SMALL_LETTER_I = 'ⁱ';
+    public static final char SUPERSCRIPT_LATIN_SMALL_LETTER_N = 'ⁿ';
+
+    public static final char SUBSCRIPT_ONE = '₁';
+    public static final char SUBSCRIPT_TWO = '₂';
+    public static final char SUBSCRIPT_THREE = '₃';
+    public static final char SUBSCRIPT_FOUR = '₄';
+    public static final char SUBSCRIPT_FIVE = '₅';
+    public static final char SUBSCRIPT_SIX = '₆';
+    public static final char SUBSCRIPT_SEVEN = '₇';
+    public static final char SUBSCRIPT_EIGHT = '₈';
+    public static final char SUBSCRIPT_NINE = '₉';
+    public static final char SUBSCRIPT_ZERO = '₀';
+    public static final char SUBSCRIPT_PLUS_SIGN = '₊';
+    public static final char SUBSCRIPT_MINUS = '₋';
+    public static final char SUBSCRIPT_EQUALS_SIGN = '₌';
+    public static final char SUBSCRIPT_LEFT_PARENTHESIS = '₍';
+    public static final char SUBSCRIPT_RIGHT_PARENTHESIS = '₎';
+    public static final char LATIN_SUBSCRIPT_SMALL_LETTER_A = 'ₐ';
+    public static final char LATIN_SUBSCRIPT_SMALL_LETTER_E = 'ₑ';
+    public static final char LATIN_SUBSCRIPT_SMALL_LETTER_O = 'ₒ';
+    public static final char LATIN_SUBSCRIPT_SMALL_LETTER_X = 'ₓ';
+    public static final char LATIN_SUBSCRIPT_SMALL_LETTER_SCHWA = 'ₔ';
+
+    public static final char VULGAR_FRACTION_ONE_QUARTER = '¼';
+    public static final char VULGAR_FRACTION_ONE_HALF = '½';
+    public static final char VULGAR_FRACTION_THREE_QUARTERS = '¾';
+    public static final char VULGAR_FRACTION_ONE_SEVENTH = '⅐';
+    public static final char VULGAR_FRACTION_ONE_NINTH = '⅑';
+    public static final char VULGAR_FRACTION_ONE_TENTH = '⅒';
+    public static final char VULGAR_FRACTION_ONE_THIRD = '⅓';
+    public static final char VULGAR_FRACTION_TWO_THIRDS = '⅔';
+    public static final char VULGAR_FRACTION_ONE_FIFTH = '⅕';
+    public static final char VULGAR_FRACTION_TWO_FIFTHS = '⅖';
+    public static final char VULGAR_FRACTION_THREE_FIFTHS = '⅗';
+    public static final char VULGAR_FRACTION_FOUR_FIFTHS = '⅘';
+    public static final char VULGAR_FRACTION_ONE_SIXTH = '⅙';
+    public static final char VULGAR_FRACTION_FIVE_SIXTHS = '⅚';
+    public static final char VULGAR_FRACTION_ONE_EIGHTH = '⅛';
+    public static final char VULGAR_FRACTION_THREE_EIGHTHS = '⅜';
+    public static final char VULGAR_FRACTION_FIVE_EIGHTHS = '⅝';
+    public static final char VULGAR_FRACTION_SEVEN_EIGHTHS = '⅞';
+    public static final char FRACTION_NUMERATOR_ONE = '⅟';
+    public static final char VULGAR_FRACTION_ZERO_THIRDS = '↉';
+
+    public static final char FOR_ALL = '∀';
+    public static final char THERE_EXISTS = '∃';
+    public static final char THERE_DOES_NOT_EXIST = '∄';
+    public static final char ELEMENT_OF = '∈';
+    public static final char NOT_AN_ELEMENT_OF = '∉';
+    public static final char N_ARY_PRODUCT = '∏';
+    public static final char SQUARE_ROOT = '√';
+    public static final char PROPORTIONAL_TO = '∝';
+
+    public static final char PARALLEL_TO = '∥';
+    public static final char LOGICAL_OR = '∨';
+    public static final char INTERSECTION = '∩';
+    public static final char UNION = '∪';
+    public static final char INTEGRAL = '∫';
+    public static final char CONTOUR_INTEGRAL = '∮';
+    public static final char THEREFORE = '∴';
+    public static final char BECAUSE = '∵';
+    public static final char APPROXIMATELY_EQUAL_TO = '≅';
+    public static final char ALMOST_EQUAL_TO = '≈';
+    public static final char DELTA_EQUAL_TO = '≜';
+    public static final char NOT_EQUAL_TO = '≠';
+    public static final char IDENTICAL_TO = '≡';
+    public static final char LESS_THAN_OR_EQUAL_TO = '≤';
+    public static final char GREATER_THAN_OR_EQUAL_TO = '≥';
+    public static final char MUCH_LESS_THAN = '≪';
+    public static final char MUCH_GREATER_THAN = '≫';
+    public static final char SUBSET_OF = '⊂';
+    public static final char SUPERSET_OF = '⊃';
+    public static final char NOT_A_SUBSET_OF = '⊄';
+    public static final char NOT_A_SUPERSET_OF = '⊅';
+    public static final char SUBSET_OF_OR_EQUAL_TO = '⊆';
+    public static final char SUPERSET_OF_OR_EQUAL_TO = '⊇';
+
+    public static final char UP_TACK = '⊥';
+    public static final char DOT_OPERATOR = '⋅';
+    public static final char LEFT_CEILING = '⌈';
+    public static final char RIGHT_CEILING = '⌉';
+    public static final char LEFT_FLOOR = '⌊';
+    public static final char RIGHT_FLOOR = '⌋';
+
 }
