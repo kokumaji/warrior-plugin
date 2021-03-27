@@ -17,7 +17,7 @@ public class LevelManager {
     }
 
     public static float getProgress(int oldXp) {
-        int nextXp = levelToXp(xpToLevel(oldXp) + 1);
+        double nextXp = levelToXp(xpToLevel(oldXp) + 1);
 
         return (float) (oldXp / nextXp);
     }
