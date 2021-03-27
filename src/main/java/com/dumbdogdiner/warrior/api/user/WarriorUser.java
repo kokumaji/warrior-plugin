@@ -77,7 +77,10 @@ public class WarriorUser implements Comparable<WarriorUser> {
     private int coins;
 
     @Getter
-    private int experience;
+    private int relativeXp;
+
+    @Getter
+    private int totalXp;
 
     @Getter
     private int level;
@@ -614,32 +617,26 @@ public class WarriorUser implements Comparable<WarriorUser> {
 
     }
 
-    public void addExperience(int xp) {
-        if(this.level < 100) {
-            int nextXp = LevelManager.levelToXp(this.level + 1);
+    public void addExperience(int exp) {
+        int nextXp = LevelManager.levelToXp(level + 1);
 
-            this.experience = this.experience + xp;
+        relativeXp = relativeXp + exp;
+        totalXp = totalXp + exp;
 
-            if(this.experience > nextXp) {
-                this.level = LevelManager.xpToLevel(experience);
-
-                WarriorLevelUpEvent e = new WarriorLevelUpEvent(this);
-                Bukkit.getPluginManager().callEvent(e);
-            }
-
+        if(relativeXp > nextXp) {
+            relativeXp = 0;
+            level++;
         }
 
         updateExperienceBar();
-
-        System.out.println("User XP:" + this.experience);
-        System.out.println("User Level:" + this.level);
-        System.out.println("Level Progress:" + (float) Math.min(0.99, LevelManager.getProgress(this)));
 
     }
 
     private void updateExperienceBar() {
         this.bukkitPlayer.setLevel(this.level);
-        this.bukkitPlayer.setExp((float) Math.min(0.99, LevelManager.getProgress(this)));
+        double actualProgress = LevelManager.getProgress(this) < 0 ? 0 : LevelManager.getProgress(this);
+
+        this.bukkitPlayer.setExp((float) Math.min(0.99, actualProgress));
     }
 
     /**
