@@ -19,10 +19,7 @@ public class DebugCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if(sender instanceof Player) {
             WarriorUser user = PlayerManager.get(((Player) sender).getUniqueId());
-            Player player = user.getBukkitPlayer();
-
-            ParticleTrailGUI gui = GUIManager.get(ParticleTrailGUI.class);
-            gui.open(player);
+            user.addExperience(125);
         }
         return true;
     }

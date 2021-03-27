@@ -19,6 +19,7 @@ import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.api.util.MathUtil;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
 import com.dumbdogdiner.warrior.managers.GameBarManager;
+import com.dumbdogdiner.warrior.managers.LevelManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import com.google.common.base.Preconditions;
@@ -180,10 +181,13 @@ public class ArenaSessionListener implements Listener {
         if(!(killerUser.getSession() instanceof ArenaSession)) return;
 
         ((ArenaSession)killerUser.getSession()).addKill();
+
         Preconditions.checkState(MIN_COINS > 0 && MIN_COINS < MAX_COINS, "Invalid value for property MIN_COINS");
         int coins = MathUtil.randomInt(MIN_COINS, MAX_COINS);
-
         killerUser.addCoins(coins);
+
+        int xp = MathUtil.randomInt(LevelManager.MIN_XP, LevelManager.MAX_XP);
+        killerUser.addExperience(xp);
 
         Location loc = e.getEntity().getLocation();
 
@@ -192,7 +196,7 @@ public class ArenaSessionListener implements Listener {
                 .asNMSCopy();
 
         new HologramBuilder(loc)
-        .setText("&c+1 Kill", String.format("§7+%d Coins", coins))
+        .setText("&c+1 Kill", String.format("§7+%d Coins", coins), String.format("§7+%d XP", xp))
         .withItem(nmsHead)
         .removeAfter(2)
         .sendTo(killerUser);
