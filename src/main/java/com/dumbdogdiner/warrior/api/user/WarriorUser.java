@@ -3,6 +3,7 @@ package com.dumbdogdiner.warrior.api.user;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
+import com.dumbdogdiner.warrior.api.events.WarriorLevelUpEvent;
 import com.dumbdogdiner.warrior.api.user.cosmetics.DeathParticle;
 import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSound;
 import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSounds;
@@ -17,6 +18,7 @@ import com.dumbdogdiner.warrior.api.sound.Note;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
 import com.dumbdogdiner.warrior.api.user.settings.VisualSettings;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
+import com.dumbdogdiner.warrior.managers.LevelManager;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import com.google.common.base.Preconditions;
 import io.netty.channel.Channel;
@@ -24,7 +26,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.data.BlockData;
+
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -36,9 +38,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.Consumer;
 
 /**
@@ -48,7 +48,10 @@ import java.util.function.Consumer;
 
 public class WarriorUser implements Comparable<WarriorUser> {
 
-    private static ExecutorService userPool = Executors.newCachedThreadPool();
+    /**
+     * TODO: should be replaced with task queue!
+     */
+    private static final ExecutorService userPool = Executors.newCachedThreadPool();
 
     /**
      * used for reflection
@@ -72,6 +75,15 @@ public class WarriorUser implements Comparable<WarriorUser> {
 
     @Getter
     private int coins;
+
+    @Getter
+    private int relativeXp;
+
+    @Getter
+    private int totalXp;
+
+    @Getter
+    private int level;
 
     @Getter
     private UUID userId;
@@ -211,6 +223,8 @@ public class WarriorUser implements Comparable<WarriorUser> {
             player.setGameMode(GameMode.ADVENTURE);
         }
 
+        updateExperienceBar();
+
         try {
             // Let's create a few nms related objects!
             this.craftPlayer = player.getClass().getMethod("getHandle").invoke(player);
@@ -292,6 +306,13 @@ public class WarriorUser implements Comparable<WarriorUser> {
 
         sendPacket(actionMessage);
 
+    }
+
+    public void sendTitle(String title, String subtitle, int stay) {
+        title = TranslationUtil.translateColor(title);
+        subtitle = TranslationUtil.translateColor(subtitle);
+
+        this.bukkitPlayer.sendTitle(title, subtitle, 20, stay * 20, 20);
     }
 
     public void spawnEffect(Consumer<WarriorUser> func) {
@@ -594,6 +615,28 @@ public class WarriorUser implements Comparable<WarriorUser> {
             }
         }.runTask(Warrior.getInstance());
 
+    }
+
+    public void addExperience(int exp) {
+        int nextXp = LevelManager.levelToXp(level);
+
+        relativeXp += exp;
+        totalXp += exp;
+
+        if(relativeXp >= nextXp) {
+            relativeXp = relativeXp - nextXp;
+            level++;
+        }
+
+        updateExperienceBar();
+
+    }
+
+    private void updateExperienceBar() {
+        this.bukkitPlayer.setLevel(this.level);
+        double actualProgress = Math.max(0, LevelManager.getProgress(this));
+
+        this.bukkitPlayer.setExp((float) Math.min(0.99, actualProgress));
     }
 
     /**

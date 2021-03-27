@@ -1,5 +1,7 @@
 package com.dumbdogdiner.warrior.listeners;
 
+import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
+import com.dumbdogdiner.warrior.api.events.WarriorLevelUpEvent;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
@@ -88,4 +90,12 @@ public class PlayerListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         PlayerManager.remove(e.getPlayer().getUniqueId());
     }
+
+    @EventHandler
+    public void onLevelUp(WarriorLevelUpEvent e) {
+        // we dont want to announce it for every single level up!
+        if(e.getLevel()%5 == 0)
+            e.getUser().spawnEffect(WarriorEffects.LEVELUP);
+    }
+
 }

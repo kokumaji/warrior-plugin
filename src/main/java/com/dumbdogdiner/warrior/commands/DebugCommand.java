@@ -2,8 +2,7 @@ package com.dumbdogdiner.warrior.commands;
 
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 
-import com.dumbdogdiner.warrior.gui.ParticleTrailGUI;
-import com.dumbdogdiner.warrior.managers.GUIManager;
+import com.dumbdogdiner.warrior.managers.LevelManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 
 import org.bukkit.command.Command;
@@ -19,10 +18,10 @@ public class DebugCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if(sender instanceof Player) {
             WarriorUser user = PlayerManager.get(((Player) sender).getUniqueId());
-            Player player = user.getBukkitPlayer();
+            user.addExperience(50);
 
-            ParticleTrailGUI gui = GUIManager.get(ParticleTrailGUI.class);
-            gui.open(player);
+            System.out.println(user.getLevel() + " " + user.getTotalXp());
+            System.out.println(user.getRelativeXp() + "/" + LevelManager.levelToXp(user.getLevel()) + " " + (int) (LevelManager.getProgress(user) * 100) + "%");
         }
         return true;
     }

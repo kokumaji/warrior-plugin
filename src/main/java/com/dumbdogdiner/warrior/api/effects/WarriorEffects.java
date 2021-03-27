@@ -39,6 +39,22 @@ public class WarriorEffects {
         }
     };
 
+    public static final Consumer<WarriorUser> LEVELUP = (user) -> {
+        user.spawnParticle(Particle.TOTEM, user.getLocation(), new Vector(0.25, 0.25, 0.25), 100, 0.85);
+        user.spawnParticle(Particle.FIREWORKS_SPARK, user.getLocation(), new Vector( 3, 3, 3), 100, 0);
+
+        Sounds.playSound(Sound.UI_TOAST_CHALLENGE_COMPLETE, user);
+        Sounds.playSound(Sound.ENTITY_VILLAGER_CELEBRATE, user);
+
+        user.sendTitle("&3&lLevel Up!", "&7You reached &fLevel " + user.getLevel(), 4);
+
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    };
+
     public static final BiConsumer<WarriorUser, Location> BLOOD = (user, location) -> {
         user.getBukkitPlayer().spawnParticle(Particle.BLOCK_CRACK, location, 8, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
     };
