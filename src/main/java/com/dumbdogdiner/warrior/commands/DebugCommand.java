@@ -2,8 +2,6 @@ package com.dumbdogdiner.warrior.commands;
 
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 
-import com.dumbdogdiner.warrior.gui.ParticleTrailGUI;
-import com.dumbdogdiner.warrior.managers.GUIManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 
 import org.bukkit.command.Command;

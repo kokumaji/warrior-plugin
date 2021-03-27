@@ -633,13 +633,13 @@ public class WarriorUser implements Comparable<WarriorUser> {
 
         System.out.println("User XP:" + this.experience);
         System.out.println("User Level:" + this.level);
-        System.out.println("Level Progress:" + (float) Math.min(0.99, LevelManager.getProgress(this.experience)));
+        System.out.println("Level Progress:" + (float) Math.min(0.99, LevelManager.getProgress(this)));
 
     }
 
     private void updateExperienceBar() {
         this.bukkitPlayer.setLevel(this.level);
-        this.bukkitPlayer.setExp((float) Math.min(0.99, LevelManager.getProgress(this.experience)));
+        this.bukkitPlayer.setExp((float) Math.min(0.99, LevelManager.getProgress(this)));
     }
 
     /**

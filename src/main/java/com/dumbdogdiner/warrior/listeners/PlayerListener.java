@@ -93,7 +93,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onLevelUp(WarriorLevelUpEvent e) {
-        e.getUser().spawnEffect(WarriorEffects.LEVELUP);
+        // we dont want to announce it for every single level up!
+        if(e.getLevel()%5 == 0)
+            e.getUser().spawnEffect(WarriorEffects.LEVELUP);
     }
 
 }
