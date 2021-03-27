@@ -618,13 +618,13 @@ public class WarriorUser implements Comparable<WarriorUser> {
     }
 
     public void addExperience(int exp) {
-        int nextXp = LevelManager.levelToXp(level + 1);
+        int nextXp = LevelManager.levelToXp(level);
 
-        relativeXp = relativeXp + exp;
-        totalXp = totalXp + exp;
+        relativeXp += exp;
+        totalXp += exp;
 
-        if(relativeXp > nextXp) {
-            relativeXp = 0;
+        if(relativeXp >= nextXp) {
+            relativeXp = relativeXp - nextXp;
             level++;
         }
 
@@ -634,7 +634,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
 
     private void updateExperienceBar() {
         this.bukkitPlayer.setLevel(this.level);
-        double actualProgress = LevelManager.getProgress(this) < 0 ? 0 : LevelManager.getProgress(this);
+        double actualProgress = Math.max(0, LevelManager.getProgress(this));
 
         this.bukkitPlayer.setExp((float) Math.min(0.99, actualProgress));
     }
