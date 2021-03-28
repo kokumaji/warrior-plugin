@@ -76,12 +76,21 @@ public class WarriorUser implements Comparable<WarriorUser> {
     @Getter
     private int coins;
 
+    /**
+     * Represents the progress on the current level.
+     */
     @Getter
     private int relativeXp;
 
+    /**
+     * Represents the total amount of XP of this user.
+     */
     @Getter
     private int totalXp;
 
+    /**
+     * Represents the xp level of this user
+     */
     @Getter
     private int level;
 
@@ -623,9 +632,12 @@ public class WarriorUser implements Comparable<WarriorUser> {
         relativeXp += exp;
         totalXp += exp;
 
-        if(relativeXp >= nextXp) {
+        if(relativeXp >= nextXp && level <= 100) {
             relativeXp = relativeXp - nextXp;
             level++;
+
+            WarriorLevelUpEvent e = new WarriorLevelUpEvent(this);
+            Bukkit.getPluginManager().callEvent(e);
         }
 
         updateExperienceBar();
@@ -740,7 +752,13 @@ public class WarriorUser implements Comparable<WarriorUser> {
         this.lastJoin = System.currentTimeMillis();
         this.totalTime = data.getTotalTime();
 
+        this.relativeXp = data.getRelativeXp();
+        this.totalXp = data.getTotalXp();
+        this.level = LevelManager.xpToLevel(data.getTotalXp());
+
         this.activeTitle = settings.getTitle();
+
+        updateExperienceBar();
 
     }
 

@@ -31,7 +31,7 @@ public class LevelManager {
 
     public static double getProgress(WarriorUser user) {
         double nextXp = levelToXp(user.getLevel());
-        return (float) MathUtil.round((user.getRelativeXp() / nextXp), 2);
+        return MathUtil.round((user.getRelativeXp() / nextXp), 2);
     }
 
 }

@@ -39,6 +39,12 @@ public class UserData {
     public long totalTime;
 
     @Getter @Setter
+    public int totalXp;
+
+    @Getter @Setter
+    public int relativeXp;
+
+    @Getter @Setter
     public boolean successful;
 
     public UserData(UUID uuid) {
@@ -57,6 +63,9 @@ public class UserData {
 
         this.firstJoin = user.getFirstJoin();
         this.lastJoin = user.getLastJoin();
+
+        this.totalXp = user.getTotalXp();
+        this.relativeXp = user.getRelativeXp();
 
         this.totalTime = user.getTotalTime() + (System.currentTimeMillis() - user.getLastJoin());
     }

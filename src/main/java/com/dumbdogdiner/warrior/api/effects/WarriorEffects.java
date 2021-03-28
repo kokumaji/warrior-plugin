@@ -43,10 +43,9 @@ public class WarriorEffects {
         user.spawnParticle(Particle.TOTEM, user.getLocation(), new Vector(0.25, 0.25, 0.25), 100, 0.85);
         user.spawnParticle(Particle.FIREWORKS_SPARK, user.getLocation(), new Vector( 3, 3, 3), 100, 0);
 
-        Sounds.playSound(Sound.UI_TOAST_CHALLENGE_COMPLETE, user);
-        Sounds.playSound(Sound.ENTITY_VILLAGER_CELEBRATE, user);
+        Sounds.playSound(Sound.UI_TOAST_CHALLENGE_COMPLETE, user, 0.35f, 1f);
 
-        user.sendTitle("&3&lLevel Up!", "&7You reached &fLevel " + user.getLevel(), 4);
+        user.sendTitle("&3&lLevel Up!", "&7You've reached &fLevel " + user.getLevel(), 4);
 
         try {
             TimeUnit.SECONDS.sleep(2);
