@@ -3,6 +3,7 @@ package com.dumbdogdiner.warrior.gui;
 import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot;
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.translation.Symbols;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
@@ -20,7 +21,10 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ArenaGUI extends GUI {
 
@@ -61,11 +65,27 @@ public class ArenaGUI extends GUI {
                     continue;
                 }
                 Arena a = ArenaManager.getArenas().get(i);
-                ClickableSlot cs = new ClickableSlot(Material.FILLED_MAP, 1, "§7Arena §3" + a.getName(), x, y);
+                int avgRating = (int) a.getMetadata().averageRating();
+                List<String> colorDesc = Arrays.stream(a.getMetadata().getDesc())
+                        .map(str -> "§7§o" + str)
+                        .collect(Collectors.toList());
+
+                ItemStack arenaItem = new ItemBuilder(Material.FILLED_MAP)
+                                        .setName("§7Arena §3" + a.getName())
+                                        .setLore(" ", "&7Rating &8» &b" + calcRating((int) a.getMetadata().averageRating()), " ")
+                                        .appendLore(colorDesc.toArray(String[]::new))
+                                        .build();
+                ClickableSlot cs = new ClickableSlot(arenaItem, x, y);
                 addSlot(cs);
                 i++;
             }
         }
+    }
+
+    private String calcRating(int rating) {
+        String stars = String.valueOf(Symbols.BLACK_STAR).repeat(rating);
+
+        return stars + String.valueOf(Symbols.WHITE_STAR).repeat(5 - rating);
     }
 
     @Override

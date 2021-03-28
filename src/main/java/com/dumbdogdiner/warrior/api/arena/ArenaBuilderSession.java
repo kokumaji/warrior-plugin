@@ -1,6 +1,8 @@
 package com.dumbdogdiner.warrior.api.arena;
 
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.models.metadata.ArenaMetadata;
+import com.dumbdogdiner.warrior.api.models.metadata.RatingNode;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
@@ -19,9 +21,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 @Getter @Setter
 public class ArenaBuilderSession {
@@ -120,6 +120,12 @@ public class ArenaBuilderSession {
             Region region = new Region(getPos1(), getPos2());
             Arena a = new Arena(getArenaName(), region, getSpawn(), true, ArenaManager.getArenas().size());
             ArenaManager.registerArena(a);
+
+            List<RatingNode> ratingModel = RatingNode.DEFAULT_RATING;
+            String[] desc = {};
+
+            ArenaMetadata meta = new ArenaMetadata(a.getName(), desc, sessionUser.getName(), System.currentTimeMillis(), ratingModel);
+            a.setMetadata(meta);
             a.save();
 
             String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_CREATE_SUCCESS, new HashMap<>() {
