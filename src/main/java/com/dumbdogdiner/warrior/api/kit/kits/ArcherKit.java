@@ -57,6 +57,7 @@ public class ArcherKit extends BaseKit {
                 .build();
 
         p.getInventory().setItem(8, special);
+        giveHealItems(p, 6);
 
         new BukkitRunnable() {
 

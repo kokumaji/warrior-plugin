@@ -69,4 +69,15 @@ public abstract class BaseKit {
         return this;
     }
 
+    public BaseKit giveHealItems(Player p, int slot) {
+        ItemStack healItem = new ItemBuilder(Material.BREAD)
+                                .setName("&8» &3&lFood &8«")
+                                .setAmount(32)
+                                .build();
+
+        p.getInventory().setItem(slot, healItem);
+
+        return this;
+    }
+
 }

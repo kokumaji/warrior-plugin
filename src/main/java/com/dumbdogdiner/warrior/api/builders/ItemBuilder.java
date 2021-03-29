@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -83,6 +84,17 @@ public class ItemBuilder {
                 .map(TranslationUtil::translateColor)
                 .collect(Collectors.toList()));
 
+        return this;
+    }
+
+
+    public ItemBuilder appendLore(String... strings) {
+        List<String> existing = meta.getLore();
+        assert existing != null;
+
+        existing.addAll(Arrays.asList(strings));
+
+        meta.setLore(existing);
         return this;
     }
 

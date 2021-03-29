@@ -1,11 +1,15 @@
 package com.dumbdogdiner.warrior.api.sessions;
 
+import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
@@ -42,6 +46,16 @@ public class LobbySession extends Session {
         player.getInventory().setItem(1, SHOP_ITEM);
         player.getInventory().setItem(4, KITS_ITEM);
         player.getInventory().setItem(8, EXIT_ITEM);
+
+        WarriorUser user = PlayerManager.get(player.getUniqueId());
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                user.removeEffects();
+            }
+
+        }.runTask(Warrior.getInstance());
     }
 
     @Override

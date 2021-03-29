@@ -8,12 +8,14 @@ import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.MaxHealthFlag
 import com.dumbdogdiner.warrior.api.models.ArenaModel;
 import com.dumbdogdiner.warrior.api.models.LocationModel;
 import com.dumbdogdiner.warrior.api.models.RegionModel;
+import com.dumbdogdiner.warrior.api.models.metadata.ArenaMetadata;
 import com.dumbdogdiner.warrior.api.util.DataType;
 import com.dumbdogdiner.warrior.api.util.JSONUtil;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -36,6 +38,9 @@ public class Arena {
 
     @Getter
     private boolean enabled;
+
+    @Getter @Setter
+    private ArenaMetadata metadata;
 
     @Getter
     private int id;
@@ -65,6 +70,7 @@ public class Arena {
             ArenaModel model = new Gson().fromJson(reader, ArenaModel.class);
             LocationModel sm = model.getSpawn();
             RegionModel rgm = model.getBounds();
+            this.metadata = model.getMetadata();
 
             World world = Bukkit.getServer().getWorld(rgm.getWorld());
             if(world == null) {

@@ -1,6 +1,7 @@
 package com.dumbdogdiner.warrior;
 
 import com.dumbdogdiner.warrior.api.WarriorLogger;
+import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.kit.SpecialAbilities;
 import com.dumbdogdiner.warrior.api.translation.Translator;
@@ -76,6 +77,7 @@ public class Warrior extends JavaPlugin {
                 .addSubCommand(new ArenaRemoveCommand() )
                 .addSubCommand(new ArenaJoinCommand())
                 .addSubCommand(new ArenaSetupCommand())
+                .addSubCommand(new ArenaRateCommand())
                 .addSubCommand(new ArenaSpectateCommand())
                 .addSubCommand(new ArenaLeaveCommand())
                 .addSubCommand(new ArenaFlagsCommand()));
@@ -108,6 +110,7 @@ public class Warrior extends JavaPlugin {
         }
 
         for(WarriorUser user : PlayerManager.getList()) user.saveData();
+        for(Arena a : ArenaManager.getArenas()) a.save();
 
     }
 

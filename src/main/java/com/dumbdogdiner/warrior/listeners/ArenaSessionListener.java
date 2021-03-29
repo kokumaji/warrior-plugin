@@ -1,6 +1,8 @@
 package com.dumbdogdiner.warrior.listeners;
 
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.arena.Arena;
+import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.MaxHealthFlag;
 import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.builders.GameBossBar;
@@ -24,6 +26,7 @@ import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import com.google.common.base.Preconditions;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.boss.BarColor;
@@ -44,12 +47,43 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.WeakHashMap;
 import java.util.function.BiConsumer;
 
 public class ArenaSessionListener implements Listener {
 
     WeakHashMap<Player, Integer> clickTime = new WeakHashMap<>();
+
+    @EventHandler
+    public void onHealUse(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        if(ArenaManager.isPlaying(p)) {
+            if(e.getItem() == null) return;
+
+            WarriorUser user = PlayerManager.get(p.getUniqueId());
+            ItemStack item = e.getItem();
+            ItemMeta meta = item.getItemMeta();
+            Arena a = ((ArenaSession) user.getSession()).getArena();
+
+            if(!meta.getDisplayName().equals("§8» §3§lFood §8«")) return;
+            Double maxHealth;
+            if(a.getFlags().getFlag(MaxHealthFlag.class) != null) maxHealth = a.getFlags().getFlag(MaxHealthFlag.class).getValue();
+            else maxHealth = Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue();
+
+            e.setCancelled(true);
+
+            if(p.getHealth() < maxHealth) {
+                p.setHealth(Math.min(p.getHealth() + 2.5, maxHealth));
+                item.setAmount(item.getAmount() - 1);
+                int slot = p.getInventory().getHeldItemSlot();
+
+                p.getInventory().setItem(slot, item);
+                user.playSound(Sound.ENTITY_GENERIC_EAT, 0.5f, 1f);
+            }
+
+        }
+    }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
