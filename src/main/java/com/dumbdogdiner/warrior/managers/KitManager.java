@@ -4,6 +4,7 @@ import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.kit.BaseKit;
 import com.dumbdogdiner.warrior.api.kit.kits.ArcherKit;
 import com.dumbdogdiner.warrior.api.kit.kits.CustomKit;
+import com.dumbdogdiner.warrior.api.kit.kits.TankKit;
 import com.dumbdogdiner.warrior.api.kit.kits.WarriorKit;
 import com.dumbdogdiner.warrior.api.models.CustomKitModel;
 import com.dumbdogdiner.warrior.api.util.JSONUtil;
@@ -27,6 +28,7 @@ public class KitManager {
     public static void registerKits() {
         kits.add(new WarriorKit("Warrior", 0, "warrior.kit.warrior", Material.IRON_SWORD));
         kits.add(new ArcherKit("Archer", 0, "warrior.kit.archer", Material.BOW));
+        kits.add(new TankKit("Tank", 0, "warrior.kit.tank", Material.IRON_CHESTPLATE));
 
         loadFiles();
     }

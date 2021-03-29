@@ -49,6 +49,7 @@ public class WarriorKit extends BaseKit {
                             .build();
 
         p.getInventory().setItem(8, special);
+        giveHealItems(p, 7);
 
         withAbility(p);
         return this;
