@@ -46,4 +46,36 @@ to understand commands & integrated script system allows you to add/remove conte
 | `/warrior help` | `warrior.command.admin` | Displays useful commands & instructions |
 | `/warrior hologram <stats, leaderboard>` | *TBA*  | *TBA* |
 | `/warrior setlobby` | `warrior.command.setlobby`  | Sets the lobby spawn to the players position (`lobby-settings.custom-spawn` needs to be set to `true` in the plugin config) |
-| `/warrior reload <language, config>` | `warrior.command.reload`  | Reloads the plugin config and/or language files |
+| `/warrior reload <language, config, database>` | `warrior.command.reload`  | Reloads the plugin config, language files or database connection |
+
+## Language & Formatting
+
+### PlaceholderAPI Support!
+
+This plugin features **full** PlaceholderAPI support and a lot of placeholders!
+
+#### Player-Related Placeholders
+```
+%warrior_player_name%
+%warrior_player_uuid%
+%warrior_player_timeplayed%
+%warrior_player_firstjoin%
+%warrior_player_ping%
+%warrior_player_title%
+%warrior_player_deathsound%
+%warrior_player_kills%
+%warrior_player_deaths%
+%warrior_player_kdr%
+%warrior_player_coins%
+%warrior_player_arena%
+```
+#### Arena-Related Placeholders
+```
+%warrior_arena_name%
+%warrior_arena_id%
+%warrior_arena_flags%
+%warrior_arena_rating%
+%warrior_arena_creator%
+%warrior_arena_timestamp%
+%warrior_arena_description%
+```
