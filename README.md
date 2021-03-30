@@ -40,8 +40,6 @@ to understand commands & integrated script system allows you to add/remove conte
 
 ### Warrior Command
 
-**NOTE** This command is experimental and should not be used in its current state, unless you know what you're doing.
-
 | Command | Permission | Description |
 | ------- | ---------- | ----------- |
 | `/warrior about` | `warrior.command.admin` | Displays information about the plugin |
