@@ -39,7 +39,8 @@ repositories {
             username "$ghUser"
             password "$ghPass"
         }
-        url = "https://maven.pkg.github.com/DumbDogDiner/StickyAPI" }
+        url = "https://maven.pkg.github.com/DumbDogDiner/StickyAPI"
+    }
 
     // This is for bStats... cuz PlaceholderAPI doesnt like
     // being shadow jar'd without it...
@@ -52,9 +53,6 @@ repositories {
         name = 'minecraft-repo'
         url = 'https://libraries.minecraft.net/'
     }
-
-    maven { url = "https://raw.githubusercontent.com/JorelAli/CommandAPI/mvn-repo/" }
-    maven { url = "https://repo.codemc.org/repository/maven-public/" }
 
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/public/' }
 
@@ -74,14 +72,16 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.10.9'
     compileOnly 'org.apache.logging.log4j:log4j-core:2.3'
 
-    compileOnly 'io.netty:netty-all:4.0.23.Final'
+    compileOnly 'io.netty:netty-all:4.1.24.Final'
 
     compileOnly 'com.mojang:authlib:1.5.21'
 
     // used for debugging!
     //compileOnly files("libs/server.jar")
 
-    shadow files("libs/stickyapi-2.1.0.jar")
+    //shadow files("libs/stickyapi-2.1.0.jar")
+
+    shadow platform("com.dumbdogdiner:stickyapi:3.0.1")
 
     // Tests - JUnit 5
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
@@ -101,6 +101,8 @@ shadowJar {
     archiveClassifier.set('')
     project.configurations.implementation.canBeResolved = true
     configurations = [project.configurations.shadow]
+
+    exclude 'generated/mojangles_width_data.json'
 
     minimize()
 }
