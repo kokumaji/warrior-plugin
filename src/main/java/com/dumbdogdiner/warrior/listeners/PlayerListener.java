@@ -1,11 +1,14 @@
 package com.dumbdogdiner.warrior.listeners;
 
+import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.events.WarriorLevelUpEvent;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 
+import com.dumbdogdiner.warrior.utils.DefaultMessages;
+import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,6 +24,11 @@ public class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         UUID uuid = p.getUniqueId();
+
+        if(p.hasPermission("warrior.command.admin") && !Warrior.getConnection().isRunning()) {
+            String msg = TranslationUtil.translateColor(DefaultMessages.SQL_ERROR_NOTICE);
+            p.sendMessage(" \n" + msg + "\n ");
+        }
 
         if (!PlayerManager.contains(uuid)) {
             WarriorUser user = PlayerManager.addUser(uuid);

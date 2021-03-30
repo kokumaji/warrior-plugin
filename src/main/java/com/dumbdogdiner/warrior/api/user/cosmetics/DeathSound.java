@@ -6,6 +6,7 @@ import org.bukkit.Sound;
 
 public enum DeathSound {
 
+    DEFAULT (Sound.ENTITY_PLAYER_DEATH, 0x00000000, "Default"),
     WATERSPLASH (Sound.ENTITY_FISHING_BOBBER_SPLASH , 0x00000001, "Watersplash"),
     GHAST_DEATH (Sound.ENTITY_GHAST_DEATH           , 0x00000002, "Ghast"),
     THUNDERSTORM(Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 0x00000004, "Thunder"),

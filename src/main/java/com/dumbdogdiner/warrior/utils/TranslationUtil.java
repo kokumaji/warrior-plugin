@@ -9,19 +9,46 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TranslationUtil {
+
+    public static String stringifyList(List<String> stringList) {
+        if(stringList == null) return "none";
+        if(stringList.size() == 1) return stringList.get(0);
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0; i < stringList.size(); i++) {
+            if((i == stringList.size() - 2)) {
+                sb.append(stringList.get(i));
+                continue;
+            }
+            if(!(i == stringList.size() - 1)) sb.append(stringList.get(i)).append(", ");
+            else sb.append(" and ").append(stringList.get(i));
+        }
+
+        return sb.toString();
+    }
+
+    public static void sendToMultiple(List<Player> list, String msg, boolean includeConsole) {
+        Warrior.getPluginLogger().info(msg);
+        for(Player p : list) {
+            p.sendMessage(translateColor(msg));
+        }
+    }
+
+    public static void sendToMultiple(List<Player> list, String msg) {
+        sendToMultiple(list, msg, false);
+    }
 
     protected static class URLPair {
         String fullPath;

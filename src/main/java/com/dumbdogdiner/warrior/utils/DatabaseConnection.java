@@ -11,6 +11,7 @@ import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.user.settings.VisualSettings;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.sql.*;
@@ -51,7 +52,6 @@ public class DatabaseConnection {
     public static final String GENERAL_SETTINGS_TABLE = "warrior_user_settings";
     public static final String GAMEPLAY_SETTINGS_TABLE = "warrior_user_gameplay_settings";
     private static final String VISUAL_SETTINGS_TABLE = "warrior_user_visual_settings";
-
 
     public DatabaseConnection(Warrior plugin, FileConfiguration config) throws SQLException {
         this.self = plugin;
@@ -166,8 +166,6 @@ public class DatabaseConnection {
                     data.setRelativeXp(rs.getInt("relative_xp"));
 
                     data.setSuccessful(true);
-                } else {
-                    return null;
                 }
 
                 conn.close();
@@ -178,6 +176,15 @@ public class DatabaseConnection {
 
         return data;
 
+    }
+
+    public void close() {
+        if(!ds.isClosed()) this.ds.close();
+    }
+
+    public boolean isRunning() {
+        if(ds == null) return false;
+        return ds.isRunning();
     }
 
     public GeneralSettings getUserSettings(UUID uuid) {
@@ -201,8 +208,6 @@ public class DatabaseConnection {
                     settings.setPrivacyLevel(rs.getInt("privacy"));
                     settings.setTitle(WarriorTitle.fromString(rs.getString("title")));
                     settings.setLastReset(rs.getTimestamp("last_reset").getTime());
-                } else {
-                    return null;
                 }
 
                 conn.close();
@@ -234,8 +239,6 @@ public class DatabaseConnection {
                     settings.showTimer(rs.getBoolean("show_timer"));
                     settings.setActiveSound(DeathSound.fromString(rs.getString("active_deathsound")));
                     settings.setActiveParticle(DeathParticle.fromString(rs.getString("active_deathparticle")));
-                } else {
-                    return null;
                 }
 
                 conn.close();
@@ -265,8 +268,6 @@ public class DatabaseConnection {
                 if(rs.next()) {
                     settings.setParticleMode(rs.getInt("particle_mode"));
                     settings.setGoreLevel(rs.getInt("gore_level"));
-                } else {
-                    return null;
                 }
 
                 conn.close();
@@ -305,14 +306,15 @@ public class DatabaseConnection {
 
                 stmt.executeUpdate();
                 conn.close();
-
             }
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
     public void saveSettings(GeneralSettings data) {
+        if(data == null) return;
         try {
             if (this.ds == null) {
                 String msg = String.format("Could not save user data for %s! Is the connection alive?", data.getUserId());
@@ -327,19 +329,20 @@ public class DatabaseConnection {
                 stmt.setInt(2, data.getPlayerVisibility());
                 stmt.setBoolean(3, data.receiveNotifications());
                 stmt.setInt(4, data.getPrivacyLevel());
-                stmt.setString(5, data.getTitle().name());
+                stmt.setString(5, data.getTitle() == null ? WarriorTitle.EMPTY.name() : data.getTitle().name());
                 stmt.setTimestamp(6, new Timestamp(data.getLastReset()));
 
                 stmt.executeUpdate();
                 conn.close();
-
             }
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
     public void saveGameplaySettings(GameplaySettings data) {
+        if(data == null) return;
         try {
             if (this.ds == null) {
                 String msg = String.format("Could not save user data for %s! Is the connection alive?", data.getUserId());
@@ -352,19 +355,20 @@ public class DatabaseConnection {
                 PreparedStatement stmt = conn.prepareStatement(String.format(Query.UPDATE_GAME_SETTINGS, GAMEPLAY_SETTINGS_TABLE, data.getUserId()));
                 stmt.setBoolean(1, data.showKills());
                 stmt.setBoolean(2, data.showTimer());
-                stmt.setString(3, data.getActiveSound().name());
-                stmt.setString(4, data.getActiveParticle().name());
+                stmt.setString(3, data.getActiveSound() == null ? DeathSound.DEFAULT.name() : data.getActiveSound().name());
+                stmt.setString(4, data.getActiveParticle() == null ? DeathParticle.HEART.name() : data.getActiveParticle().name());
 
                 stmt.executeUpdate();
                 conn.close();
-
             }
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
     public void saveVisualSettings(VisualSettings data) {
+        if(data == null) return;
         try {
             if (this.ds == null) {
                 String msg = String.format("Could not save user data for %s! Is the connection alive?", data.getUserId());
@@ -381,11 +385,16 @@ public class DatabaseConnection {
 
                 stmt.executeUpdate();
                 conn.close();
-
             }
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public String getStatus() {
+        if(ds == null) return "&c&lERROR";
+        else return "&a&lACTIVE";
     }
 
 }

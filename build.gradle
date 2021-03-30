@@ -18,7 +18,7 @@ plugins {
 
 // Setting some variables for our plugin!
 group 'me.kokumaji'
-version '1.0.1-beta'
+version '1.0.2-beta'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -97,10 +97,6 @@ dependencies {
 // vv Configuring the Gradle plugins below vv
 tasks.build.dependsOn tasks.shadowJar
 
-tasks.withType(Jar) {
-    destinationDirectory = file("$rootDir/debug/plugins")
-}
-
 shadowJar {
     archiveClassifier.set('')
     project.configurations.implementation.canBeResolved = true
@@ -118,8 +114,8 @@ configurations {
 }
 
 spigot {
-    description 'A KitPvP Plugin'
-    authors 'Kokumaji'
+    description 'A fully customizable, class-based competitive FFA plugin.'
+    authors 'kokumaji'
     apiVersion '1.13'
 
     softDepends("Multiverse", "PlaceholderAPI")

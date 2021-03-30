@@ -1,12 +1,17 @@
 package com.dumbdogdiner.warrior.commands.warrior;
 
+import com.dumbdogdiner.stickyapi.bukkit.util.PlayerSelector;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.translation.Constants;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.utils.DefaultMessages;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,6 +43,21 @@ public class WarriorReloadCommand implements SubCommand {
                 reloadLanguage(sender);
             } else if(args[1].equalsIgnoreCase("config")) {
                 reloadConfig(sender);
+            } else if(args[1].equalsIgnoreCase("database")) {
+                List<Player> admins = PlayerSelector.selectPlayers(p -> p.hasPermission("warrior.command.admin"));
+                TranslationUtil.sendToMultiple(admins, TranslationUtil.translateColor(TranslationUtil.getPrefix() + DefaultMessages.SQL_CONNECT_ATTEMPT), true);
+                boolean success = Warrior.reconnectDatabase();
+
+                if(success) {
+                    TranslationUtil.sendToMultiple(admins, TranslationUtil.translateColor(TranslationUtil.getPrefix() + DefaultMessages.SQL_CONNECT_SUCCESS), true);
+                    for(WarriorUser user : PlayerManager.getList()) {
+                        user.loadData();
+                    }
+                }
+
+                if(!success && sender instanceof Player) {
+                   TranslationUtil.sendToMultiple(admins, TranslationUtil.translateColor(TranslationUtil.getPrefix() + DefaultMessages.SQL_CONNECT_FAILURE) );
+                }
             }
         }
 
@@ -64,7 +84,7 @@ public class WarriorReloadCommand implements SubCommand {
         List<String> strings = new ArrayList<>();
 
         if(args.length == 2) {
-            strings = List.of("config", "language");
+            strings = List.of("config", "language", "database");
         }
 
         return strings;

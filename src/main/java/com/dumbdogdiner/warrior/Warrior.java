@@ -165,4 +165,16 @@ public class Warrior extends JavaPlugin {
         }
     }
 
+    public static boolean reconnectDatabase() {
+        try {
+            if(connection != null && connection.isRunning()) connection.close();
+            connection = new DatabaseConnection(Warrior.getInstance(), Warrior.getInstance().getConfig());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+
+        return connection.isRunning();
+    }
+
 }
