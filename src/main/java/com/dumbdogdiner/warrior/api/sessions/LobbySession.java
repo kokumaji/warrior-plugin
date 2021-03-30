@@ -19,6 +19,7 @@ public class LobbySession extends Session {
             .setName("&8» &3&lARENAS &8«")
             .setLore("&7Select an Arena to Join")
             .build();
+
     public static final ItemStack KITS_ITEM = new ItemBuilder(Material.LEATHER_CHESTPLATE)
             .setName("&8» &3&lVIEW KITS &8«")
             .setLore("&7View Your Available Kits")
@@ -28,6 +29,12 @@ public class LobbySession extends Session {
             .setName("&8» &3&lSHOP &8«")
             .setLore("&7Browse & Unlock new Kits!")
             .build();
+
+    public static final ItemStack SETTINGS_ITEM = new ItemBuilder(Material.COMPARATOR)
+            .setName("&8» &3&lSettings &8«")
+            .setLore("&7Adjust Your Warrior Settings")
+            .build();
+
     public static final ItemStack EXIT_ITEM = new ItemBuilder(Material.BARRIER)
             .setName("&4&l☓ &c&lQUIT &4&l☓")
             .setLore("&7Leave KitPvP")
@@ -45,6 +52,7 @@ public class LobbySession extends Session {
         player.getInventory().setItem(0, ARENA_ITEM);
         player.getInventory().setItem(1, SHOP_ITEM);
         player.getInventory().setItem(4, KITS_ITEM);
+        player.getInventory().setItem(7, SETTINGS_ITEM);
         player.getInventory().setItem(8, EXIT_ITEM);
 
         WarriorUser user = PlayerManager.get(player.getUniqueId());

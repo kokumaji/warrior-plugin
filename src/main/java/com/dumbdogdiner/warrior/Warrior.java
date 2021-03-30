@@ -9,6 +9,7 @@ import com.dumbdogdiner.warrior.commands.DebugCommand;
 import com.dumbdogdiner.warrior.commands.arena.*;
 import com.dumbdogdiner.warrior.commands.kit.KitCommand;
 import com.dumbdogdiner.warrior.commands.kit.KitCreateCommand;
+import com.dumbdogdiner.warrior.commands.misc.SettingsCommand;
 import com.dumbdogdiner.warrior.commands.misc.StatisticsCommand;
 import com.dumbdogdiner.warrior.commands.warrior.*;
 import com.dumbdogdiner.warrior.listeners.*;
@@ -66,6 +67,7 @@ public class Warrior extends JavaPlugin {
         getCommand("debug").setExecutor(new DebugCommand());
         this.getCommandMap();
 
+        cmds.add(new SettingsCommand());
         cmds.add(new StatisticsCommand("stats", this));
         cmds.add(new WarriorCommand("warrior", this)
                 .addSubCommand(new WarriorHelpCommand())

@@ -2,6 +2,8 @@ package com.dumbdogdiner.warrior.utils;
 
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.translation.DefaultFontInfo;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.util.MathUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -34,6 +36,14 @@ public class TranslationUtil {
         }
 
         return sb.toString();
+    }
+
+    public static String privacyString(WarriorUser user) {
+        GeneralSettings settings = user.getSettings();
+
+        return settings.getPrivacyLevel() > 0 ? settings.getPrivacyLevel() < 3 ?
+                settings.getPrivacyLevel() < 2 ? "Hide Last Join" : "Hide First + Last Join"
+                : "Fully Hidden!" : "All Public!";
     }
 
     public static void sendToMultiple(List<Player> list, String msg, boolean includeConsole) {

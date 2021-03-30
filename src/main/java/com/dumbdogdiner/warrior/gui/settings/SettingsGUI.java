@@ -1,13 +1,17 @@
-package com.dumbdogdiner.warrior.gui;
+package com.dumbdogdiner.warrior.gui.settings;
 
+import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot;
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.user.cosmetics.WarriorTitle;
 import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.util.HeadTexture;
+import com.dumbdogdiner.warrior.managers.GUIManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -17,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 public class SettingsGUI extends GUI {
 
     public SettingsGUI() {
-        super(3, "Settings", Warrior.getInstance());
+        super(5, "Settings", Warrior.getInstance());
     }
 
     @Override
@@ -27,7 +31,7 @@ public class SettingsGUI extends GUI {
 
         for(int i = 0; i < 9; i++) {
             addSlot(i, 0, placeholder);
-            addSlot(i, 2, placeholder);
+            addSlot(i, 4, placeholder);
         }
 
         WarriorUser user = PlayerManager.get(event.getPlayer().getUniqueId());
@@ -42,8 +46,9 @@ public class SettingsGUI extends GUI {
         String walkType = settings.canFly() ? "Flying" : "Walking";
         String visibilityType = settings.getPlayerVisibility() > 0 ? settings.getPlayerVisibility() < 2 ? "Semi-Transparent" : "Hidden" : "Visible";
         String notificationType = settings.receiveNotifications() ? "Enabled" : "Disabled";
-        String privacyType = settings.getPrivacyLevel() > 0 ? settings.getPrivacyLevel() < 3 ? settings.getPrivacyLevel() < 2 ? "Hide Last Join" : "Hide First + Last Join" : "Fully Hidden!" : "All Public!";
+        String privacyType = TranslationUtil.privacyString(user);
         String titleContent = settings.getTitle() != WarriorTitle.EMPTY ? settings.getTitle().getTitle() : "None";
+        LanguageCode lang = settings.getLanguage();
 
         ItemStack walkOption = new ItemBuilder(Material.IRON_BOOTS)
                 .setName("&3&lWalk Type")
@@ -72,11 +77,32 @@ public class SettingsGUI extends GUI {
                 .setLore("&b" + titleContent, " ", "&7Set your Player Title", "&8&oOnly Visible in Chat")
                 .build();
 
-        addSlot(0, 1, walkOption);
-        addSlot(2, 1, visibilityOption);
-        addSlot(4, 1, notificationsOption);
-        addSlot(6, 1, privacyOption);
-        addSlot(8, 1, titleOption);
+        ItemStack languageOption = new ItemBuilder(Material.PLAYER_HEAD)
+                .setName("&3&lChange Language")
+                .setLore("&b" + lang.getFriendlyName(), " ", "&7Adjust your Language ", "&7and Chat formatting.")
+                .setTexture(lang.getHeadTexture())
+                .build();
+
+        ClickableSlot languageSlot = new ClickableSlot(languageOption, 7, 1 );
+        ClickableSlot notificationSlot = new ClickableSlot(notificationsOption, 4, 1 );
+        ClickableSlot privacySlot = new ClickableSlot(privacyOption, 1, 1 );
+
+        addSlot(languageSlot, (evt, gui) -> {
+            LanguageGUI langGUI = GUIManager.get(LanguageGUI.class);
+            langGUI.open(user.getBukkitPlayer());
+        });
+        addSlot(notificationSlot, (evt, gui) -> {
+            NotificationsGUI notifGUI = GUIManager.get(NotificationsGUI.class);
+            notifGUI.open(user.getBukkitPlayer());
+        });
+        addSlot(privacySlot, (evt, gui) -> {
+            PrivacyGUI privacyGUI = GUIManager.get(PrivacyGUI.class);
+            privacyGUI.open(user.getBukkitPlayer());
+        });
+
+        addSlot(4, 3, walkOption);
+        addSlot(1, 3, visibilityOption);
+        addSlot(7, 3, titleOption);
 
     }
 }

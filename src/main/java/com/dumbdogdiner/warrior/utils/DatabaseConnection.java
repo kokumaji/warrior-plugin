@@ -40,7 +40,7 @@ public class DatabaseConnection {
 
         public static final String GET_USER_DATA = "SELECT * FROM %s WHERE uuid = '%2s'";
         public static final String UPDATE_USER_DATA = "UPDATE %s SET kills = ?, deaths = ?, coins = ?, total_xp = ?, relative_xp = ?, death_sounds = ?, death_particles = ?, warrior_titles = ?, last_join = ?, total_time = ? WHERE uuid = '%2s'";
-        public static final String UPDATE_USER_SETTINGS = "UPDATE %s SET can_fly = ?, player_visibility = ?, notifications = ?, privacy = ?, title = ?, lang = ?, last_reset = ? WHERE uuid = '%2s'";
+        public static final String UPDATE_USER_SETTINGS = "UPDATE %s SET can_fly = ?, player_visibility = ?, notifications = ?, privacy = ?, lang = ?, title = ?, last_reset = ? WHERE uuid = '%2s'";
         public static final String UPDATE_GAME_SETTINGS = "UPDATE %s SET show_kills = ?, show_timer = ?, active_deathsound = ?, active_deathparticle = ? WHERE uuid = '%2s'";
         public static final String UPDATE_VISUAL_SETTINGS = "UPDATE %s SET particle_mode = ?, gore_level = ? WHERE uuid = '%2s'";
     }

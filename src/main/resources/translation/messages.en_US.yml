@@ -19,6 +19,11 @@ command-messages:
   arena-no-setup-running: "&7Can't execute this command! There is no active arena setup running."
   kit-equip: "&7Selected Kit &3{KIT}"
 
+settings-gui:
+  language-changed: "&7Language has been set to &b{LANGUAGE}"
+  notifications-changed: "&7Notifications have been &b{STATE}"
+  privacy-changed: "&7Privacy Level has been set to &b{STATE}"
+
 gameplay:
   ability-ready: "&7Your special ability is ready!"
 notifications:

@@ -6,6 +6,7 @@ import com.dumbdogdiner.warrior.api.command.AsyncCommandLegacy;
 import com.dumbdogdiner.warrior.api.command.ExitStatus;
 import com.dumbdogdiner.warrior.api.translation.TimeUtil;
 import com.dumbdogdiner.warrior.api.user.UserData;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
 import com.dumbdogdiner.warrior.api.util.MathUtil;
@@ -49,6 +50,7 @@ public class StatisticsCommand extends AsyncCommandLegacy implements TabComplete
             return ExitStatus.ERROR_GENERAL;
         }
 
+        WarriorUser user = PlayerManager.get(((Player) sender).getUniqueId());
         UserData data = player.isOnline() ? new UserData(PlayerManager.get(player.getUniqueId()))
                                                 : Warrior.getConnection().getData(player.getUniqueId());
 
@@ -68,7 +70,7 @@ public class StatisticsCommand extends AsyncCommandLegacy implements TabComplete
                 : "last seen " + TimeUtil.timeAgo(data.getLastJoin(), true);
         String totalTime = playerSettings.getPrivacyLevel() == 0 ? TimeUtil.formatDuration(data.getTotalTime())
                                                                  : "(HIDDEN)";
-        String firstJoin = playerSettings.getPrivacyLevel() < 2 ? TimeUtil.formatDate(data.getFirstJoin()) : "(HIDDEN)";
+        String firstJoin = playerSettings.getPrivacyLevel() < 2 ? TimeUtil.formatDate(user.getSettings().getLanguage(), data.getFirstJoin()) : "(HIDDEN)";
 
         String centeredMessage = TranslationUtil.prettyMessage( " ",
               "&7Statistics for " + player.getName(),

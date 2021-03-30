@@ -8,6 +8,7 @@ import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.gui.ArenaGUI;
 import com.dumbdogdiner.warrior.gui.DeathSoundGUI;
 import com.dumbdogdiner.warrior.gui.KitGUI;
+import com.dumbdogdiner.warrior.gui.settings.SettingsGUI;
 import com.dumbdogdiner.warrior.managers.GUIManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import org.bukkit.Bukkit;
@@ -56,6 +57,9 @@ public class ItemInteractListener implements Listener {
                         gui.open(e.getPlayer());
                     } else if(item.equals(LobbySession.SHOP_ITEM)) {
                         DeathSoundGUI gui = GUIManager.get(DeathSoundGUI.class);
+                        gui.open(e.getPlayer());
+                    } else if(item.equals(LobbySession.SETTINGS_ITEM)) {
+                        SettingsGUI gui = GUIManager.get(SettingsGUI.class);
                         gui.open(e.getPlayer());
                     } else {
                         user.getBukkitPlayer().sendActionBar("§4§lFeature Not Implemented!");
