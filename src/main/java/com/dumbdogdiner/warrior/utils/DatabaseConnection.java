@@ -1,6 +1,7 @@
 package com.dumbdogdiner.warrior.utils;
 
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.user.cosmetics.DeathParticle;
 import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSound;
@@ -25,20 +26,21 @@ public class DatabaseConnection {
         public static final String ALTER_DATA_TABLE_TITLES    = "ALTER TABLE %s ADD COLUMN IF NOT EXISTS warrior_titles int DEFAULT 0 AFTER death_particles";
         public static final String ALTER_DATA_TABLE_TOTALXP    = "ALTER TABLE %s ADD COLUMN IF NOT EXISTS total_xp int DEFAULT 0 AFTER coins";
         public static final String ALTER_DATA_TABLE_RELXP    = "ALTER TABLE %s ADD COLUMN IF NOT EXISTS relative_xp int DEFAULT 0 AFTER total_xp";
+        public static final String ALTER_DATA_LANG_CODE    = "ALTER TABLE %s ADD COLUMN IF NOT EXISTS lang VARCHAR(5) DEFAULT 'EN_US' AFTER privacy";
 
         public static final String CREATE_STATS_TABLE = "CREATE TABLE IF NOT EXISTS %s (uuid VARCHAR(36), kills int, deaths int, coins int, death_sounds int, first_join datetime NULL DEFAULT '1970-01-01 00:00:01', last_join datetime NULL DEFAULT CURRENT_TIMESTAMP(), total_time bigint, UNIQUE (uuid))";
-        public static final String CREATE_GENERAL_USER_SETTINGS = "CREATE TABLE IF NOT EXISTS %s (uuid VARCHAR(36) NOT NULL, can_fly bit DEFAULT false, player_visibility tinyint DEFAULT 0 CHECK (player_visibility > -1 AND player_visibility < 3), notifications bit DEFAULT true, privacy tinyint DEFAULT 0 CHECK (player_visibility > -1 AND player_visibility < 4), title VARCHAR(32) NULL, last_reset datetime DEFAULT CURRENT_TIMESTAMP, UNIQUE(uuid))";
+        public static final String CREATE_GENERAL_USER_SETTINGS = "CREATE TABLE IF NOT EXISTS %s (uuid VARCHAR(36) NOT NULL, can_fly bit DEFAULT false, player_visibility tinyint DEFAULT 0 CHECK (player_visibility > -1 AND player_visibility < 3), notifications bit DEFAULT true, privacy tinyint DEFAULT 0 CHECK (privacy > -1 AND privacy < 4), lang VARCHAR(5) DEFAULT 'EN_US', title VARCHAR(32) NULL, last_reset datetime DEFAULT CURRENT_TIMESTAMP, UNIQUE(uuid))";
         public static final String CREATE_GAMEPLAY_SETTINGS = "CREATE TABLE IF NOT EXISTS %s (uuid VARCHAR(36) NOT NULL, show_kills bit DEFAULT 0, show_timer bit DEFAULT 0, active_deathsound VARCHAR(24) NULL DEFAULT NULL, active_deathparticle VARCHAR(24) NULL DEFAULT NULL, armor_color VARCHAR(7) NULL DEFAULT NULL, UNIQUE(uuid))";
         public static final String CREATE_VISUAL_SETTINGS = "CREATE TABLE IF NOT EXISTS %s (uuid VARCHAR(36) NOT NULL, particle_mode tinyint DEFAULT 2 CHECK (particle_mode > -1 AND particle_mode < 3), gore_level tinyint DEFAULT 1 CHECK (gore_level > -1 AND gore_level < 3), UNIQUE(uuid))";
 
         public static final String INSERT_NEW_USER = "INSERT IGNORE INTO %s VALUES ('%2s', 0, 0, 0, DEFAULT, DEFAULT, DEFAULT, DEFAULT,  DEFAULT, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0)";
-        public static final String INSERT_NEW_GENERAL_SETTINGS = "INSERT IGNORE INTO %s VALUES ('%2s', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT)";
+        public static final String INSERT_NEW_GENERAL_SETTINGS = "INSERT IGNORE INTO %s VALUES ('%2s', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT)";
         public static final String INSERT_NEW_GAMEPLAY_SETTINGS = "INSERT IGNORE INTO %s VALUES ('%2s', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT)";
         public static final String INSERT_NEW_VISUAL_SETTINGS = "INSERT IGNORE INTO %s VALUES ('%2s', DEFAULT, DEFAULT)";
 
         public static final String GET_USER_DATA = "SELECT * FROM %s WHERE uuid = '%2s'";
         public static final String UPDATE_USER_DATA = "UPDATE %s SET kills = ?, deaths = ?, coins = ?, total_xp = ?, relative_xp = ?, death_sounds = ?, death_particles = ?, warrior_titles = ?, last_join = ?, total_time = ? WHERE uuid = '%2s'";
-        public static final String UPDATE_USER_SETTINGS = "UPDATE %s SET can_fly = ?, player_visibility = ?, notifications = ?, privacy = ?, title = ?, last_reset = ? WHERE uuid = '%2s'";
+        public static final String UPDATE_USER_SETTINGS = "UPDATE %s SET can_fly = ?, player_visibility = ?, notifications = ?, privacy = ?, title = ?, lang = ?, last_reset = ? WHERE uuid = '%2s'";
         public static final String UPDATE_GAME_SETTINGS = "UPDATE %s SET show_kills = ?, show_timer = ?, active_deathsound = ?, active_deathparticle = ? WHERE uuid = '%2s'";
         public static final String UPDATE_VISUAL_SETTINGS = "UPDATE %s SET particle_mode = ?, gore_level = ? WHERE uuid = '%2s'";
     }
@@ -103,6 +105,7 @@ public class DatabaseConnection {
             stmt.addBatch(String.format(Query.ALTER_DATA_TABLE_TITLES, STATS_TABLE));
             stmt.addBatch(String.format(Query.ALTER_DATA_TABLE_TOTALXP, STATS_TABLE));
             stmt.addBatch(String.format(Query.ALTER_DATA_TABLE_RELXP, STATS_TABLE));
+            stmt.addBatch(String.format(Query.ALTER_DATA_LANG_CODE, GENERAL_SETTINGS_TABLE));
 
             stmt.executeBatch();
 
@@ -206,6 +209,7 @@ public class DatabaseConnection {
                     settings.setPlayerVisibility(rs.getInt("player_visibility"));
                     settings.receiveNotifications(rs.getBoolean("notifications"));
                     settings.setPrivacyLevel(rs.getInt("privacy"));
+                    settings.setLanguage(LanguageCode.valueOf(rs.getString("lang")));
                     settings.setTitle(WarriorTitle.fromString(rs.getString("title")));
                     settings.setLastReset(rs.getTimestamp("last_reset").getTime());
                 }
@@ -329,8 +333,9 @@ public class DatabaseConnection {
                 stmt.setInt(2, data.getPlayerVisibility());
                 stmt.setBoolean(3, data.receiveNotifications());
                 stmt.setInt(4, data.getPrivacyLevel());
-                stmt.setString(5, data.getTitle() == null ? WarriorTitle.EMPTY.name() : data.getTitle().name());
-                stmt.setTimestamp(6, new Timestamp(data.getLastReset()));
+                stmt.setString(5, data.getLanguage().toString());
+                stmt.setString(6, data.getTitle() == null ? WarriorTitle.EMPTY.name() : data.getTitle().name());
+                stmt.setTimestamp(7, new Timestamp(data.getLastReset()));
 
                 stmt.executeUpdate();
                 conn.close();

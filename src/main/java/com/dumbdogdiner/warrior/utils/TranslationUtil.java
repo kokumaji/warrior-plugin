@@ -12,9 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.awt.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -250,45 +247,6 @@ public class TranslationUtil {
 
     }
 
-    public static String formatDuration(long timeSpan) {
-        Duration d = Duration.ofMillis(timeSpan);
-        return  d.toString()
-                .substring(2)
-                .replaceAll("(\\d[HMS])(?!$)", "$1 ")
-                .replaceAll("\\.\\d+", "")
-                .toLowerCase();
-    }
-
-    public static String timeAgo(long lastJoin) {
-        return timeAgo(lastJoin, false);
-    }
-
-    public static String timeAgo(long lastJoin, boolean approximate) {
-        long deltaTime = System.currentTimeMillis() - lastJoin;
-        Duration durationSeconds = Duration.ofSeconds(deltaTime / 1000);
-
-        String timeString = formatDuration(deltaTime);
-        if(approximate) {
-            if(durationSeconds.toDays() > 14) {
-                timeString = "a while";
-            } else if(durationSeconds.toDays() > 3) {
-                timeString = "a few days";
-            } else return "recently";
-
-        } else {
-            if(durationSeconds.toDays() > 30) {
-                timeString = "> 1 month";
-            } else if(durationSeconds.toDays() > 14) {
-                timeString = String.format("%d weeks", durationSeconds.toDays() / 7);
-            } else if(durationSeconds.toDays() > 1) {
-                timeString = String.format("%d days", durationSeconds.toDays());
-            }
-
-        }
-
-        return String.format("%s ago", timeString);
-    }
-
     public static boolean validateUsername(String string) {
         return MathUtil.inRange(string.length(), 3, 16) && !containsSpecialCharacter(string);
     }
@@ -304,29 +262,13 @@ public class TranslationUtil {
 
         StringBuilder result = new StringBuilder();
         for(Character c : string.toCharArray()) {
-            int index = indexOf(HALFWIDTH, String.valueOf(c));
+            int index = MathUtil.indexOf(HALFWIDTH, String.valueOf(c));
             if(index == -1) result.append(c);
             else result.append(FULLWIDTH[index]);
         }
 
         return result.toString();
 
-    }
-
-    public static int indexOf(String[] array, String key) {
-        int returnvalue = -1;
-        for (int i = 0; i < array.length; ++i) {
-            if (key.equals(array[i])) {
-                return i;
-            }
-        }
-        return returnvalue;
-    }
-
-    public static String toDate(long timestamp) {
-        Date date = new Date(timestamp);
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        return formatter.format(date);
     }
 
     public static URLPair findURL(String text) {

@@ -175,4 +175,13 @@ public class MathUtil {
         return generated;
     }
 
+    public static <T> int indexOf(T[] array, T key) {
+        for (int i = 0; i < array.length; ++i) {
+            if (key.equals(array[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }

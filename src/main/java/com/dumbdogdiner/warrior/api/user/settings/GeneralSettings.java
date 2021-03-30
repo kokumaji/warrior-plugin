@@ -1,5 +1,6 @@
 package com.dumbdogdiner.warrior.api.user.settings;
 
+import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode;
 import com.dumbdogdiner.warrior.api.user.cosmetics.WarriorTitle;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,9 @@ public class GeneralSettings {
 
     @Getter @Setter
     private long lastReset;
+
+    @Getter @Setter
+    private LanguageCode language;
 
     @Getter
     private final UUID userId;

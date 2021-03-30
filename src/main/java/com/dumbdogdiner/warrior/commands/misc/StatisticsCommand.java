@@ -4,6 +4,7 @@ import com.dumbdogdiner.stickyapi.bukkit.util.PlayerSelector;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.command.AsyncCommandLegacy;
 import com.dumbdogdiner.warrior.api.command.ExitStatus;
+import com.dumbdogdiner.warrior.api.translation.TimeUtil;
 import com.dumbdogdiner.warrior.api.user.UserData;
 import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
@@ -63,11 +64,11 @@ public class StatisticsCommand extends AsyncCommandLegacy implements TabComplete
         }
 
         double kdr = MathUtil.round(data.getDeaths() < 1 ? data.getKills() : (double) data.getKills() / (double) data.getDeaths(), 2);
-        String lastJoin = player.isOnline() ? "§aOnline" : playerSettings.getPrivacyLevel() == 0 ? "last seen " + TranslationUtil.timeAgo(data.getLastJoin(), false)
-                : "last seen " + TranslationUtil.timeAgo(data.getLastJoin(), true);
-        String totalTime = playerSettings.getPrivacyLevel() == 0 ? TranslationUtil.formatDuration(data.getTotalTime())
+        String lastJoin = player.isOnline() ? "§aOnline" : playerSettings.getPrivacyLevel() == 0 ? "last seen " + TimeUtil.timeAgo(data.getLastJoin(), false)
+                : "last seen " + TimeUtil.timeAgo(data.getLastJoin(), true);
+        String totalTime = playerSettings.getPrivacyLevel() == 0 ? TimeUtil.formatDuration(data.getTotalTime())
                                                                  : "(HIDDEN)";
-        String firstJoin = playerSettings.getPrivacyLevel() < 2 ? TranslationUtil.toDate(data.getFirstJoin()) : "(HIDDEN)";
+        String firstJoin = playerSettings.getPrivacyLevel() < 2 ? TimeUtil.formatDate(data.getFirstJoin()) : "(HIDDEN)";
 
         String centeredMessage = TranslationUtil.prettyMessage( " ",
               "&7Statistics for " + player.getName(),
