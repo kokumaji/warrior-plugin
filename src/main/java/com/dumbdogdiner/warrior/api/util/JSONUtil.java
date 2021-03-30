@@ -108,4 +108,12 @@ public class JSONUtil {
             e.printStackTrace();
         }
     }
+
+    public static void removeFile(Arena arena) {
+        String filePath = DATA_FOLDER_PATH + subFolderNames[0] + "/" + arena.getName() + ".json";
+        File f = new File(filePath);
+        if(f.exists() && f.getParentFile().canWrite()) {
+            if(!f.delete()) Warrior.getPluginLogger().error("Could not delete file " + filePath);
+        }
+    }
 }

@@ -84,5 +84,6 @@ public class ArenaManager {
 
     public static void remove(Arena a) {
         arenaMap.remove(a.getId());
+        JSONUtil.removeFile(a);
     }
 }

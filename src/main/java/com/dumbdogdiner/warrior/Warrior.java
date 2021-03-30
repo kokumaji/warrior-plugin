@@ -74,7 +74,7 @@ public class Warrior extends JavaPlugin {
                 .addSubCommand(new WarriorReloadCommand()));
         cmds.add(new ArenaCommand("arena", this)
                 .addSubCommand(new ArenaCreateCommand())
-                .addSubCommand(new ArenaRemoveCommand() )
+                .addSubCommand(new ArenaRemoveCommand())
                 .addSubCommand(new ArenaJoinCommand())
                 .addSubCommand(new ArenaSetupCommand())
                 .addSubCommand(new ArenaRateCommand())

@@ -31,7 +31,6 @@ public class ArenaLeaveCommand implements SubCommand {
         WarriorUser user = PlayerManager.get(((Player)sender).getUniqueId());
         if(user.getSession().getType() == SessionType.GAME) {
             long time = user.getSession().getTimestamp();
-            user.sendMessage("this session lasted " + (System.currentTimeMillis() - time)/1e3 + "s");
             user.setSession(new LobbySession(user.getUserId()));
             if(user.isSpectating()) user.setSpectating(false);
         }

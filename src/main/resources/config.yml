@@ -9,6 +9,7 @@ arena-settings:
   max-coins: 50
 lobby-settings:
   custom-spawn: true
+  lobby-world: "world"
 mysql-settings:
   db-host: "localhost"
   db-port: 3306

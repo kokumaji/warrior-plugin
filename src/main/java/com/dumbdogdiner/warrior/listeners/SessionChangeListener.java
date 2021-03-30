@@ -18,8 +18,7 @@ public class SessionChangeListener implements Listener {
         // might replace all this with debug only stuff
         if(e.getNext() instanceof LobbySession) {
             Player p = e.getPlayer();
-            if(Warrior.getInstance().getConfig().getBoolean("lobby-settings.custom-spawn"))
-                p.teleport(LobbyManager.getLobbySpawn());
+            p.teleport(LobbyManager.getLobbySpawn());
             p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20D);
         } else if(e.getNext() instanceof ArenaSession) {
             //e.getPlayer().sendMessage("Teleporting to Arena...");
