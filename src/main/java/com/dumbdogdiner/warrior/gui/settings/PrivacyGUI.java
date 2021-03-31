@@ -4,6 +4,7 @@ import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot;
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
+import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.util.HeadTexture;
@@ -62,12 +63,12 @@ public class PrivacyGUI extends GUI {
         ClickableSlot hideJoinSlot = new ClickableSlot(hideJoin, 4, 1);
         ClickableSlot hideAllSlot = new ClickableSlot(hideAll, 5, 1);
 
-        String msg = TranslationUtil.getPrefix() + Warrior.getTranslator().translate("settings-gui.privacy-changed");
+        String msg = TranslationUtil.getPrefix() + Warrior.getTranslator().translate("settings-gui.privacy-changed", user);
 
         addSlot(publicSlot, (evt, gui) -> {
             user.getSettings().setPrivacyLevel(0);
 
-            user.sendMessage(Warrior.getTranslator().applyPlaceholders(msg, new HashMap<>() {
+            user.sendMessage(Placeholders.applyPlaceholders(msg, new HashMap<>() {
                 {
                     put("STATE", TranslationUtil.privacyString(user));
                 }
@@ -76,7 +77,7 @@ public class PrivacyGUI extends GUI {
 
         addSlot(hideLastSlot, (evt, gui) -> {
             user.getSettings().setPrivacyLevel(1);
-            user.sendMessage(Warrior.getTranslator().applyPlaceholders(msg, new HashMap<>() {
+            user.sendMessage(Placeholders.applyPlaceholders(msg, new HashMap<>() {
                 {
                     put("STATE", TranslationUtil.privacyString(user));
                 }
@@ -85,7 +86,7 @@ public class PrivacyGUI extends GUI {
 
         addSlot(hideJoinSlot, (evt, gui) -> {
             user.getSettings().setPrivacyLevel(2);
-            user.sendMessage(Warrior.getTranslator().applyPlaceholders(msg, new HashMap<>() {
+            user.sendMessage(Placeholders.applyPlaceholders(msg, new HashMap<>() {
                 {
                     put("STATE", TranslationUtil.privacyString(user));
                 }
@@ -94,7 +95,7 @@ public class PrivacyGUI extends GUI {
 
         addSlot(hideAllSlot, (evt, gui) -> {
             user.getSettings().setPrivacyLevel(3);
-            user.sendMessage(Warrior.getTranslator().applyPlaceholders(msg, new HashMap<>() {
+            user.sendMessage(Placeholders.applyPlaceholders(msg, new HashMap<>() {
                 {
                     put("STATE", TranslationUtil.privacyString(user));
                 }

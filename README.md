@@ -79,3 +79,18 @@ This plugin features **full** PlaceholderAPI support and a lot of placeholders!
 %warrior_arena_timestamp%
 %warrior_arena_description%
 ```
+
+### Conditional Placeholders
+
+Ever wanted to display information, but only if a certain condition is met? With Warrior's internal placeholder system, this is now possible!
+Simply put placeholders in this format `{CONDITION|"IF TRUE"|"IF FALSE"}` anywhere you want and Warrior will replace the text for you! 
+
+#### Predefined Conditions
+
+ - `notifications`- returns true if the user has notifications  enabled
+ - `flying`- returns true if the user is flying
+ - `online`- returns true if the user is online
+ - `ingame`- returns true if the user currently in an arena
+
+#### Custom Conditions (WIP)
+Future versions will allow you to "code" your very own conditional placeholders, using simple math operations.

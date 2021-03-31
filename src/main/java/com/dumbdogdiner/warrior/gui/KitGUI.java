@@ -100,7 +100,7 @@ public class KitGUI extends GUI {
                 {
                     put("KIT", kit.getName());
                 }
-            });
+            }, user);
 
             user.sendMessage(TranslationUtil.getPrefix() + msg);
             user.playSound(Sound.ITEM_ARMOR_EQUIP_CHAIN, 0.5f, 1f);

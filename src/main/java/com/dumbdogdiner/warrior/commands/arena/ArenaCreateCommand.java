@@ -8,6 +8,7 @@ import com.dumbdogdiner.warrior.api.arena.ArenaBuilderSession;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
+import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -40,6 +41,7 @@ public class ArenaCreateCommand implements SubCommand {
         }
 
         Player player = (Player) sender;
+        WarriorUser user = PlayerManager.get(player.getUniqueId());
         String name = TranslationUtil.capitalize(args[1]);
         ArenaBuilderSession session = new ArenaBuilderSession(new WarriorUser(player), name);
 
@@ -50,7 +52,7 @@ public class ArenaCreateCommand implements SubCommand {
                 {
                     put("ARENA", arena.getName());
                 }
-            });
+            }, user);
             player.sendMessage(TranslationUtil.getPrefix() + msg);
             player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5f, 1f);
             return true;

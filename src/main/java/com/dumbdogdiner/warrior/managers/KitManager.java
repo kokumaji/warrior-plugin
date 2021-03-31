@@ -7,6 +7,7 @@ import com.dumbdogdiner.warrior.api.kit.kits.CustomKit;
 import com.dumbdogdiner.warrior.api.kit.kits.TankKit;
 import com.dumbdogdiner.warrior.api.kit.kits.WarriorKit;
 import com.dumbdogdiner.warrior.api.models.CustomKitModel;
+import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.util.JSONUtil;
 import com.dumbdogdiner.warrior.utils.DefaultMessages;
 import com.google.gson.Gson;
@@ -46,7 +47,7 @@ public class KitManager {
         }
 
         int finalI = i;
-        String msg = Warrior.getTranslator().applyPlaceholders(DefaultMessages.LOADED_OBJECT, new HashMap<>() {
+        String msg = Placeholders.applyPlaceholders(DefaultMessages.LOADED_OBJECT, new HashMap<>() {
             {
                 put("AMOUNT", Integer.toString(finalI));
                 put("TYPE", "kit");

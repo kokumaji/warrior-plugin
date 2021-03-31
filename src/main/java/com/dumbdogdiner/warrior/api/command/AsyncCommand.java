@@ -1,6 +1,7 @@
 package com.dumbdogdiner.warrior.api.command;
 
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.utils.DefaultMessages;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import lombok.Getter;
@@ -102,7 +103,7 @@ public abstract class AsyncCommand extends Command implements TabCompleter {
                         }
 
                         if(!subCommand.execute(sender, commandLabel, args)) {
-                            String msg = Warrior.getTranslator().applyPlaceholders(DefaultMessages.SUBCMD_SYNTAX, new HashMap<>() {
+                            String msg = Placeholders.applyPlaceholders(DefaultMessages.SUBCMD_SYNTAX, new HashMap<>() {
 
                                 {
                                     put("SUB_SYNTAX", subCommand.getSyntax());

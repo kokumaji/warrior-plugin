@@ -1,6 +1,9 @@
 package com.dumbdogdiner.warrior.api.translation;
 
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +23,10 @@ public class Translator {
     private Plugin owner;
 
     @Getter @Setter
-    private YamlConfiguration languageFile;
+    private YamlConfiguration englishFile;
+
+    @Getter @Setter
+    private YamlConfiguration germanFile;
 
     public Translator(Plugin plugin, FileConfiguration conf) throws IOException {
         this.owner = plugin;
@@ -32,36 +38,55 @@ public class Translator {
                 throw new IOException("Could not copy file 'messages.en_US.yml': File doess not exist.");
 
             owner.saveResource("translation/messages.en_US.yml", true);
+            owner.saveResource("translation/messages.de_DE.yml", true);
         } else {
             File langFile = new File(owner.getDataFolder(), "translation/messages.en_US.yml");
+            File langFileGerman = new File(owner.getDataFolder(), "translation/messages.de_DE.yml");
 
             if(!langFile.exists())
                 owner.saveResource("translation/messages.en_US.yml", true);
+
+            if(!langFileGerman.exists())
+                owner.saveResource("translation/messages.de_DE.yml", true);
         }
 
         File f = new File(plugin.getDataFolder(), "translation/messages.en_US.yml");
-        this.languageFile = YamlConfiguration.loadConfiguration(f);
+        this.englishFile = YamlConfiguration.loadConfiguration(f);
+
+        File f2 = new File(plugin.getDataFolder(), "translation/messages.de_DE.yml");
+        this.germanFile = YamlConfiguration.loadConfiguration(f2);
 
     }
 
     public String translate(String stringPath) {
-        return translate(stringPath, null);
+        return translate(stringPath, null, null);
     }
 
-    public String applyPlaceholders(String msg, Map<String, String> values) {
-        if(values != null) {
-            StrSubstitutor sub = new StrSubstitutor(values, "{", "}");
-            msg = sub.replace(msg);
+    public String translate(String stringPath, WarriorUser user) {
+        return translate(stringPath, null, user);
+    }
+
+    public String translate(String stringPath, Map<String, String> values, WarriorUser user) {
+        LanguageCode lang = LanguageCode.EN_US;
+        if(user != null) {
+            lang = user.getSettings().getLanguage();
         }
 
-        return TranslationUtil.translateColor(msg);
-    }
+        YamlConfiguration languageFile = lang == LanguageCode.DE_DE ? germanFile : englishFile;
 
-    public String translate(String stringPath, Map<String, String> values, Player player) {
         if(languageFile.get(stringPath) != null) {
-            String result = applyPlaceholders(languageFile.getString(stringPath), values);
-            if(Warrior.usePlaceholderAPI() && player != null) {
-                result = PlaceholderAPI.setPlaceholders(player, result);
+            String result = languageFile.getString(stringPath);
+
+            if(values != null) {
+                result = Placeholders.applyPlaceholders(result, values);
+            }
+
+            if(Warrior.usePlaceholderAPI() && user != null) {
+                result = PlaceholderAPI.setPlaceholders(user.getBukkitPlayer(), result);
+            }
+
+            if(user != null) {
+                result = Placeholders.parseConditional(result, user.getBukkitPlayer());
             }
 
             return TranslationUtil.translateColor(result);
@@ -74,7 +99,8 @@ public class Translator {
         return translate(stringPath, values, null);
     }
 
-    public String[] getStrings(String s) {
-        return this.languageFile.getStringList(s).toArray(String[]::new);
+    public String[] getStrings(String s, LanguageCode lang) {
+        return lang == LanguageCode.DE_DE ? germanFile.getStringList(s).toArray(String[]::new)
+                : englishFile.getStringList(s).toArray(String[]::new);
     }
 }

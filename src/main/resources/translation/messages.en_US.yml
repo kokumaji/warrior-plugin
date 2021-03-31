@@ -21,7 +21,7 @@ command-messages:
 
 settings-gui:
   language-changed: "&7Language has been set to &b{LANGUAGE}"
-  notifications-changed: "&7Notifications have been &b{STATE}"
+  notifications-changed: "&7Notifications have been &b{notifications|\"enabled\"|\"disabled\"}"
   privacy-changed: "&7Privacy Level has been set to &b{STATE}"
 
 gameplay:

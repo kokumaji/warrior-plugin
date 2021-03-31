@@ -64,7 +64,7 @@ public class ArenaJoinCommand implements SubCommand {
                     {
                         put("ARENA", a.getName());
                     }
-                });
+                }, user);
 
                 user.sendMessage(TranslationUtil.getPrefix() + msg);
                 user.playSound(Sound.ENTITY_ENDERMAN_TELEPORT, 0.5f, 1f);

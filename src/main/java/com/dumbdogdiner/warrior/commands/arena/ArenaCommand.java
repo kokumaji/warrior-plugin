@@ -6,6 +6,7 @@ import com.dumbdogdiner.warrior.api.command.CommandType;
 import com.dumbdogdiner.warrior.api.command.ExitStatus;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.translation.ConsoleColor;
+import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.translation.Translator;
 import com.dumbdogdiner.warrior.utils.DefaultMessages;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
@@ -54,7 +55,7 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
     public void onSyntaxError(CommandSender sender, String label, String[] args) {
         if(args.length > 1) return;
         Translator t = Warrior.getTranslator();
-        String msg = t.applyPlaceholders(DefaultMessages.COMMAND_SYNTAX_ERROR, new HashMap<>() {
+        String msg = Placeholders.applyPlaceholders(DefaultMessages.COMMAND_SYNTAX_ERROR, new HashMap<>() {
             {
                 put("HELP_CMD", "/warrior help");
             }

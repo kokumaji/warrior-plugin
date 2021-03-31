@@ -4,6 +4,7 @@ import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot;
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
+import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.util.HeadTexture;
 import com.dumbdogdiner.warrior.managers.GUIManager;
@@ -50,24 +51,16 @@ public class NotificationsGUI extends GUI {
         ClickableSlot enableSlot = new ClickableSlot(enableItem, 3, 1);
         ClickableSlot disableSlot = new ClickableSlot(disableItem, 5, 1);
 
-        String msg = TranslationUtil.getPrefix() + Warrior.getTranslator().translate("settings-gui.notifications-changed");
-
         addSlot(enableSlot, (evt, gui) -> {
             user.getSettings().receiveNotifications(true);
-            user.sendMessage(Warrior.getTranslator().applyPlaceholders(msg, new HashMap<>() {
-                {
-                    put("STATE", "enabled");
-                }
-            }));
+            String msg = TranslationUtil.getPrefix() + Warrior.getTranslator().translate("settings-gui.notifications-changed", user);
+            user.sendMessage(msg);
         });
 
         addSlot(disableSlot, (evt, gui) -> {
             user.getSettings().receiveNotifications(false);
-            user.sendMessage(Warrior.getTranslator().applyPlaceholders(msg, new HashMap<>() {
-                {
-                    put("STATE", "disabled");
-                }
-            }));
+            String msg = TranslationUtil.getPrefix() + Warrior.getTranslator().translate("settings-gui.notifications-changed", user);
+            user.sendMessage(msg);
         });
 
         addSlot(backSlot, (evt, gui) -> {

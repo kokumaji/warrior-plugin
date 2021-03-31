@@ -4,6 +4,7 @@ import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot;
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
+import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.util.HeadTexture;
@@ -56,13 +57,13 @@ public class LanguageGUI extends GUI {
         ClickableSlot ukSlot = new ClickableSlot(unitedKingdom, 3, 1);
         ClickableSlot germanySlot = new ClickableSlot(germany, 4, 1);
 
-        String msg = TranslationUtil.getPrefix() +   Warrior.getTranslator().translate("settings-gui.language-changed");
+        String msg = TranslationUtil.getPrefix() + Warrior.getTranslator().translate("settings-gui.language-changed", user);
 
         addSlot(usSlot, (evt, gui) -> {
             user.getSettings().setLanguage(LanguageCode.EN_US);
             evt.getWhoClicked().closeInventory();
 
-            user.sendMessage(Warrior.getTranslator().applyPlaceholders(msg, new HashMap<>() {
+            user.sendMessage(Placeholders.applyPlaceholders(msg, new HashMap<>() {
                 {
                     put("LANGUAGE", LanguageCode.EN_US.getFriendlyName());
                 }
@@ -73,7 +74,7 @@ public class LanguageGUI extends GUI {
             user.getSettings().setLanguage(LanguageCode.EN_GB);
             evt.getWhoClicked().closeInventory();
 
-            user.sendMessage(Warrior.getTranslator().applyPlaceholders(msg, new HashMap<>() {
+            user.sendMessage(Placeholders.applyPlaceholders(msg, new HashMap<>() {
                 {
                     put("LANGUAGE", LanguageCode.EN_GB.getFriendlyName());
                 }
@@ -84,7 +85,7 @@ public class LanguageGUI extends GUI {
             user.getSettings().setLanguage(LanguageCode.DE_DE);
             evt.getWhoClicked().closeInventory();
 
-            user.sendMessage(Warrior.getTranslator().applyPlaceholders(msg, new HashMap<>() {
+            user.sendMessage(Placeholders.applyPlaceholders(msg, new HashMap<>() {
                 {
                     put("LANGUAGE", LanguageCode.DE_DE.getFriendlyName());
                 }

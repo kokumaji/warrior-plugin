@@ -3,6 +3,7 @@ package com.dumbdogdiner.warrior.managers;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.sound.Melody;
 import com.dumbdogdiner.warrior.api.sound.Note;
+import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.util.MathUtil;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 
 public class NotificationManager {
 
-    private static final String[] msgPool = Warrior.getTranslator().getStrings("notifications.messages");
+    private static final String[] msgPool = Warrior.getTranslator().getStrings("notifications.messages", LanguageCode.EN_US);
 
     private static final Melody msgSound = new Melody(Instrument.PIANO, 2L, 0.65f, Note.D2, Note.F1_SHARP, Note.F2_SHARP);
 

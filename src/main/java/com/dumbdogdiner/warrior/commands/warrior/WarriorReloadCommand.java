@@ -72,7 +72,9 @@ public class WarriorReloadCommand implements SubCommand {
 
     private void reloadLanguage(CommandSender sender) {
         File f = new File(Warrior.getInstance().getDataFolder(), "translation/messages.en_US.yml");
-        Warrior.getTranslator().setLanguageFile(YamlConfiguration.loadConfiguration(f));
+        Warrior.getTranslator().setEnglishFile(YamlConfiguration.loadConfiguration(f));
+        File f2 = new File(Warrior.getInstance().getDataFolder(), "translation/messages.de_DE.yml");
+        Warrior.getTranslator().setGermanFile(YamlConfiguration.loadConfiguration(f2));
         DefaultMessages.update();
 
         String msg = Warrior.getTranslator().translate(Constants.Lang.CMD_RELOAD_LANGUAGE);

@@ -1,0 +1,32 @@
+command-messages:
+  syntax-error: "&cUnbekannter Sub-Command!\n&7Nutze {HELP_CMD}, um eine Liste von Commands \n&7zu erhalten!"
+  subcmd-syntax: "&cFalsche Command Syntax!\n&7Syntax &8>> &7{SUB_SYNTAX}"
+  permission-error: "&cDu kannst diesen Command nicht ausführen!"
+  general-error: "&cCommand konnte aufgrund eines Fehlers nicht ausgeführt werden... Sollte dieser Fehler weiterhin bestehen, kontaktiere den Developer des Plugins!"
+  client-only-error: "&cDieser Command ist nur für Spieler gedacht!"
+
+  reload-config: "&7Die Plugin Konfigurations-Datei wurde erfolgreich neugeladen!"
+  reload-language: "&7Die Spracheinstellungen wurden erfolgreich neugeladen!"
+
+  arena-set-location: "&b{TYPE} &7ist nun bei &b{LOCATION}"
+  arena-create-success: "&7Arena &b{ARENA} &7wurde erfolgreich gespeichert."
+  arena-create-cancel: "&cDas Erstellen der Arena &b{ARENA} &c wurde abgrebrochen."
+  setup-in-progress: "&cDu befindest dich bereits im Arena Setup!"
+  arena-already-exists: "&7Die Arena &b{ARENA} &7existiert bereits!"
+  arena-doesnt-exist: "&7Die Arena &b{ARENA} &7existiert nicht!"
+  arena-teleport: "&7Teleportiere zu Arena &b{ARENA}"
+  arena-setup-incomplete: "&7Arena kann nicht erstellt werden! Bitte schließe erst das Setup ab!"
+  arena-no-setup-running: "&7Du kannst diesen Command nicht außerhalb des Arena Setups nutzen."
+  kit-equip: "&7Du hast das Kit &b{KIT} &7ausgewählt."
+
+settings-gui:
+  language-changed: "&7Sprache wurde auf &b{LANGUAGE} &7umgestellt."
+  notifications-changed: "&7Benachrichtigungen sind nun &b{notifications|\"aktiviert\"|\"deaktiviert\"}."
+  privacy-changed: "&7Dein Privatsphären-Level ist nun &b{STATE}."
+
+gameplay:
+  ability-ready: "&7Deine Special-Ability ist nun bereit!"
+notifications:
+  message-format: "&3&l(!) &7{MESSAGE}"
+  messages:
+    - "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in ex dui."

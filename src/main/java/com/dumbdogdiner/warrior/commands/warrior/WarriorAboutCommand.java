@@ -2,6 +2,7 @@ package com.dumbdogdiner.warrior.commands.warrior;
 
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
+import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -41,7 +42,7 @@ public class WarriorAboutCommand implements SubCommand {
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         if(args.length > 1) return false;
         Plugin self = Warrior.getInstance();
-        String message = Warrior.getTranslator().applyPlaceholders(String.join("\n", about), new HashMap<>() {
+        String message = Placeholders.applyPlaceholders(String.join("\n", about), new HashMap<>() {
             {
                 put("Description", self.getDescription().getDescription());
                 put("PluginName", self.getName());

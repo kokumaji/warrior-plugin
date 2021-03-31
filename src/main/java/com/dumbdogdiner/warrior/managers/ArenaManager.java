@@ -1,6 +1,7 @@
 package com.dumbdogdiner.warrior.managers;
 
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
@@ -48,7 +49,7 @@ public class ArenaManager {
         }
 
         int finalI = i;
-        String msg = Warrior.getTranslator().applyPlaceholders(DefaultMessages.LOADED_OBJECT, new HashMap<>() {
+        String msg = Placeholders.applyPlaceholders(DefaultMessages.LOADED_OBJECT, new HashMap<>() {
             {
                 put("AMOUNT", Integer.toString(finalI));
                 put("TYPE", "arena");
