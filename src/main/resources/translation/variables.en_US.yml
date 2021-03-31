@@ -1,0 +1,7 @@
+statistics:
+  stats-for: "Statistics for {user}"
+  total-kills: "Total Kills"
+  total-deaths: "Total Deaths"
+  kdr: "KDR"
+  time-played: "Time Played"
+  first-join: "First Join"

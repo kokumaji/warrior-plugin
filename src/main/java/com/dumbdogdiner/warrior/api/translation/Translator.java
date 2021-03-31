@@ -28,6 +28,12 @@ public class Translator {
     @Getter @Setter
     private YamlConfiguration germanFile;
 
+    @Getter @Setter
+    private YamlConfiguration variablesEnglish;
+
+    @Getter @Setter
+    private YamlConfiguration variablesGerman;
+
     public Translator(Plugin plugin, FileConfiguration conf) throws IOException {
         this.owner = plugin;
         File langFolder = new File(owner.getDataFolder(), "translation");
@@ -39,15 +45,26 @@ public class Translator {
 
             owner.saveResource("translation/messages.en_US.yml", true);
             owner.saveResource("translation/messages.de_DE.yml", true);
+            owner.saveResource("translation/variables.de_DE.yml", true);
+            owner.saveResource("translation/variables.en_US.yml", true);
         } else {
             File langFile = new File(owner.getDataFolder(), "translation/messages.en_US.yml");
             File langFileGerman = new File(owner.getDataFolder(), "translation/messages.de_DE.yml");
+
+            File varFile = new File(owner.getDataFolder(), "translation/variables.en_US.yml");
+            File varFileGerman = new File(owner.getDataFolder(), "translation/variables.de_DE.yml");
 
             if(!langFile.exists())
                 owner.saveResource("translation/messages.en_US.yml", true);
 
             if(!langFileGerman.exists())
                 owner.saveResource("translation/messages.de_DE.yml", true);
+
+            if(!varFile.exists())
+                owner.saveResource("translation/variables.en_US.yml", true);
+
+            if(!varFileGerman.exists())
+                owner.saveResource("translation/variables.de_DE.yml", true);
         }
 
         File f = new File(plugin.getDataFolder(), "translation/messages.en_US.yml");
@@ -55,6 +72,12 @@ public class Translator {
 
         File f2 = new File(plugin.getDataFolder(), "translation/messages.de_DE.yml");
         this.germanFile = YamlConfiguration.loadConfiguration(f2);
+
+        File f3 = new File(plugin.getDataFolder(), "translation/variables.de_DE.yml");
+        this.variablesGerman = YamlConfiguration.loadConfiguration(f3);
+
+        File f4 = new File(plugin.getDataFolder(), "translation/variables.en_US.yml");
+        this.variablesEnglish = YamlConfiguration.loadConfiguration(f4);
 
     }
 
@@ -86,7 +109,10 @@ public class Translator {
             }
 
             if(user != null) {
-                result = Placeholders.parseConditional(result, user.getBukkitPlayer());
+                YamlConfiguration varFile = lang == LanguageCode.DE_DE ? variablesGerman : variablesEnglish;
+                result = Placeholders.applyPlaceholders(Placeholders.parseConditional(result, user.getBukkitPlayer()), varFile);
+            } else {
+                result = Placeholders.applyPlaceholders(Placeholders.parseConditional(result), variablesEnglish);
             }
 
             return TranslationUtil.translateColor(result);

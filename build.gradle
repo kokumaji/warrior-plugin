@@ -18,7 +18,7 @@ plugins {
 
 // Setting some variables for our plugin!
 group 'me.kokumaji'
-version '1.1-beta'
+version '1.2-beta'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {

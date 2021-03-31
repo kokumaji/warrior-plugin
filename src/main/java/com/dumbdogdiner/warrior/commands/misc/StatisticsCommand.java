@@ -4,6 +4,7 @@ import com.dumbdogdiner.stickyapi.bukkit.util.PlayerSelector;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.command.AsyncCommandLegacy;
 import com.dumbdogdiner.warrior.api.command.ExitStatus;
+import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.translation.TimeUtil;
 import com.dumbdogdiner.warrior.api.user.UserData;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
@@ -72,18 +73,9 @@ public class StatisticsCommand extends AsyncCommandLegacy implements TabComplete
                                                                  : "(HIDDEN)";
         String firstJoin = playerSettings.getPrivacyLevel() < 2 ? TimeUtil.formatDate(user.getSettings().getLanguage(), data.getFirstJoin()) : "(HIDDEN)";
 
-        String centeredMessage = TranslationUtil.prettyMessage( " ",
-              "&7Statistics for " + player.getName(),
-                    "&8" + lastJoin,
-                    " ",
-                    "&7Total Kills &8» &f&l" + data.getKills(),
-                    "&7Total Deaths &8» &f&l" + data.getDeaths(),
-                    "&7KDR &8» &f&l" + kdr,
-                    " ",
-                    "&7Time Played &8» &f&l" + totalTime,
-                    "&7First Join &8» &f&l" + firstJoin,
-                    " "
-        );
+        String msg = Placeholders.applyPlaceholders("&7{statistics.stats-for} %1s\n&8" + lastJoin + "\n \n&7{statistics.total-kills} &8» &f&l%1d\n&7{statistics.total-deaths} &8» &f&l%2d\n&7{statistics.kdr} &8» &f&l%.2f\n \n&7{statistics.time-played} &8» &f&l%2s\n&7{statistics.first-join} &8» &f&l%3s\n ", user.getSettings().getLanguage());
+        String formatted = String.format(msg, player.getName(), data.getKills(), data.getDeaths(), kdr, totalTime, firstJoin);
+        String centeredMessage = TranslationUtil.prettyMessage(formatted.split("\n"));
 
         sender.sendMessage(centeredMessage);
 
