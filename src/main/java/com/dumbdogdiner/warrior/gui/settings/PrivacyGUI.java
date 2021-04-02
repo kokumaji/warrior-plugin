@@ -103,8 +103,9 @@ public class PrivacyGUI extends GUI {
         });
 
         addSlot(backSlot, (evt, gui) -> {
-            SettingsGUI langGUI = GUIManager.get(SettingsGUI.class);
-            langGUI.open(user.getBukkitPlayer());
+            SettingsGUI parentGUI = GUIManager.get(SettingsGUI.class);
+            evt.getWhoClicked().closeInventory();
+            parentGUI.open(user.getBukkitPlayer());
         });
 
     }
