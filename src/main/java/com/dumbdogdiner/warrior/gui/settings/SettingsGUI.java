@@ -89,14 +89,17 @@ public class SettingsGUI extends GUI {
 
         addSlot(languageSlot, (evt, gui) -> {
             LanguageGUI langGUI = GUIManager.get(LanguageGUI.class);
+            evt.getWhoClicked().closeInventory();
             langGUI.open(user.getBukkitPlayer());
         });
         addSlot(notificationSlot, (evt, gui) -> {
             NotificationsGUI notifGUI = GUIManager.get(NotificationsGUI.class);
+            evt.getWhoClicked().closeInventory();
             notifGUI.open(user.getBukkitPlayer());
         });
         addSlot(privacySlot, (evt, gui) -> {
             PrivacyGUI privacyGUI = GUIManager.get(PrivacyGUI.class);
+            evt.getWhoClicked().closeInventory();
             privacyGUI.open(user.getBukkitPlayer());
         });
 
