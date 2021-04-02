@@ -11,6 +11,8 @@ import com.dumbdogdiner.warrior.commands.kit.KitCommand;
 import com.dumbdogdiner.warrior.commands.kit.KitCreateCommand;
 import com.dumbdogdiner.warrior.commands.misc.SettingsCommand;
 import com.dumbdogdiner.warrior.commands.misc.StatisticsCommand;
+import com.dumbdogdiner.warrior.commands.misc.SymbolCommand;
+import com.dumbdogdiner.warrior.commands.misc.SymbolsSearchCommand;
 import com.dumbdogdiner.warrior.commands.warrior.*;
 import com.dumbdogdiner.warrior.listeners.*;
 import com.dumbdogdiner.warrior.managers.*;
@@ -83,6 +85,7 @@ public class Warrior extends JavaPlugin {
                 .addSubCommand(new ArenaSpectateCommand())
                 .addSubCommand(new ArenaLeaveCommand())
                 .addSubCommand(new ArenaFlagsCommand()));
+        cmds.add(new SymbolCommand().addSubCommand(new SymbolsSearchCommand()));
         cmds.add(new KitCommand("kit")
                 .addSubCommand(new KitCreateCommand()));
         cMap.registerAll(this.getName().toLowerCase(), cmds);

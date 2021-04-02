@@ -1,6 +1,7 @@
 package com.dumbdogdiner.warrior.commands.arena;
 
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
@@ -8,11 +9,13 @@ import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.GameState;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +50,12 @@ public class ArenaSpectateCommand implements SubCommand {
 
             @Override
             public void run() {
+                String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_SPECTATE, new HashMap<>() {
+                    {
+                        put("arena", args[1]);
+                    }
+                }, u);
+                sender.sendMessage(TranslationUtil.getPrefix() + msg);
                 u.setSession(new ArenaSession(u.getUserId(), a, GameState.SPECTATING));
                 u.setSpectating(true);
             }

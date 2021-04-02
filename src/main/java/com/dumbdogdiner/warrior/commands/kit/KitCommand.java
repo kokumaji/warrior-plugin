@@ -19,6 +19,7 @@ public class KitCommand extends AsyncCommand implements TabCompleter {
     public KitCommand(String commmandName) {
         super(commmandName, Warrior.getInstance(), CommandType.PLAYER_ONLY);
         setTabCompleter(this);
+        setPermission("warrior.command.kit");
     }
 
     @Override

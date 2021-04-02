@@ -1,5 +1,8 @@
 package com.dumbdogdiner.warrior.api.translation;
 
+import com.dumbdogdiner.stickyapi.common.util.NumberUtil;
+import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
+
 @SuppressWarnings("unused")
 public class Symbols {
 
@@ -808,5 +811,22 @@ public class Symbols {
     public static final char RIGHT_CEILING = '⌉';
     public static final char LEFT_FLOOR = '⌊';
     public static final char RIGHT_FLOOR = '⌋';
+
+    public static String parseSymbols(String msg) {
+        String[] split = msg.split(" ");
+        for(String str : split) {
+            if(str.contains("%#")) {
+                String sub = str.substring(str.indexOf("%#")).replace("%#", "");
+                if(NumberUtil.isNumeric(sub)) {
+                    Integer num = Integer.parseInt(sub);
+
+                    msg = msg.replace("%#" + sub, FieldUtil.getStringConstant(num, Symbols.class));
+                } else {
+                    msg = msg.replace("%#" + sub, FieldUtil.getStringConstant(sub, Symbols.class));
+                }
+            }
+        }
+        return msg;
+    }
 
 }

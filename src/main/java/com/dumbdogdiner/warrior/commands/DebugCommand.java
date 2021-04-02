@@ -1,6 +1,7 @@
 package com.dumbdogdiner.warrior.commands;
 
 import com.dumbdogdiner.warrior.api.translation.Placeholders;
+import com.dumbdogdiner.warrior.api.translation.Symbols;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 
 import com.dumbdogdiner.warrior.managers.LevelManager;
@@ -17,11 +18,7 @@ public class DebugCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        String msg;
-        if(sender instanceof Player) {
-            msg = Placeholders.parseConditional(String.join(" ", args), ((Player) sender).getPlayer());
-        } else msg = Placeholders.parseConditional(String.join(" ", args));
-        sender.sendMessage(msg);
+        sender.sendMessage(Symbols.parseSymbols(String.join(" ", args)));
         return true;
     }
 

@@ -36,7 +36,7 @@ public class ArenaSetupCommand implements SubCommand {
         ArenaBuilderSession session = ArenaBuilder.getSession(user);
 
         if(session == null) {
-            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_NO_SETUP_RUNNING);
+            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_NO_SETUP_RUNNING, user);
             user.getBukkitPlayer().sendMessage(TranslationUtil.getPrefix() + msg);
             return true;
         }

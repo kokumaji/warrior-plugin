@@ -16,6 +16,7 @@ public class SettingsCommand extends AsyncCommandLegacy implements TabCompleter 
 
     public SettingsCommand() {
         super("settings", Warrior.getInstance());
+        setPermission("warrior.command.settings");
     }
 
     @Override

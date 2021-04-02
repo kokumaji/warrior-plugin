@@ -5,3 +5,6 @@ statistics:
   kdr: "KDR"
   time-played: "Time Played"
   first-join: "First Join"
+gameplay:
+  you-died: "&4&lYou Died!"
+  respawn-in: "&7Respawning in &f{time} &7seconds"

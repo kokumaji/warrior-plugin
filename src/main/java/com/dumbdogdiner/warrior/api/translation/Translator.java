@@ -17,6 +17,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 public class Translator {
 
@@ -98,7 +99,7 @@ public class Translator {
         YamlConfiguration languageFile = lang == LanguageCode.DE_DE ? germanFile : englishFile;
 
         if(languageFile.get(stringPath) != null) {
-            String result = languageFile.getString(stringPath);
+            String result = Symbols.parseSymbols(Objects.requireNonNull(languageFile.getString(stringPath)));
 
             if(values != null) {
                 result = Placeholders.applyPlaceholders(result, values);

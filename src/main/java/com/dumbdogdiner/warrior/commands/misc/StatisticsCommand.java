@@ -33,6 +33,7 @@ public class StatisticsCommand extends AsyncCommandLegacy implements TabComplete
     public StatisticsCommand(String commmandName, Plugin plugin) {
         super(commmandName, plugin);
         setTabCompleter(this);
+        setPermission("warrior.command.statistics");
     }
 
     @Override

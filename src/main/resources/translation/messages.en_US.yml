@@ -1,5 +1,5 @@
 command-messages:
-  syntax-error: "&cInvalid Sub-Command!\n&7Type {HELP_CMD} for commands!"
+  syntax-error: "&cInvalid Sub-Command!\n&7Type {help_cmd} for commands!"
   subcmd-syntax: "&cWrong Command Syntax!\n&7Syntax &8>> &7{SUB_SYNTAX}"
   permission-error: "&cYou don't have the required permissions\n&cto execute this command!"
   general-error: "&cAn Error occurred while trying to execute this command. If this issue persists, please contact the plugin author!"
@@ -9,15 +9,20 @@ command-messages:
   reload-language: "&7Successfully reloaded language file!"
 
   arena-set-location: "&7Setting &b{TYPE} &7to &b{LOCATION}"
-  arena-create-success: "&7Successfully created Arena &b{ARENA}"
-  arena-create-cancel: "&cCancelled creation of Arena &b{ARENA}"
+  arena-create-success: "&7Successfully created Arena &b{arena}"
+  arena-create-cancel: "&cCancelled creation of Arena &b{arena}"
+  arena-remove-success: "&7Successfully deleted Arena &b{arena}"
+  arena-spectate: "&7You're now spectating Arena &b{arena}"
   setup-in-progress: "&cArena Setup already started!"
-  arena-already-exists: "&7Arena &b{ARENA} &7already exists!"
-  arena-doesnt-exist: "&7Arena &b{ARENA} &7doesn't exist!"
-  arena-teleport: "&7Teleported to Arena &b{ARENA}"
+  arena-already-exists: "&7Arena &b{arena} &7already exists!"
+  arena-doesnt-exist: "&7Arena &b{arena} &7doesn't exist!"
+  arena-teleport: "&7Teleported to Arena &b{arena}"
+  arena-leave: "&7Left Arena &b{arena}"
   arena-setup-incomplete: "&7Can't create Arena! Setup is incomplete..."
   arena-no-setup-running: "&7Can't execute this command! There is no active arena setup running."
   kit-equip: "&7Selected Kit &3{KIT}"
+
+  symbols-command: "&7%#EM_DASH %#EM_DASH %#EM_DASH &3Symbol &b{arg1} &7%#EM_DASH %#EM_DASH %#EM_DASH\n    &7Unicode &8» &f{unicode}\n    &7Index &8» &f{index}\n    &7Identifier &8» &f{identifier}\n    "
 
 settings-gui:
   language-changed: "&7Language has been set to &b{LANGUAGE}"

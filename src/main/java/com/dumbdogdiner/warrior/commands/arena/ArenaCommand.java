@@ -6,8 +6,11 @@ import com.dumbdogdiner.warrior.api.command.CommandType;
 import com.dumbdogdiner.warrior.api.command.ExitStatus;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.translation.ConsoleColor;
+import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.translation.Translator;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.utils.DefaultMessages;
 import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import org.bukkit.Sound;
@@ -29,6 +32,7 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
         super(commmandName, plugin, CommandType.PLAYER_ONLY);
         setDescription("Manage/Join an Arena.");
         setTabCompleter(this);
+        setPermission("warrior.command.arena");
     }
 
     @Override
@@ -39,10 +43,11 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
     @Override
     public void onPermissionError(CommandSender sender, String label, String[] args) {
         if(sender instanceof Player) {
-            Player p = (Player) sender;
+            WarriorUser user = PlayerManager.get(((Player) sender).getUniqueId());
+            String msg = Warrior.getTranslator().translate(Constants.Lang.ERROR_PERM, user);
 
-            p.sendMessage(TranslationUtil.prettyMessage(DefaultMessages.COMMAND_PERM_ERROR));
-            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
+            user.sendMessage(TranslationUtil.prettyMessage(msg));
+            user.playSound(Sound.BLOCK_NOTE_BLOCK_BASS, 0.25f, 0.8f);
         }
     }
 
@@ -55,11 +60,15 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
     public void onSyntaxError(CommandSender sender, String label, String[] args) {
         if(args.length > 1) return;
         Translator t = Warrior.getTranslator();
-        String msg = Placeholders.applyPlaceholders(DefaultMessages.COMMAND_SYNTAX_ERROR, new HashMap<>() {
+
+        WarriorUser user = null;
+        if(sender instanceof Player) user = PlayerManager.get(((Player)sender).getUniqueId());
+
+        String msg = t.translate(Constants.Lang.ERROR_SYNTAX, new HashMap<>() {
             {
-                put("HELP_CMD", "/warrior help");
+                put("help_cmd", "/warrior help");
             }
-        });
+        }, user);
 
         if(sender instanceof Player) {
             Player p = (Player) sender;

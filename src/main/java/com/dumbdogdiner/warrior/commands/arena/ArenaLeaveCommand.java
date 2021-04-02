@@ -1,13 +1,17 @@
 package com.dumbdogdiner.warrior.commands.arena;
 
+import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.api.sessions.SessionType;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.utils.TranslationUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ArenaLeaveCommand implements SubCommand {
@@ -30,7 +34,13 @@ public class ArenaLeaveCommand implements SubCommand {
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         WarriorUser user = PlayerManager.get(((Player)sender).getUniqueId());
         if(user.getSession().getType() == SessionType.GAME) {
-            long time = user.getSession().getTimestamp();
+            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_LEFT, new HashMap<>() {
+                {
+                    put("arena", args[1]);
+                }
+            }, user);
+
+            user.sendMessage(TranslationUtil.getPrefix() + msg);
             user.setSession(new LobbySession(user.getUserId()));
             if(user.isSpectating()) user.setSpectating(false);
         }

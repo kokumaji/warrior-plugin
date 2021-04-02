@@ -50,7 +50,7 @@ public class ArenaCreateCommand implements SubCommand {
         if(arena != null) {
             String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_ALREADY_EXISTS, new HashMap<>() {
                 {
-                    put("ARENA", arena.getName());
+                    put("arena", arena.getName());
                 }
             }, user);
             player.sendMessage(TranslationUtil.getPrefix() + msg);

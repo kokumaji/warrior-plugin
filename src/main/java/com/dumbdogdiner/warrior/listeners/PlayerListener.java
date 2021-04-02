@@ -39,7 +39,7 @@ public class PlayerListener implements Listener {
              *  could look like :
              *
              *             ChatMessage msg = new ChatMessage(String.format(TranslationUtil.translateColor("\n \n \n&3&l(%s) &7For an enhanced visual experience, please use the included resource pack. Would you like to download it now?\n \n"), Symbols.FULLWIDTH_EXCLAMATION_MARK));
-             *             msg.appendMessage(new ChatMessage(TranslationUtil.translateColor("&8» &a&lAccept &8- ")).setClickAction(Warrior.getInstance(), p, 30, player -> {
+             *             msg.appendMessage(new ChatMessage(TranslationUtil.translateColor("&8&raquo; &a&lAccept &8- ")).setClickAction(Warrior.getInstance(), p, 30, player -> {
              *                 Packet resourcePack = new Packet(PacketType.Play.Server.RESOURCE_PACK_SEND);
              *                 resourcePack.setString(0, "http://localhost/files/resources.zip");
              *                 resourcePack.setString(1, "f2b2cadba2bcd8eb9097156fbf670a43dd86b58b");
@@ -57,7 +57,7 @@ public class PlayerListener implements Listener {
              *             }).setTooltip("&7Click to Accept"));
              *
              *             msg.appendMessage(new ChatMessage(TranslationUtil.translateColor("&c&lDeny &8- ")).setTooltip("&7Click to Deny."));
-             *             msg.appendMessage(new ChatMessage(TranslationUtil.translateColor("&7&lDon't ask again! &8«\n \n ")).setTooltip("&7Click to stop receiving this message."));
+             *             msg.appendMessage(new ChatMessage(TranslationUtil.translateColor("&7&lDon't ask again! &8&laquo;\n \n ")).setTooltip("&7Click to stop receiving this message."));
              *
              *             p.spigot().sendMessage(msg.getComponent());
              *

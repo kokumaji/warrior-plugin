@@ -4,6 +4,7 @@ import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.MaxHealthFlag;
 import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
+import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.builders.GameBossBar;
 import com.dumbdogdiner.warrior.api.builders.HologramBuilder;
@@ -191,7 +192,9 @@ public class ArenaSessionListener implements Listener {
                         user.setSpectating(false);
                         cancel();
                     } else {
-                        user.getBukkitPlayer().sendTitle("§4§lYOU DIED", "§7Respawning in " +totalTime+ " seconds", 0, 25, 0);
+                        String title = Placeholders.applyPlaceholders("{gameplay.you-died}", user.getSettings().getLanguage());
+                        String subTitle = Placeholders.applyPlaceholders("{gameplay.respawn-in}", user.getSettings().getLanguage());
+                        user.sendTitle(title, subTitle.replace("{time}", String.valueOf(totalTime)), 0, 25, 0);
                         user.playSound(Sound.ENTITY_ARROW_HIT_PLAYER, 0.5f, 1f);
                     }
 

@@ -47,9 +47,9 @@ public class ArenaJoinCommand implements SubCommand {
         if(a == null) {
             String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_DOESNT_EXIST, new HashMap<>() {
                 {
-                    put("ARENA", args[1]);
+                    put("arena", args[1]);
                 }
-            });
+            }, user);
             user.sendMessage(TranslationUtil.getPrefix() + msg);
             user.playSound(Sound.ENTITY_ITEM_BREAK, 0.5f, 1f);
             return true;

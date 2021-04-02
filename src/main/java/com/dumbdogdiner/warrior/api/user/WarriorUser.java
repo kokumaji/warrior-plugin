@@ -321,7 +321,15 @@ public class WarriorUser implements Comparable<WarriorUser> {
         title = TranslationUtil.translateColor(title);
         subtitle = TranslationUtil.translateColor(subtitle);
 
-        this.bukkitPlayer.sendTitle(title, subtitle, 20, stay * 20, 20);
+        this.bukkitPlayer.sendTitle(title, subtitle, 20, stay, 20);
+    }
+
+
+    public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+        title = TranslationUtil.translateColor(title);
+        subtitle = TranslationUtil.translateColor(subtitle);
+
+        this.bukkitPlayer.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
     }
 
     public void spawnEffect(Consumer<WarriorUser> func) {
