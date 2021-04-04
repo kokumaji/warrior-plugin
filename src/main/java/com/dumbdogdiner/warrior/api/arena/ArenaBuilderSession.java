@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -66,17 +67,21 @@ public class ArenaBuilderSession {
         inventoryCapture = user.getBukkitPlayer().getInventory().getContents();
     }
 
-    public void setPosition(PositionType type) {
-        if(type.equals(PositionType.LOC1)) setPos1(sessionUser.getBukkitPlayer().getLocation());
-        if(type.equals(PositionType.LOC2)) setPos2(sessionUser.getBukkitPlayer().getLocation());
-        if(type.equals(PositionType.SPAWN)) setSpawn(sessionUser.getBukkitPlayer().getLocation());
-        String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_BUILDER_LOCATION, new HashMap<String, String>() {
+    private void setPosition(PositionType type, Location loc) {
+        if(type.equals(PositionType.LOC1)) setPos1(loc);
+        if(type.equals(PositionType.LOC2)) setPos2(loc);
+        if(type.equals(PositionType.SPAWN)) setSpawn(loc);
+        String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_BUILDER_LOCATION, new HashMap<>() {
             {
-                put("LOCATION", TranslationUtil.readableLocation(sessionUser.getBukkitPlayer().getLocation(), true, false));
-                put("TYPE", type.getLang());
+                put("location", TranslationUtil.readableLocation(loc, true, false));
+                put("type", type.getLang());
             }
         });
         sessionUser.getBukkitPlayer().sendMessage(TranslationUtil.getPrefix() + msg);
+    }
+
+    public void setPosition(PositionType type) {
+        setPosition(type, sessionUser.getLocation());
     }
 
     protected void restoreInventory() {
@@ -107,7 +112,7 @@ public class ArenaBuilderSession {
 
             String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_CREATE_CANCEL, new HashMap<>() {
                 {
-                    put("ARENA", getArenaName());
+                    put("arena", getArenaName());
                 }
             });
 
@@ -130,7 +135,7 @@ public class ArenaBuilderSession {
 
             String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_CREATE_SUCCESS, new HashMap<>() {
                 {
-                    put("ARENA", getArenaName());
+                    put("arena", getArenaName());
                 }
             });
 
@@ -196,7 +201,13 @@ public class ArenaBuilderSession {
 
                 if(item.getType() == Material.BLAZE_ROD) {
                     if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {
-                        setPosition(PositionType.LOC1);
+                        Block block = e.getClickedBlock();
+                        Location loc;
+
+                        if(block != null) loc = block.getLocation();
+                        else loc = player.getLocation();
+
+                        setPosition(PositionType.LOC1, loc);
                     }
 
                     if(rightClick) {

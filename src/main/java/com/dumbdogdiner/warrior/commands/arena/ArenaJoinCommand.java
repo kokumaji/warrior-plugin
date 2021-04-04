@@ -62,7 +62,7 @@ public class ArenaJoinCommand implements SubCommand {
                 user.setSession(new ArenaSession(user.getUserId(), a));
                 String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_TELEPORT, new HashMap<String, String>() {
                     {
-                        put("ARENA", a.getName());
+                        put("arena", a.getName());
                     }
                 }, user);
 

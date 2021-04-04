@@ -8,7 +8,7 @@ command-messages:
   reload-config: "&7Die Plugin Konfigurations-Datei wurde erfolgreich neugeladen!"
   reload-language: "&7Die Spracheinstellungen wurden erfolgreich neugeladen!"
 
-  arena-set-location: "&b{TYPE} &7ist nun bei &b{LOCATION}"
+  arena-set-location: "&b{type} &7ist nun bei &b{location}"
   arena-create-success: "&7Arena &b{arena} &7wurde erfolgreich gespeichert."
   arena-create-cancel: "&cDas Erstellen der Arena &b{ARENA} &c wurde abgrebrochen."
   arena-remove-success: "&7Arena &b{arena} &7wurde erfolgreich gelöscht."
