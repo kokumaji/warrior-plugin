@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Manages registered arenas.
  */
-public interface ArenaManager {
+public interface WarriorArenaManager {
     /**
      * Register the target arena with the arena manager.
      * @param arena The arena to register

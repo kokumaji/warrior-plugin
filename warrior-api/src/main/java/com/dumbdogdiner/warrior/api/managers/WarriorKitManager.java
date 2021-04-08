@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Manages the registration and loading of kits.
  */
-public interface KitManager {
+public interface WarriorKitManager {
     /**
      * Load a kit from the target file.
      * @param f The target file

@@ -5,7 +5,7 @@ import com.dumbdogdiner.warrior.api.user.WarriorUser;
 /**
  * Manages XP and levels.
  */
-public interface LevelManager {
+public interface WarriorLevelManager {
     /**
      * Convert an amount of xp to level.
      * @param xp The xp to convert

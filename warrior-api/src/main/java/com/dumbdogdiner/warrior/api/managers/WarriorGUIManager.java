@@ -3,7 +3,7 @@ package com.dumbdogdiner.warrior.api.managers;
 /**
  * Manages the registration of plugin GUIs.
  */
-public interface GUIManager {
+public interface WarriorGUIManager {
     /**
      * Retrieve the GUI of the target class type.
      * @param guiClass The class of the GUI

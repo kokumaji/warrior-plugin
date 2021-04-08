@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public interface PlayerManager {
+public interface WarriorPlayerManager {
 
     /**
      * Test whether the player manager contains the target player.
