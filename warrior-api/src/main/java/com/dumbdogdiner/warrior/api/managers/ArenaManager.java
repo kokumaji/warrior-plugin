@@ -1,25 +1,19 @@
 package com.dumbdogdiner.warrior.api.managers;
 
-import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
-import com.dumbdogdiner.warrior.api.sessions.Session;
-import com.dumbdogdiner.warrior.api.sessions.SessionType;
-import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
-import com.dumbdogdiner.warrior.api.util.JSONUtil;
-import com.dumbdogdiner.warrior.utils.DefaultMessages;
 import org.bukkit.entity.Player;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Manages registered arenas.
+ */
 public interface ArenaManager {
     /**
      * Register the target arena with the arena manager.
-     * @param arena
+     * @param arena The arena to register
      */
     void registerArena(Arena arena);
 
