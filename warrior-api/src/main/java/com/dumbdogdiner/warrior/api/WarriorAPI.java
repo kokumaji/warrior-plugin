@@ -1,5 +1,13 @@
 package com.dumbdogdiner.warrior.api;
 
+import com.dumbdogdiner.warrior.api.managers.WarriorArenaManager;
+import com.dumbdogdiner.warrior.api.managers.WarriorGUIManager;
+import com.dumbdogdiner.warrior.api.managers.WarriorGameBarManager;
+import com.dumbdogdiner.warrior.api.managers.WarriorKitManager;
+import com.dumbdogdiner.warrior.api.managers.WarriorLevelManager;
+import com.dumbdogdiner.warrior.api.managers.WarriorLobbyManager;
+import com.dumbdogdiner.warrior.api.managers.WarriorNotificationManager;
+import com.dumbdogdiner.warrior.api.managers.WarriorPlayerManager;
 import com.dumbdogdiner.warrior.api.translation.Translator;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import lombok.Getter;
@@ -82,7 +90,42 @@ public interface WarriorAPI {
 	Translator getTranslator();
 
 	/**
-	 * @return The {@link PlayerManager} associated with this API implementation.
+	 * @return The {@link WarriorArenaManager} associated with this API implementation.
 	 */
-	PlayerManager getPlayerManager();
+	WarriorArenaManager getArenaManager();
+
+	/**
+	 * @return The {@link WarriorGameBarManager} associated with this API implementation.
+	 */
+	WarriorGameBarManager getGameBarManager();
+
+	/**
+	 * @return The {@link WarriorGUIManager} associated with this API implementation.
+	 */
+	WarriorGUIManager getGUIManager();
+
+	/**
+	 * @return The {@link WarriorKitManager} associated with this API implementation.
+	 */
+	WarriorKitManager getKitManager();
+
+	/**
+	 * @return The {@link WarriorLevelManager} associated with this API implementation.
+	 */
+	WarriorLevelManager getLevelManager();
+
+	/**
+	 * @return The {@link WarriorLobbyManager} associated with this API implementation.
+	 */
+	WarriorLobbyManager getLobbyManager();
+
+	/**
+	 * @return The {@link WarriorNotificationManager} associated with this API implementation.
+	 */
+	WarriorNotificationManager getNotificationManager();
+
+	/**
+	 * @return The {@link WarriorPlayerManager} associated with this API implementation.
+	 */
+	WarriorPlayerManager getPlayerManager();
 }

@@ -86,11 +86,18 @@ public class Warrior extends JavaPlugin {
     }
 
     // managers
-    ArenaManager arenaManager = new ArenaManager();
-    LobbyManager lobbyManager = new LobbyManager();
-    GUIManager guiManager = new GUIManager();
-    KitManager kitManager = new KitManager();
-    NotificationManager notificationManager = new NotificationManager();
+    @Getter
+    private final ArenaManager arenaManager = new ArenaManager();
+    @Getter
+    private final LobbyManager lobbyManager = new LobbyManager();
+    @Getter
+    private final GUIManager guiManager = new GUIManager();
+    @Getter
+    private final KitManager kitManager = new KitManager();
+    @Getter
+    private final NotificationManager notificationManager = new NotificationManager();
+    @Getter
+    private final PlayerManager playerManager = new PlayerManager();
 
     @Override
     public void onEnable() {
@@ -142,8 +149,8 @@ public class Warrior extends JavaPlugin {
             specTeam.unregister();
         }
 
-        for(WarriorUser user : PlayerManager.getList()) user.saveData();
-        for(Arena a : ArenaManager.getArenas()) a.save();
+        for(WarriorUser user : playerManager.getList()) user.saveData();
+        for(Arena a : arenaManager.getArenas()) a.save();
 
     }
 

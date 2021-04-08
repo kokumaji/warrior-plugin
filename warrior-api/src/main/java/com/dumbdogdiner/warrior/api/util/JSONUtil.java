@@ -1,13 +1,12 @@
 package com.dumbdogdiner.warrior.api.util;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.kit.kits.CustomKit;
 import com.dumbdogdiner.warrior.api.models.ArenaModel;
 import com.dumbdogdiner.warrior.api.models.CustomKitModel;
 import com.dumbdogdiner.warrior.api.models.LobbyDataModel;
 import com.dumbdogdiner.warrior.api.models.LocationModel;
-import com.dumbdogdiner.warrior.managers.LobbyManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -18,7 +17,7 @@ import java.io.IOException;
 public class JSONUtil {
 
     private static final String[] subFolderNames = {"/arenas", "/holograms", "/npcData", "/kits"};
-    private static final String DATA_FOLDER_PATH = Warrior.getInstance().getDataFolder().getPath() + "/data";
+    private static final String DATA_FOLDER_PATH = WarriorAPI.getService().getInstance().getDataFolder().getPath() + "/data";
 
     public static final String LOBBY_DATA_PATH = DATA_FOLDER_PATH + "/lobby.json";
     public static final String KIT_DATA_PATH = DATA_FOLDER_PATH + subFolderNames[3];
@@ -93,7 +92,7 @@ public class JSONUtil {
     }
 
     public static void saveSpawn() {
-        LobbyDataModel ldm = new LobbyDataModel(new LocationModel(LobbyManager.getLobbySpawn()));
+        LobbyDataModel ldm = new LobbyDataModel(new LocationModel(WarriorAPI.getService().getLobbyManager().getLobbySpawn()));
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         // idk.. will have to adjust a few functions here ig
@@ -113,7 +112,7 @@ public class JSONUtil {
         String filePath = DATA_FOLDER_PATH + subFolderNames[0] + "/" + arena.getName() + ".json";
         File f = new File(filePath);
         if(f.exists() && f.getParentFile().canWrite()) {
-            if(!f.delete()) Warrior.getPluginLogger().error("Could not delete file " + filePath);
+            if(!f.delete()) WarriorAPI.getService().getLogger().error("Could not delete file " + filePath);
         }
     }
 }

@@ -1,13 +1,10 @@
 package com.dumbdogdiner.warrior.api.translation;
 
-import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
-import com.dumbdogdiner.warrior.utils.TranslationUtil;
+import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import lombok.Getter;
 import lombok.Setter;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;

@@ -2,7 +2,7 @@ package com.dumbdogdiner.warrior.api.builders;
 
 import com.dumbdogdiner.warrior.api.util.HeadTexture;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
-import com.dumbdogdiner.warrior.utils.TranslationUtil;
+import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.bukkit.Material;

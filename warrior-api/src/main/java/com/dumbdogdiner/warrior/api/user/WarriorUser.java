@@ -1,33 +1,35 @@
 package com.dumbdogdiner.warrior.api.user;
 
-import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
 import com.dumbdogdiner.warrior.api.events.WarriorLevelUpEvent;
-import com.dumbdogdiner.warrior.api.user.cosmetics.DeathParticle;
-import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSound;
-import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSounds;
-import com.dumbdogdiner.warrior.api.user.cosmetics.WarriorTitle;
-import com.dumbdogdiner.warrior.api.user.settings.GameplaySettings;
-import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.nms.PacketType;
 import com.dumbdogdiner.warrior.api.nms.enums.MessageType;
 import com.dumbdogdiner.warrior.api.nms.networking.packets.Packet;
 import com.dumbdogdiner.warrior.api.sessions.Session;
 import com.dumbdogdiner.warrior.api.sound.Note;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
+import com.dumbdogdiner.warrior.api.user.cosmetics.DeathParticle;
+import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSound;
+import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSounds;
+import com.dumbdogdiner.warrior.api.user.cosmetics.WarriorTitle;
+import com.dumbdogdiner.warrior.api.user.settings.GameplaySettings;
+import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.user.settings.VisualSettings;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
-import com.dumbdogdiner.warrior.managers.LevelManager;
-import com.dumbdogdiner.warrior.utils.TranslationUtil;
+import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import com.google.common.base.Preconditions;
 import io.netty.channel.Channel;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
-
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -38,8 +40,13 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
@@ -397,7 +404,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
             public void run() {
                 Bukkit.getPluginManager().callEvent(e);
             }
-        }.runTask(WarriorAPI.getInstance());
+        }.runTask(WarriorAPI.getService().getInstance());
         this.session = session;
     }
 
@@ -603,24 +610,24 @@ public class WarriorUser implements Comparable<WarriorUser> {
                     bukkitPlayer.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
                     for(Player p : Bukkit.getOnlinePlayers()) {
                         if(WarriorAPI.getSpecTeam().hasEntry(p.getName())) continue;
-                        p.hidePlayer(WarriorAPI.getInstance(), bukkitPlayer);
+                        p.hidePlayer(WarriorAPI.getService().getInstance(), bukkitPlayer);
                     }
 
                     for(String s : WarriorAPI.getSpecTeam().getEntries()) {
                         Player p = Bukkit.getPlayer(s);
                         if(p == null) return;
-                        bukkitPlayer.showPlayer(WarriorAPI.getInstance(), p);
+                        bukkitPlayer.showPlayer(WarriorAPI.getService().getInstance(), p);
                     }
                 } else {
                     WarriorAPI.getSpecTeam().removeEntry(bukkitPlayer.getName());
                     for(Player p : Bukkit.getOnlinePlayers()) {
-                        p.showPlayer(WarriorAPI.getInstance(), bukkitPlayer);
+                        p.showPlayer(WarriorAPI.getService().getInstance(), bukkitPlayer);
                     }
 
                     for(String s : WarriorAPI.getSpecTeam().getEntries()) {
                         Player p = Bukkit.getPlayer(s);
                         if(p == null) return;
-                        bukkitPlayer.hidePlayer(WarriorAPI.getInstance(), p);
+                        bukkitPlayer.hidePlayer(WarriorAPI.getService().getInstance(), p);
                     }
 
                     for(PotionEffect effect : bukkitPlayer.getActivePotionEffects())
@@ -631,12 +638,12 @@ public class WarriorUser implements Comparable<WarriorUser> {
                 bukkitPlayer.setFlying(spectating);
 
             }
-        }.runTask(WarriorAPI.getInstance());
+        }.runTask(WarriorAPI.getService().getInstance());
 
     }
 
     public void addExperience(int exp) {
-        int nextXp = LevelManager.levelToXp(level);
+        int nextXp = WarriorAPI.getService().getLevelManager().levelToXp(level);
 
         relativeXp += exp;
         totalXp += exp;

@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.effects;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.nms.PacketType;
 import com.dumbdogdiner.warrior.api.nms.entity.NMSEntity;
@@ -129,7 +129,7 @@ public class WarriorEffects {
 
                         user.sendPacket(destroyArmorStand);
                     }
-                }.runTaskLater(Warrior.getInstance(), 40L);
+                }.runTaskLater(WarriorAPI.getService().getInstance(), 40L);
 
             }
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
