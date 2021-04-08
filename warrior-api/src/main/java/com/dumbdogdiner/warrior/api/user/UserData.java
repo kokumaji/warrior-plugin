@@ -1,6 +1,5 @@
 package com.dumbdogdiner.warrior.api.user;
 
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import lombok.Getter;
 import lombok.Setter;
 

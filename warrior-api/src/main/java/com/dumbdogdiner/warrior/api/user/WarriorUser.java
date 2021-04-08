@@ -1,6 +1,7 @@
 package com.dumbdogdiner.warrior.api.user;
 
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.Warrior;
 import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
 import com.dumbdogdiner.warrior.api.events.WarriorLevelUpEvent;
@@ -248,7 +249,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
             String msg = String.format("Oh no! Something went wrong while trying to create a WarriorUser instance! %s", e.getMessage());
             Warrior.getPluginLogger().error(msg);
 
-            if(Warrior.getInstance().getConfig().getBoolean("general-settings.debug-mode"))
+            if(Warrior.getService().getConfig().getBoolean("general-settings.debug-mode"))
                 e.printStackTrace();
         }
     }

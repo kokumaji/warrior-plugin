@@ -1,10 +1,9 @@
-package com.dumbdogdiner.warrior.utils;
+package com.dumbdogdiner.warrior.api.util;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.Warrior;
 import com.dumbdogdiner.warrior.api.translation.DefaultFontInfo;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
-import com.dumbdogdiner.warrior.api.util.MathUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -19,7 +18,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Translation utilities.
+ */
 public class TranslationUtil {
+    private TranslationUtil() {}
 
     public static String stringifyList(List<String> stringList) {
         if(stringList == null) return "none";
@@ -47,7 +50,7 @@ public class TranslationUtil {
     }
 
     public static void sendToMultiple(List<Player> list, String msg, boolean includeConsole) {
-        Warrior.getPluginLogger().info(msg);
+        Warrior.getService().getLogger().info(msg);
         for(Player p : list) {
             p.sendMessage(translateColor(msg));
         }
@@ -103,7 +106,7 @@ public class TranslationUtil {
         if(args.length == 1 && args[0].contains("\n")) args = args[0].split("\n");
 
         List<String> finalMsg = new ArrayList<>();
-        finalMsg.add(TranslationUtil.translateColor(Warrior.getInstance().COMMAND_HEADER));
+        finalMsg.add(TranslationUtil.translateColor(Warrior.getService().getCommandHeader()));
         finalMsg.addAll(Arrays.asList(args));
         finalMsg.add("&8" + TranslationUtil.translateColor(HL));
 
@@ -159,7 +162,8 @@ public class TranslationUtil {
     }
 
     public static String getPrefix() {
-        String prefix = Warrior.getInstance().getConfig().getString("general-settings.plugin-prefix");
+        // TODO: Add default and null handing.
+        String prefix = Warrior.getService().getConfig().getString("general-settings.plugin-prefix");
         if(!prefix.endsWith(" ")) prefix = prefix + " ";
 
         return TranslationUtil.translateColor(prefix);

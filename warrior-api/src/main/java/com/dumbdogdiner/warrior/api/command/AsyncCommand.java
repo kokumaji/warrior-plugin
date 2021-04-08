@@ -1,11 +1,8 @@
 package com.dumbdogdiner.warrior.api.command;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.Warrior;
 import com.dumbdogdiner.warrior.api.translation.Constants;
-import com.dumbdogdiner.warrior.api.translation.Placeholders;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
-import com.dumbdogdiner.warrior.utils.DefaultMessages;
-import com.dumbdogdiner.warrior.utils.TranslationUtil;
+import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Sound;
@@ -106,7 +103,7 @@ public abstract class AsyncCommand extends Command implements TabCompleter {
 
                         if(!subCommand.execute(sender, commandLabel, args)) {
                             Player p = (Player) sender;
-                            String msg = Warrior.getTranslator().translate(Constants.Lang.ERROR_SUBCMD, new HashMap<>() {
+                            String msg = Warrior.getService().getTranslator().translate(Constants.Lang.ERROR_SUBCMD, new HashMap<>() {
                                 {
                                     put("sub_syntax", subCommand.getSyntax());
                                 }

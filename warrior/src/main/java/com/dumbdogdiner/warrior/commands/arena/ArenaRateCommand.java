@@ -1,8 +1,6 @@
 package com.dumbdogdiner.warrior.commands.arena;
 
-import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
-import com.dumbdogdiner.warrior.api.models.metadata.ArenaMetadata;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
 import org.bukkit.command.CommandSender;
 

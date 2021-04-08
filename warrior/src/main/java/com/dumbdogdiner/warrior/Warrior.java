@@ -17,7 +17,7 @@ import com.dumbdogdiner.warrior.commands.warrior.*;
 import com.dumbdogdiner.warrior.listeners.*;
 import com.dumbdogdiner.warrior.managers.*;
 import com.dumbdogdiner.warrior.utils.DatabaseConnection;
-import com.dumbdogdiner.warrior.utils.TranslationUtil;
+import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import kr.entree.spigradle.annotations.PluginMain;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -36,7 +36,7 @@ import java.util.List;
 @PluginMain
 public class Warrior extends JavaPlugin {
 
-    public final String COMMAND_HEADER = "&8" + TranslationUtil.HL(15) + " &8[ &3&l" + getName() + " &8] " + TranslationUtil.HL(15);
+    public final String COMMAND_HEADER =
 
     private static final List<Command> cmds = new ArrayList<Command>();
     private CommandMap cMap;

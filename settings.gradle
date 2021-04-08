@@ -8,3 +8,6 @@
  */
 
 rootProject.name = 'Warrior'
+
+include(':warrior-api')
+include(':warrior')

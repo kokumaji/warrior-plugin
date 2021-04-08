@@ -21,76 +21,79 @@ group 'me.kokumaji'
 version '1.2-beta'
 compileJava.options.encoding = 'UTF-8'
 
-repositories {
+subprojects {
+    apply plugin: 'kr.entree.spigradle'
 
-    // Default Gradle repositories
-    jcenter()
-    mavenCentral()
+    repositories {
+        // Default Gradle repositories
+        jcenter()
+        mavenCentral()
 
-    papermc()
+        papermc()
 
-    // PlaceholderAPI repository
-    maven {
-        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
-    }
+        // PlaceholderAPI repository
+        maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
 
-    maven {
-        credentials {
-            username "$ghUser"
-            password "$ghPass"
+        maven {
+            credentials {
+                username '$ghUser'
+                password '$ghPass'
+            }
+            url 'https://maven.pkg.github.com/DumbDogDiner/StickyAPI'
         }
-        url = "https://maven.pkg.github.com/DumbDogDiner/StickyAPI"
+
+        // This is for bStats... cuz PlaceholderAPI doesnt like
+        // being shadow jar'd without it...
+        maven {
+            url 'https://repo.codemc.org/repository/maven-public'
+        }
+
+        // Adding the Official Minecraft Repo
+        maven { url 'https://libraries.minecraft.net/' }
+
+        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/public/' }
     }
 
-    // This is for bStats... cuz PlaceholderAPI doesnt like
-    // being shadow jar'd without it...
-    maven {
-        url 'https://repo.codemc.org/repository/maven-public'
+    dependencies {
+        // annotations
+        annotationProcessor 'org.projectlombok:lombok:1.18.16'
+        compileOnly 'org.projectlombok:lombok:1.18.16'
+
+        // shared dependencies
+        implementation 'org.jetbrains:annotations:20.1.0'
+
+        // runtime dependencies
+        compileOnly paper()
+
+        // shaded dependencies
+        implementation platform('com.dumbdogdiner:stickyapi:3.0.1')
+
+        // Tests - JUnit 5
+        testImplementation 'junit:junit:4.12'
+
+        testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.1'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
+
+        // Tests - Mocking Suite (eg. mocking Bukkit for tests)
+        testImplementation 'org.mockito:mockito-core:3.7.7'
+        testImplementation 'com.github.seeseemelk:MockBukkit-v1.16:0.25.0'
     }
-
-    // Adding the Official Minecraft Repo
-    maven {
-        name = 'minecraft-repo'
-        url = 'https://libraries.minecraft.net/'
-    }
-
-    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/public/' }
-
 }
 
 dependencies {
-    implementation 'org.jetbrains:annotations:20.1.0'
-    implementation 'junit:junit:4.12'
-    annotationProcessor 'org.projectlombok:lombok:1.18.16'
-    compileOnly 'org.projectlombok:lombok:1.18.16'
-
-    shadow group: 'com.zaxxer', name: 'HikariCP', version: '4.0.3'
-
-    // Since this is a PaperMC plugin, there is
-    // no need to shadow anything into the final jar
-    compileOnly paper()
-    compileOnly 'me.clip:placeholderapi:2.10.9'
-    compileOnly 'org.apache.logging.log4j:log4j-core:2.3'
-
-    compileOnly 'io.netty:netty-all:4.1.24.Final'
-
-    compileOnly 'com.mojang:authlib:1.5.21'
+//    shadow group: 'com.zaxxer', name: 'HikariCP', version: '4.0.3'
+//    compileOnly 'me.clip:placeholderapi:2.10.9'
+//    compileOnly 'org.apache.logging.log4j:log4j-core:2.3'
+//
+//    compileOnly 'io.netty:netty-all:4.1.24.Final'
+//
+//    compileOnly 'com.mojang:authlib:1.5.21'
 
     // used for debugging!
-    //compileOnly files("libs/server.jar")
+    //compileOnly files('libs/server.jar')
+    //shadow files('libs/stickyapi-2.1.0.jar')
 
-    //shadow files("libs/stickyapi-2.1.0.jar")
-
-    shadow platform("com.dumbdogdiner:stickyapi:3.0.1")
-
-    // Tests - JUnit 5
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
-
-    // Tests - Mocking Suite (eg. mocking Bukkit for tests)
-    testImplementation("org.mockito:mockito-core:3.7.7")
-    testImplementation 'com.github.seeseemelk:MockBukkit-v1.16:0.25.0'
 
 }
 
@@ -120,7 +123,7 @@ spigot {
     authors 'kokumaji'
     apiVersion '1.13'
 
-    softDepends("Multiverse", "PlaceholderAPI")
+    softDepends('Multiverse', 'PlaceholderAPI')
 
     commands {
         debug {

@@ -21,14 +21,13 @@ public class WarriorLogger {
     private ChatColor TEXT_COLOR = ChatColor.GRAY;
 
     @Getter
-    private final Plugin owner;
+    private final Warrior owner;
 
     private Logger logger;
 
     public WarriorLogger(Warrior warrior) {
         this.logger = Bukkit.getLogger();
         this.owner = warrior;
-
     }
 
     public void debug(String msg) {

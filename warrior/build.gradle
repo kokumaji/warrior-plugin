@@ -1,0 +1,8 @@
+plugins {
+    id 'java'
+    id 'kr.entree.spigradle'
+}
+
+dependencies {
+    implementation project(':warrior-api')
+}

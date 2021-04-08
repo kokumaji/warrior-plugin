@@ -1,8 +1,6 @@
 package com.dumbdogdiner.warrior.commands;
 
-import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
