@@ -1,12 +1,9 @@
 package com.dumbdogdiner.warrior.commands.arena;
 
-import com.dumbdogdiner.stickyapi.common.util.MathUtil;
-import com.dumbdogdiner.stickyapi.common.util.NumberUtil;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.models.metadata.ArenaMetadata;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
-import com.dumbdogdiner.warrior.managers.ArenaManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;

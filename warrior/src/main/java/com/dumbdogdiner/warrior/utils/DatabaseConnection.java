@@ -12,7 +12,6 @@ import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.user.settings.VisualSettings;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.sql.*;

@@ -1,6 +1,5 @@
 package com.dumbdogdiner.warrior.listeners;
 
-import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
