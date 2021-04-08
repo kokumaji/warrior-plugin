@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 /**
  * Provides a way to access plugin instance methods, without direct access to the Warrior plugin class.
  */
-public interface Warrior {
+public interface WarriorAPI {
 	/**
 	 * Represents an exception thrown when an illegal service registration is found.
 	 */
@@ -34,17 +34,17 @@ public interface Warrior {
 	 * @param plugin The plugin registering the service
 	 * @param service The plugin's implementation of the service
 	 */
-	static void registerService(JavaPlugin plugin, Warrior service) {
-		Bukkit.getServicesManager().register(Warrior.class, service, plugin, ServicePriority.Lowest);
+	static void registerService(JavaPlugin plugin, WarriorAPI service) {
+		Bukkit.getServicesManager().register(WarriorAPI.class, service, plugin, ServicePriority.Lowest);
 	}
 
 	/**
 	 * Fetch the instantiated API service.
-	 * @return The {@link Warrior} API object.
+	 * @return The {@link WarriorAPI} API object.
 	 */
 	@NotNull
-	static Warrior getService() {
-		var provider = Bukkit.getServicesManager().getRegistration(Warrior.class);
+	static WarriorAPI getService() {
+		var provider = Bukkit.getServicesManager().getRegistration(WarriorAPI.class);
 		// just in case someone tries something wacky.
 		if (provider == null) {
 			throw new IllegalServiceException("Failed to fetch the WarriorAPI - existing service is invalid!");

@@ -1,12 +1,13 @@
 package com.dumbdogdiner.warrior.managers;
 
-import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.translation.Placeholders;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.WithWarriorPlugin;
 import com.dumbdogdiner.warrior.api.arena.Arena;
+import com.dumbdogdiner.warrior.api.managers.WarriorArenaManager;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.Session;
 import com.dumbdogdiner.warrior.api.sessions.SessionType;
+import com.dumbdogdiner.warrior.api.translation.Placeholders;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.util.JSONUtil;
 import com.dumbdogdiner.warrior.utils.DefaultMessages;
 import org.bukkit.entity.Player;
@@ -16,19 +17,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ArenaManager {
+public class ArenaManager implements WithWarriorPlugin, WarriorArenaManager {
 
-    private static final HashMap<Integer, Arena> arenaMap = new HashMap<>();
+    private final HashMap<Integer, Arena> arenaMap = new HashMap<>();
 
-    public static void registerArena(Arena arena) {
+    public void registerArena(Arena arena) {
         arenaMap.put(arenaMap.size(), arena);
     }
 
-    public static List<Arena> getArenas() {
+    public List<Arena> getArenas() {
         return new ArrayList<>(arenaMap.values());
     }
 
-    public static Arena get(String arenaName) {
+    public Arena get(String arenaName) {
         for(Arena a : arenaMap.values()) {
             if(a.getName().equalsIgnoreCase(arenaName)) return a;
         }
@@ -36,7 +37,7 @@ public class ArenaManager {
         return null;
     }
 
-    public static void loadArenas() {
+    public void loadArenas() {
         File dataFolder = new File(JSONUtil.ARENA_DATA_PATH);
         File[] files = dataFolder.listFiles();
 
@@ -55,11 +56,10 @@ public class ArenaManager {
                 put("TYPE", "arena");
             }
         });
-        Warrior.getPluginLogger().info(msg);
-
+        getLogger().info(msg);
     }
 
-    public static List<WarriorUser> getPlayers(Arena a) {
+    public List<WarriorUser> getPlayers(Arena a) {
         return PlayerManager.getListOf(user -> {
             Session s = user.getSession();
             if(s.getType().equals(SessionType.GAME))
@@ -68,13 +68,13 @@ public class ArenaManager {
         });
     }
 
-    public static boolean isPlaying(Player player) {
+    public boolean isPlaying(Player player) {
         WarriorUser user = PlayerManager.get(player.getUniqueId());
         if(user.getSession() == null) return false;
         return user.getSession().getType() == SessionType.GAME;
     }
 
-    public static ArenaSession getSession(Player player) {
+    public ArenaSession getSession(Player player) {
         if(isPlaying(player)) {
             WarriorUser user = PlayerManager.get(player.getUniqueId());
             return (ArenaSession) user.getSession();
@@ -83,7 +83,7 @@ public class ArenaManager {
         return null;
     }
 
-    public static void remove(Arena a) {
+    public void remove(Arena a) {
         arenaMap.remove(a.getId());
         JSONUtil.removeFile(a);
     }

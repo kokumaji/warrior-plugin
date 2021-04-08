@@ -1,16 +1,17 @@
 package com.dumbdogdiner.warrior.managers;
 
+import com.dumbdogdiner.warrior.api.managers.WarriorGameBarManager;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.builders.GameBossBar;
 import org.bukkit.boss.BarColor;
 
 import java.util.TreeMap;
 
-public class GameBarManager {
+public class GameBarManager implements WarriorGameBarManager {
 
-    private static final TreeMap<WarriorUser, GameBossBar> bossBars = new TreeMap<>();
+    private final TreeMap<WarriorUser, GameBossBar> bossBars = new TreeMap<>();
 
-    public static void addPlayer(WarriorUser user, GameBossBar bossBar) {
+    public void addPlayer(WarriorUser user, GameBossBar bossBar) {
         if(bossBars.get(user) != null)
             bossBars.remove(user);
 
@@ -18,7 +19,7 @@ public class GameBarManager {
         bossBar.showPlayer(user.getBukkitPlayer());
     }
 
-    public static void removePlayer(WarriorUser user) {
+    public void removePlayer(WarriorUser user) {
         if(bossBars.get(user) != null) {
             GameBossBar bossBar = bossBars.get(user);
             bossBar.removePlayer(user.getBukkitPlayer());
@@ -26,25 +27,25 @@ public class GameBarManager {
         }
     }
 
-    public static GameBossBar getBossBar(WarriorUser user) {
+    public GameBossBar getBossBar(WarriorUser user) {
         return bossBars.get(user);
     }
 
-    public static void updateTitle(WarriorUser user, String title) {
+    public void updateTitle(WarriorUser user, String title) {
         if(bossBars.get(user) != null) {
             GameBossBar bossBar = bossBars.get(user);
             bossBar.setTitle(title);
         }
     }
 
-    public static void updateColor(WarriorUser user, BarColor color) {
+    public void updateColor(WarriorUser user, BarColor color) {
         if(bossBars.get(user) != null) {
             GameBossBar bossBar = bossBars.get(user);
             bossBar.setColor(color);
         }
     }
 
-    public static void updateProgress(WarriorUser user, double val) {
+    public void updateProgress(WarriorUser user, double val) {
         if(bossBars.get(user) != null) {
             GameBossBar bossBar = bossBars.get(user);
             bossBar.setProgress(val);

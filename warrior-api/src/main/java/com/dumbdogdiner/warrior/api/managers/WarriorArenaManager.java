@@ -43,7 +43,7 @@ public interface WarriorArenaManager {
      * @param player The target player
      * @return True if the player is in a game.
      */
-    Boolean isPlaying(Player player);
+    boolean isPlaying(Player player);
 
     /**
      * Return the session for the target player.

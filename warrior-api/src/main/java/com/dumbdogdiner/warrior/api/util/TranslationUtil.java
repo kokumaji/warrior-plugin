@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.util;
 
-import com.dumbdogdiner.warrior.api.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.translation.DefaultFontInfo;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
@@ -50,7 +50,7 @@ public class TranslationUtil {
     }
 
     public static void sendToMultiple(List<Player> list, String msg, boolean includeConsole) {
-        Warrior.getService().getLogger().info(msg);
+        WarriorAPI.getService().getLogger().info(msg);
         for(Player p : list) {
             p.sendMessage(translateColor(msg));
         }
@@ -106,7 +106,7 @@ public class TranslationUtil {
         if(args.length == 1 && args[0].contains("\n")) args = args[0].split("\n");
 
         List<String> finalMsg = new ArrayList<>();
-        finalMsg.add(TranslationUtil.translateColor(Warrior.getService().getCommandHeader()));
+        finalMsg.add(TranslationUtil.translateColor(WarriorAPI.getService().getCommandHeader()));
         finalMsg.addAll(Arrays.asList(args));
         finalMsg.add("&8" + TranslationUtil.translateColor(HL));
 
@@ -163,7 +163,7 @@ public class TranslationUtil {
 
     public static String getPrefix() {
         // TODO: Add default and null handing.
-        String prefix = Warrior.getService().getConfig().getString("general-settings.plugin-prefix");
+        String prefix = WarriorAPI.getService().getConfig().getString("general-settings.plugin-prefix");
         if(!prefix.endsWith(" ")) prefix = prefix + " ";
 
         return TranslationUtil.translateColor(prefix);

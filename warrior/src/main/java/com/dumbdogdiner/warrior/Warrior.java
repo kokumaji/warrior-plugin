@@ -2,22 +2,46 @@ package com.dumbdogdiner.warrior;
 
 import com.dumbdogdiner.warrior.api.WarriorLogger;
 import com.dumbdogdiner.warrior.api.arena.Arena;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.kit.SpecialAbilities;
 import com.dumbdogdiner.warrior.api.translation.Translator;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.commands.DebugCommand;
-import com.dumbdogdiner.warrior.commands.arena.*;
+import com.dumbdogdiner.warrior.commands.arena.ArenaCommand;
+import com.dumbdogdiner.warrior.commands.arena.ArenaCreateCommand;
+import com.dumbdogdiner.warrior.commands.arena.ArenaFlagsCommand;
+import com.dumbdogdiner.warrior.commands.arena.ArenaJoinCommand;
+import com.dumbdogdiner.warrior.commands.arena.ArenaLeaveCommand;
+import com.dumbdogdiner.warrior.commands.arena.ArenaRateCommand;
+import com.dumbdogdiner.warrior.commands.arena.ArenaRemoveCommand;
+import com.dumbdogdiner.warrior.commands.arena.ArenaSetupCommand;
+import com.dumbdogdiner.warrior.commands.arena.ArenaSpectateCommand;
 import com.dumbdogdiner.warrior.commands.kit.KitCommand;
 import com.dumbdogdiner.warrior.commands.kit.KitCreateCommand;
 import com.dumbdogdiner.warrior.commands.misc.SettingsCommand;
 import com.dumbdogdiner.warrior.commands.misc.StatisticsCommand;
 import com.dumbdogdiner.warrior.commands.misc.SymbolCommand;
 import com.dumbdogdiner.warrior.commands.misc.SymbolsSearchCommand;
-import com.dumbdogdiner.warrior.commands.warrior.*;
-import com.dumbdogdiner.warrior.listeners.*;
-import com.dumbdogdiner.warrior.managers.*;
+import com.dumbdogdiner.warrior.commands.warrior.WarriorAboutCommand;
+import com.dumbdogdiner.warrior.commands.warrior.WarriorCommand;
+import com.dumbdogdiner.warrior.commands.warrior.WarriorHelpCommand;
+import com.dumbdogdiner.warrior.commands.warrior.WarriorLobbyCommand;
+import com.dumbdogdiner.warrior.commands.warrior.WarriorReloadCommand;
+import com.dumbdogdiner.warrior.listeners.ArenaListener;
+import com.dumbdogdiner.warrior.listeners.ArenaSessionListener;
+import com.dumbdogdiner.warrior.listeners.GameFlagListener;
+import com.dumbdogdiner.warrior.listeners.GameStateListener;
+import com.dumbdogdiner.warrior.listeners.ItemInteractListener;
+import com.dumbdogdiner.warrior.listeners.LobbySessionListener;
+import com.dumbdogdiner.warrior.listeners.PlayerListener;
+import com.dumbdogdiner.warrior.listeners.RegionExitListener;
+import com.dumbdogdiner.warrior.listeners.SessionChangeListener;
+import com.dumbdogdiner.warrior.managers.ArenaManager;
+import com.dumbdogdiner.warrior.managers.GUIManager;
+import com.dumbdogdiner.warrior.managers.KitManager;
+import com.dumbdogdiner.warrior.managers.LobbyManager;
+import com.dumbdogdiner.warrior.managers.NotificationManager;
+import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.utils.DatabaseConnection;
-import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import kr.entree.spigradle.annotations.PluginMain;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -35,9 +59,6 @@ import java.util.List;
 
 @PluginMain
 public class Warrior extends JavaPlugin {
-
-    public final String COMMAND_HEADER =
-
     private static final List<Command> cmds = new ArrayList<Command>();
     private CommandMap cMap;
 
@@ -63,6 +84,13 @@ public class Warrior extends JavaPlugin {
             e.printStackTrace();
         }
     }
+
+    // managers
+    ArenaManager arenaManager = new ArenaManager();
+    LobbyManager lobbyManager = new LobbyManager();
+    GUIManager guiManager = new GUIManager();
+    KitManager kitManager = new KitManager();
+    NotificationManager notificationManager = new NotificationManager();
 
     @Override
     public void onEnable() {
@@ -90,17 +118,17 @@ public class Warrior extends JavaPlugin {
                 .addSubCommand(new KitCreateCommand()));
         cMap.registerAll(this.getName().toLowerCase(), cmds);
 
-        ArenaManager.loadArenas();
+        arenaManager.loadArenas();
         registerTeams();
         registerEvents();
 
         SpecialAbilities.registerAbility();
 
-        LobbyManager.loadData();
-        GUIManager.registerGUIs();
-        KitManager.registerKits();
+        lobbyManager.loadData();
+        guiManager.registerGUIs();
+        kitManager.registerKits();
 
-        NotificationManager.start();
+        notificationManager.start();
 
         if(usePlaceholderAPI()) {
             new WarriorPlaceholders().register();

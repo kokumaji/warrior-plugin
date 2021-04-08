@@ -2,6 +2,7 @@ package com.dumbdogdiner.warrior.managers;
 
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.managers.WarriorGUIManager;
 import com.dumbdogdiner.warrior.gui.*;
 import com.dumbdogdiner.warrior.gui.settings.LanguageGUI;
 import com.dumbdogdiner.warrior.gui.settings.NotificationsGUI;
@@ -10,11 +11,11 @@ import com.dumbdogdiner.warrior.gui.settings.SettingsGUI;
 
 import java.util.HashMap;
 
-public class GUIManager {
+public class GUIManager implements WarriorGUIManager  {
 
-    private static HashMap<Class<?>, GUI> map = new HashMap<>();
+    private HashMap<Class<?>, GUI> map = new HashMap<>();
 
-    public static void registerGUIs() {
+    public void registerGUIs() {
         map.put(ArenaGUI.class, new ArenaGUI(5, "Select Arena", Warrior.getInstance()));
         map.put(KitGUI.class, new KitGUI(5, "Select a Kit", Warrior.getInstance()));
         map.put(DeathSoundGUI.class, new DeathSoundGUI());
@@ -25,7 +26,7 @@ public class GUIManager {
         map.put(ParticleTrailGUI.class, new ParticleTrailGUI(Warrior.getInstance()));
     }
 
-    public static  <T> T get(Class<T> guiClass) {
+    public <T> T get(Class<T> guiClass) {
         return guiClass.cast(map.get(guiClass));
     }
 

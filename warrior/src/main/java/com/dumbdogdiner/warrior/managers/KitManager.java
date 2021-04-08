@@ -6,6 +6,7 @@ import com.dumbdogdiner.warrior.api.kit.kits.ArcherKit;
 import com.dumbdogdiner.warrior.api.kit.kits.CustomKit;
 import com.dumbdogdiner.warrior.api.kit.kits.TankKit;
 import com.dumbdogdiner.warrior.api.kit.kits.WarriorKit;
+import com.dumbdogdiner.warrior.api.managers.WarriorKitManager;
 import com.dumbdogdiner.warrior.api.models.CustomKitModel;
 import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.util.JSONUtil;
@@ -22,11 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class KitManager {
+public class KitManager implements WarriorKitManager {
 
-    private static final ArrayList<BaseKit> kits = new ArrayList<>();
+    private final ArrayList<BaseKit> kits = new ArrayList<>();
 
-    public static void registerKits() {
+    public void registerKits() {
         kits.add(new WarriorKit("Warrior", 0, "warrior.kit.warrior", Material.IRON_SWORD));
         kits.add(new ArcherKit("Archer", 0, "warrior.kit.archer", Material.BOW));
         kits.add(new TankKit("Tank", 0, "warrior.kit.tank", Material.IRON_CHESTPLATE));
@@ -34,7 +35,10 @@ public class KitManager {
         loadFiles();
     }
 
-    private static void loadFiles() {
+    /**
+     * Load kits from plugin configuration.
+     */
+    private void loadFiles() {
         File dataFolder = new File(JSONUtil.KIT_DATA_PATH);
         File[] files = dataFolder.listFiles();
 
@@ -54,10 +58,9 @@ public class KitManager {
             }
         });
         Warrior.getPluginLogger().info(msg);
-
     }
 
-    public static void addKit(File f) {
+    public void addKit(File f) {
         if(!f.canRead()) return;
         try(JsonReader reader = new JsonReader(new FileReader(f))) {
             CustomKitModel model = new Gson().fromJson(reader, CustomKitModel.class);
@@ -67,18 +70,18 @@ public class KitManager {
         }
     }
 
-    public static void addKit(CustomKit kit) {
+    public void addKit(CustomKit kit) {
         kits.add(kit);
     }
 
-    public static BaseKit get(String n) {
+    public BaseKit get(String n) {
         for(BaseKit k : kits) {
             if(k.getName().equalsIgnoreCase(n)) return k;
         }
         return kits.get(0);
     }
 
-    public static List<BaseKit> getKits() {
+    public List<BaseKit> getKits() {
         return kits;
     }
 }

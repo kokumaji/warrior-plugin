@@ -1,6 +1,7 @@
 package com.dumbdogdiner.warrior.managers;
 
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.managers.WarriorNotificationManager;
 import com.dumbdogdiner.warrior.api.sound.Melody;
 import com.dumbdogdiner.warrior.api.sound.Note;
 import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode;
@@ -15,19 +16,22 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 
-public class NotificationManager {
+public class NotificationManager implements WarriorNotificationManager {
 
-    private static final String[] msgPool = Warrior.getTranslator().getStrings("notifications.messages", LanguageCode.EN_US);
+    private final String[] msgPool = Warrior.getTranslator().getStrings("notifications.messages", LanguageCode.EN_US);
 
-    private static final Melody msgSound = new Melody(Instrument.PIANO, 2L, 0.65f, Note.D2, Note.F1_SHARP, Note.F2_SHARP);
+    private final Melody msgSound = new Melody(Instrument.PIANO, 2L, 0.65f, Note.D2, Note.F1_SHARP, Note.F2_SHARP);
 
-    private static final int interval = Warrior.getInstance().getConfig().getInt("general-settings.notification-interval");
+    private final int interval = Warrior.getInstance().getConfig().getInt("general-settings.notification-interval");
 
     @Getter
-    private static boolean running;
-    private static int taskId;
+    private boolean running;
+    private int taskId;
 
-    public static void start() {
+    /**
+     * Start the notification runnable.
+     */
+    public void start() {
         if(running) {
             String msg = "Attempted to start NotificationManager task, but it's already running!";
             Warrior.getPluginLogger().warn(msg);
@@ -47,14 +51,21 @@ public class NotificationManager {
         running = true;
     }
 
-    public static void stop() {
+    /**
+     * Stop the notification runnable.
+     */
+    public void stop() {
         if(running) {
             Bukkit.getScheduler().cancelTask(taskId);
             running = false;
         }
     }
 
-    private static void sendNotification(WarriorUser user) {
+    /**
+     * Send a notification to the target player. Used by the runnable to send notifications.
+     * @param user The player to send a notification to
+     */
+    public void sendNotification(WarriorUser user) {
         GeneralSettings settings = user.getSettings();
         if(settings.receiveNotifications()) {
             String rndMsg = MathUtil.randomElement(msgPool);

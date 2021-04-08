@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.api.user;
 
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
 import com.dumbdogdiner.warrior.api.events.WarriorLevelUpEvent;
@@ -247,9 +247,9 @@ public class WarriorUser implements Comparable<WarriorUser> {
 
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException e) {
             String msg = String.format("Oh no! Something went wrong while trying to create a WarriorUser instance! %s", e.getMessage());
-            Warrior.getPluginLogger().error(msg);
+            WarriorAPI.getPluginLogger().error(msg);
 
-            if(Warrior.getService().getConfig().getBoolean("general-settings.debug-mode"))
+            if(WarriorAPI.getService().getConfig().getBoolean("general-settings.debug-mode"))
                 e.printStackTrace();
         }
     }
@@ -397,7 +397,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
             public void run() {
                 Bukkit.getPluginManager().callEvent(e);
             }
-        }.runTask(Warrior.getInstance());
+        }.runTask(WarriorAPI.getInstance());
         this.session = session;
     }
 
@@ -599,28 +599,28 @@ public class WarriorUser implements Comparable<WarriorUser> {
             public void run() {
                 if(spectating) {
                     bukkitPlayer.setGameMode(GameMode.ADVENTURE);
-                    Warrior.getSpecTeam().addEntry(bukkitPlayer.getName());
+                    WarriorAPI.getSpecTeam().addEntry(bukkitPlayer.getName());
                     bukkitPlayer.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
                     for(Player p : Bukkit.getOnlinePlayers()) {
-                        if(Warrior.getSpecTeam().hasEntry(p.getName())) continue;
-                        p.hidePlayer(Warrior.getInstance(), bukkitPlayer);
+                        if(WarriorAPI.getSpecTeam().hasEntry(p.getName())) continue;
+                        p.hidePlayer(WarriorAPI.getInstance(), bukkitPlayer);
                     }
 
-                    for(String s : Warrior.getSpecTeam().getEntries()) {
+                    for(String s : WarriorAPI.getSpecTeam().getEntries()) {
                         Player p = Bukkit.getPlayer(s);
                         if(p == null) return;
-                        bukkitPlayer.showPlayer(Warrior.getInstance(), p);
+                        bukkitPlayer.showPlayer(WarriorAPI.getInstance(), p);
                     }
                 } else {
-                    Warrior.getSpecTeam().removeEntry(bukkitPlayer.getName());
+                    WarriorAPI.getSpecTeam().removeEntry(bukkitPlayer.getName());
                     for(Player p : Bukkit.getOnlinePlayers()) {
-                        p.showPlayer(Warrior.getInstance(), bukkitPlayer);
+                        p.showPlayer(WarriorAPI.getInstance(), bukkitPlayer);
                     }
 
-                    for(String s : Warrior.getSpecTeam().getEntries()) {
+                    for(String s : WarriorAPI.getSpecTeam().getEntries()) {
                         Player p = Bukkit.getPlayer(s);
                         if(p == null) return;
-                        bukkitPlayer.hidePlayer(Warrior.getInstance(), p);
+                        bukkitPlayer.hidePlayer(WarriorAPI.getInstance(), p);
                     }
 
                     for(PotionEffect effect : bukkitPlayer.getActivePotionEffects())
@@ -631,7 +631,7 @@ public class WarriorUser implements Comparable<WarriorUser> {
                 bukkitPlayer.setFlying(spectating);
 
             }
-        }.runTask(Warrior.getInstance());
+        }.runTask(WarriorAPI.getInstance());
 
     }
 
@@ -739,10 +739,10 @@ public class WarriorUser implements Comparable<WarriorUser> {
      */
     public void loadData() {
 
-        UserData data = Warrior.getConnection().getData(this.userId);
-        this.settings = Warrior.getConnection().getUserSettings(this.userId);
-        this.gameplaySettings = Warrior.getConnection().getGameplaySettings(this.userId);
-        this.visualSettings = Warrior.getConnection().getVisualSettings(this.userId);
+        UserData data = WarriorAPI.getConnection().getData(this.userId);
+        this.settings = WarriorAPI.getConnection().getUserSettings(this.userId);
+        this.gameplaySettings = WarriorAPI.getConnection().getGameplaySettings(this.userId);
+        this.visualSettings = WarriorAPI.getConnection().getVisualSettings(this.userId);
         if(data.isSuccessful()) {
             String msg = String.format("&2%1$s &aPlayer Data Loaded &2%1$s", Symbols.HEAVY_CHECK_MARK);
             sendActionBar(TranslationUtil.translateColor(msg));
@@ -773,10 +773,10 @@ public class WarriorUser implements Comparable<WarriorUser> {
 
     public void saveData() {
         UserData data = new UserData(this);
-        Warrior.getConnection().saveData(data);
-        Warrior.getConnection().saveSettings(this.settings);
-        Warrior.getConnection().saveGameplaySettings(this.gameplaySettings);
-        Warrior.getConnection().saveVisualSettings(this.visualSettings);
+        WarriorAPI.getConnection().saveData(data);
+        WarriorAPI.getConnection().saveSettings(this.settings);
+        WarriorAPI.getConnection().saveGameplaySettings(this.gameplaySettings);
+        WarriorAPI.getConnection().saveVisualSettings(this.visualSettings);
     }
 
 }

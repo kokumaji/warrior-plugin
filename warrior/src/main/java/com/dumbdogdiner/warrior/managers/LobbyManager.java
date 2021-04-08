@@ -1,6 +1,7 @@
 package com.dumbdogdiner.warrior.managers;
 
 import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.managers.WarriorLobbyManager;
 import com.dumbdogdiner.warrior.api.models.LobbyDataModel;
 import com.dumbdogdiner.warrior.api.models.LocationModel;
 import com.dumbdogdiner.warrior.api.util.JSONUtil;
@@ -16,12 +17,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Objects;
 
-public class LobbyManager {
+public class LobbyManager implements WarriorLobbyManager {
 
     @Getter
-    private static Location lobbySpawn;
+    private Location lobbySpawn;
 
-    public static void loadData() {
+    /**
+     * Load lobby spawn data from plugin configuration.
+     */
+    public void loadData() {
         FileConfiguration c = Warrior.getInstance().getConfig();
         if(c.getBoolean("lobby-settings.custom-spawn")) {
             File lobbyData = new File(JSONUtil.LOBBY_DATA_PATH);
@@ -43,7 +47,7 @@ public class LobbyManager {
         }
     }
 
-    private static Location getVanillaSpawn() {
+    private Location getVanillaSpawn() {
         FileConfiguration c = Warrior.getInstance().getConfig();
         String world = c.getString("lobby-settings.lobby-world");
         if(world == null) {
@@ -53,7 +57,7 @@ public class LobbyManager {
         }
     }
 
-    public static void updateLocation(Location location) {
+    public void updateLocation(Location location) {
         lobbySpawn = location;
         JSONUtil.saveSpawn();
     }

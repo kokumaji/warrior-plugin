@@ -5,7 +5,6 @@ import com.dumbdogdiner.warrior.api.translation.ConsoleColor;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,11 +20,11 @@ public class WarriorLogger {
     private ChatColor TEXT_COLOR = ChatColor.GRAY;
 
     @Getter
-    private final Warrior owner;
+    private final WarriorAPI owner;
 
     private Logger logger;
 
-    public WarriorLogger(Warrior warrior) {
+    public WarriorLogger(WarriorAPI warrior) {
         this.logger = Bukkit.getLogger();
         this.owner = warrior;
     }

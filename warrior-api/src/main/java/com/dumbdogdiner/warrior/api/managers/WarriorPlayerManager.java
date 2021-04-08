@@ -19,8 +19,9 @@ public interface WarriorPlayerManager {
     /**
      * Add the target player to the player manager.
      * @param userId The UUID of the player
+     * @return
      */
-    void addUser(@NotNull UUID userId);
+    WarriorUser addUser(@NotNull UUID userId);
 
     /**
      * Remove the target player from the player manager.
