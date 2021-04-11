@@ -1,10 +1,10 @@
 package com.dumbdogdiner.warrior.api.builders;
 
 import com.dumbdogdiner.warrior.api.WarriorAPI;
-import com.dumbdogdiner.warrior.api.nms.PacketType;
-import com.dumbdogdiner.warrior.api.nms.entity.NMSEntity;
-import com.dumbdogdiner.warrior.api.nms.entity.NMSEntityType;
-import com.dumbdogdiner.warrior.api.nms.networking.packets.Packet;
+import com.dumbdogdiner.warrior.nms.PacketType;
+import com.dumbdogdiner.warrior.nms.entity.NMSEntity;
+import com.dumbdogdiner.warrior.nms.entity.NMSEntityType;
+import com.dumbdogdiner.warrior.nms.networking.packets.Packet;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;

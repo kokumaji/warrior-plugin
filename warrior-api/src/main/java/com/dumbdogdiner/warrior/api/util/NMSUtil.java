@@ -1,9 +1,9 @@
 package com.dumbdogdiner.warrior.api.util;
 
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
-import com.dumbdogdiner.warrior.api.nms.PacketListener;
-import com.dumbdogdiner.warrior.api.nms.networking.packets.ClientPacket;
-import com.dumbdogdiner.warrior.api.nms.networking.packets.ServerPacket;
+import com.dumbdogdiner.warrior.nms.PacketListener;
+import com.dumbdogdiner.warrior.nms.networking.packets.ClientPacket;
+import com.dumbdogdiner.warrior.nms.networking.packets.ServerPacket;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;

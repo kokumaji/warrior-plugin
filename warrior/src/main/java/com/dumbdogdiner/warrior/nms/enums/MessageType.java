@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.nms.enums;
+package com.dumbdogdiner.warrior.nms.enums;
 
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 

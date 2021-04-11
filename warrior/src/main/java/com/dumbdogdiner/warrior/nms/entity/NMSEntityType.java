@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.nms.entity;
+package com.dumbdogdiner.warrior.nms.entity;
 
 public enum NMSEntityType {
 

@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.nms.objects;
+package com.dumbdogdiner.warrior.nms.objects;
 
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 

@@ -1,9 +1,9 @@
-package com.dumbdogdiner.warrior.api.nms.networking.packets;
+package com.dumbdogdiner.warrior.nms.networking.packets;
 
-import com.dumbdogdiner.warrior.api.nms.PacketType;
-import com.dumbdogdiner.warrior.api.nms.networking.Protocol;
-import com.dumbdogdiner.warrior.api.nms.networking.ProtocolDirection;
-import com.dumbdogdiner.warrior.api.nms.objects.SoundEffect;
+import com.dumbdogdiner.warrior.nms.PacketType;
+import com.dumbdogdiner.warrior.nms.networking.Protocol;
+import com.dumbdogdiner.warrior.nms.networking.ProtocolDirection;
+import com.dumbdogdiner.warrior.nms.objects.SoundEffect;
 import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import lombok.Getter;

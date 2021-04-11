@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.nms.entity;
+package com.dumbdogdiner.warrior.nms.entity;
 
 import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;

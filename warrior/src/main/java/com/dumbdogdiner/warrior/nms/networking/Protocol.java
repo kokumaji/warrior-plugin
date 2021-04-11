@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.nms.networking;
+package com.dumbdogdiner.warrior.nms.networking;
 
 import com.dumbdogdiner.warrior.api.reflection.EnumUtil;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;

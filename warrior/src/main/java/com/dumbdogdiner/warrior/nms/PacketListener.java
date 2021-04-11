@@ -1,8 +1,8 @@
-package com.dumbdogdiner.warrior.api.nms;
+package com.dumbdogdiner.warrior.nms;
 
-import com.dumbdogdiner.warrior.api.nms.networking.packets.ClientPacket;
-import com.dumbdogdiner.warrior.api.nms.networking.packets.Packet;
-import com.dumbdogdiner.warrior.api.nms.networking.packets.ServerPacket;
+import com.dumbdogdiner.warrior.nms.networking.packets.ClientPacket;
+import com.dumbdogdiner.warrior.nms.networking.packets.Packet;
+import com.dumbdogdiner.warrior.nms.networking.packets.ServerPacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 

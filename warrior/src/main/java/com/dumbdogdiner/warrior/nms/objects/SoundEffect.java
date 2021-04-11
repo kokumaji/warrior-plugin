@@ -1,6 +1,6 @@
-package com.dumbdogdiner.warrior.api.nms.objects;
+package com.dumbdogdiner.warrior.nms.objects;
 
-import com.dumbdogdiner.warrior.api.nms.networking.packets.Packet;
+import com.dumbdogdiner.warrior.nms.networking.packets.Packet;
 import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import org.bukkit.Sound;

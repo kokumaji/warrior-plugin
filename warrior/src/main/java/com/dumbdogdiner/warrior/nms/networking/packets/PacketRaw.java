@@ -1,6 +1,6 @@
-package com.dumbdogdiner.warrior.api.nms.networking.packets;
+package com.dumbdogdiner.warrior.nms.networking.packets;
 
-import com.dumbdogdiner.warrior.api.nms.PacketType;
+import com.dumbdogdiner.warrior.nms.PacketType;
 import com.dumbdogdiner.warrior.api.reflection.ReflectionUtil;
 import com.dumbdogdiner.warrior.api.util.NMSUtil;
 import io.netty.buffer.ByteBuf;

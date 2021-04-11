@@ -1,6 +1,6 @@
-package com.dumbdogdiner.warrior.api.nms;
+package com.dumbdogdiner.warrior.nms;
 
-import com.dumbdogdiner.warrior.api.nms.networking.Protocol;
+import com.dumbdogdiner.warrior.nms.networking.Protocol;
 import lombok.Getter;
 
 /**

@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.api.user;
 
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
-import com.dumbdogdiner.warrior.api.nms.networking.packets.Packet;
+import com.dumbdogdiner.warrior.nms.networking.packets.Packet;
 import com.dumbdogdiner.warrior.api.sessions.Session;
 import com.dumbdogdiner.warrior.api.sound.Note;
 import com.dumbdogdiner.warrior.api.user.cosmetics.DeathParticle;
@@ -172,7 +172,7 @@ public interface WarriorUser extends Comparable<WarriorUser> {
 	 * Get the general user settings
 	 * for this player.
 	 */
-	GeneralSettings getGeneralSettings();
+	GeneralSettings getSettings();
 
 	/**
 	 * Get the gameplay specific settings
