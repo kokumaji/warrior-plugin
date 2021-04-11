@@ -5,7 +5,7 @@ import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.MaxHealthFlag;
 import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.translation.Placeholders;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.builders.GameBossBar;
 import com.dumbdogdiner.warrior.api.builders.HologramBuilder;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
@@ -62,7 +62,7 @@ public class ArenaSessionListener implements Listener {
         if(ArenaManager.isPlaying(p)) {
             if(e.getItem() == null) return;
 
-            WarriorUser user = PlayerManager.get(p.getUniqueId());
+            User user = PlayerManager.get(p.getUniqueId());
             ItemStack item = e.getItem();
             ItemMeta meta = item.getItemMeta();
             Arena a = ((ArenaSession) user.getSession()).getArena();
@@ -100,7 +100,7 @@ public class ArenaSessionListener implements Listener {
 
             if(e.getItem() == null) return;
 
-            WarriorUser user = PlayerManager.get(p.getUniqueId());
+            User user = PlayerManager.get(p.getUniqueId());
             ItemMeta meta = e.getItem().getItemMeta();
 
             // credit to spazzylemons for this solution uwu
@@ -130,7 +130,7 @@ public class ArenaSessionListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
-        WarriorUser user = PlayerManager.get(e.getEntity().getUniqueId());
+        User user = PlayerManager.get(e.getEntity().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
@@ -214,7 +214,7 @@ public class ArenaSessionListener implements Listener {
 
         if(killer.equals(e.getEntity())) return;
 
-        WarriorUser killerUser = PlayerManager.get(killer.getUniqueId());
+        User killerUser = PlayerManager.get(killer.getUniqueId());
         if(!(killerUser.getSession() instanceof ArenaSession)) return;
 
         ((ArenaSession)killerUser.getSession()).addKill();
@@ -259,7 +259,7 @@ public class ArenaSessionListener implements Listener {
         Projectile projectile = (Arrow) e.getDamager();
         if(!(projectile.getShooter() instanceof Player)) return;
 
-        WarriorUser victim = PlayerManager.get(e.getEntity().getUniqueId());
+        User victim = PlayerManager.get(e.getEntity().getUniqueId());
 
         if(victim.getSession() == null) return;
 
@@ -276,8 +276,8 @@ public class ArenaSessionListener implements Listener {
         if(!(e.getEntity() instanceof Player)) return;
         if(!(e.getDamager() instanceof Player)) return;
 
-        WarriorUser victim = PlayerManager.get(e.getEntity().getUniqueId());
-        WarriorUser attacker = PlayerManager.get(e.getDamager().getUniqueId());
+        User victim = PlayerManager.get(e.getEntity().getUniqueId());
+        User attacker = PlayerManager.get(e.getDamager().getUniqueId());
 
         if(victim == null || attacker == null) return;
 
@@ -292,7 +292,7 @@ public class ArenaSessionListener implements Listener {
         } else {
             int goreLevel = attacker.getVisualSettings().getGoreLevel();
 
-            BiConsumer<WarriorUser, Location> effect = WarriorEffects.getGoreEffect(goreLevel);
+            BiConsumer<User, Location> effect = WarriorEffects.getGoreEffect(goreLevel);
 
             // if our shooter has blood/gore disabled, return.
             if(effect != null) effect.accept(attacker, victim.getLocation());
@@ -302,7 +302,7 @@ public class ArenaSessionListener implements Listener {
 
     @EventHandler
     public void onStreakReset(KillStreakResetEvent e) {
-        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = PlayerManager.get(e.getPlayer().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
@@ -312,7 +312,7 @@ public class ArenaSessionListener implements Listener {
 
     @EventHandler
     public void onKillStreak(KillStreakChangeEvent e) {
-        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = PlayerManager.get(e.getPlayer().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
@@ -372,7 +372,7 @@ public class ArenaSessionListener implements Listener {
         if(!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
 
-        WarriorUser user = PlayerManager.get(p.getUniqueId());
+        User user = PlayerManager.get(p.getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
@@ -406,10 +406,10 @@ public class ArenaSessionListener implements Listener {
             if(target == shooter) return;
 
             if(shooter instanceof Player) {
-                WarriorUser userShooter = PlayerManager.get(shooter.getUniqueId());
+                User userShooter = PlayerManager.get(shooter.getUniqueId());
                 int goreLevel = userShooter.getVisualSettings().getGoreLevel();
 
-                BiConsumer<WarriorUser, Location> effect = WarriorEffects.getGoreEffect(goreLevel);
+                BiConsumer<User, Location> effect = WarriorEffects.getGoreEffect(goreLevel);
 
                 // if our shooter has blood/gore disabled, return.
                 if(effect == null) return;
@@ -417,10 +417,10 @@ public class ArenaSessionListener implements Listener {
             }
 
             if(target instanceof Player) {
-                WarriorUser userTarget = PlayerManager.get(target.getUniqueId());
+                User userTarget = PlayerManager.get(target.getUniqueId());
                 int goreLevel = userTarget.getVisualSettings().getGoreLevel();
 
-                BiConsumer<WarriorUser, Location> effect = WarriorEffects.getGoreEffect(goreLevel);
+                BiConsumer<User, Location> effect = WarriorEffects.getGoreEffect(goreLevel);
 
                 // if our shooter has blood/gore disabled, return.
                 if(effect == null) return;

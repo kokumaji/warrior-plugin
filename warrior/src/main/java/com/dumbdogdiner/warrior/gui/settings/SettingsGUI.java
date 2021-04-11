@@ -4,7 +4,7 @@ import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot;
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.user.cosmetics.WarriorTitle;
 import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
@@ -34,7 +34,7 @@ public class SettingsGUI extends GUI {
             addSlot(i, 4, placeholder);
         }
 
-        WarriorUser user = PlayerManager.get(event.getPlayer().getUniqueId());
+        User user = PlayerManager.get(event.getPlayer().getUniqueId());
         if(user == null || user.getSettings() == null) {
             ItemStack errorHead = HeadTexture.asItem(HeadTexture.MHF_QUESTION);
             addSlot(1, 4, errorHead);

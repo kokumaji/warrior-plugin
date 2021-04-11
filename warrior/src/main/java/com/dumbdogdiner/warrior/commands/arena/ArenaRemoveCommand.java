@@ -4,7 +4,7 @@ import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.translation.Constants;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
@@ -36,7 +36,7 @@ public class ArenaRemoveCommand implements SubCommand {
         Arena a = ArenaManager.get(args[1]);
 
         if(a != null) {
-            WarriorUser user = PlayerManager.get(((Player)sender).getUniqueId());
+            User user = PlayerManager.get(((Player)sender).getUniqueId());
             String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_REMOVE, new HashMap<>() {
                 {
                     put("arena", args[1]);

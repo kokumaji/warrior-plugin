@@ -3,7 +3,7 @@ package com.dumbdogdiner.warrior.commands.misc;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.command.AsyncCommandLegacy;
 import com.dumbdogdiner.warrior.api.command.ExitStatus;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.gui.settings.SettingsGUI;
 import com.dumbdogdiner.warrior.managers.GUIManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
@@ -21,7 +21,7 @@ public class SettingsCommand extends AsyncCommandLegacy implements TabCompleter 
 
     @Override
     public ExitStatus executeCommand(CommandSender sender, String commandLabel, String[] args) {
-        WarriorUser user = PlayerManager.get(((Player) sender).getUniqueId());
+        User user = PlayerManager.get(((Player) sender).getUniqueId());
         SettingsGUI langGUI = GUIManager.get(SettingsGUI.class);
         new BukkitRunnable() {
 

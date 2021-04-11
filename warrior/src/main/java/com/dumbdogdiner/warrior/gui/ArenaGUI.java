@@ -4,7 +4,7 @@ import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot;
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
@@ -98,7 +98,7 @@ public class ArenaGUI extends GUI {
             event.getWhoClicked().closeInventory();
         } else if(name.contains("Arena")) {
             String arenaName = name.replace("§7Arena §3", "");
-            WarriorUser user = PlayerManager.get(event.getWhoClicked().getUniqueId());
+            User user = PlayerManager.get(event.getWhoClicked().getUniqueId());
 
             if(user == null) return;
             Arena a = ArenaManager.get(arenaName);

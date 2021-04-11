@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.commands.arena;
 
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
@@ -41,7 +41,7 @@ public class ArenaJoinCommand implements SubCommand {
             return false;
         }
 
-        WarriorUser user = PlayerManager.get(((Player)sender).getUniqueId());
+        User user = PlayerManager.get(((Player)sender).getUniqueId());
         Arena a = ArenaManager.get(args[1]);
 
         if(a == null) {

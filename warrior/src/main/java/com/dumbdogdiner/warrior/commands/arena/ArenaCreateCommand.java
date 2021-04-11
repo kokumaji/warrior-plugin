@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.commands.arena;
 
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.arena.ArenaBuilder;
 import com.dumbdogdiner.warrior.api.arena.ArenaBuilderSession;
@@ -41,9 +41,9 @@ public class ArenaCreateCommand implements SubCommand {
         }
 
         Player player = (Player) sender;
-        WarriorUser user = PlayerManager.get(player.getUniqueId());
+        User user = PlayerManager.get(player.getUniqueId());
         String name = TranslationUtil.capitalize(args[1]);
-        ArenaBuilderSession session = new ArenaBuilderSession(new WarriorUser(player), name);
+        ArenaBuilderSession session = new ArenaBuilderSession(new User(player), name);
 
         Arena arena = ArenaManager.get(args[1]);
 

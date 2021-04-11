@@ -5,7 +5,7 @@ import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -52,7 +52,7 @@ public class SymbolsSearchCommand implements SubCommand {
 
         String msg;
         if(sender instanceof Player) {
-            WarriorUser user = PlayerManager.get(((Player)sender).getUniqueId());
+            User user = PlayerManager.get(((Player)sender).getUniqueId());
             msg = Warrior.getTranslator().translate("command-messages.symbols-command", new HashMap<>() {
                 {
                     put("arg1", args[1]);

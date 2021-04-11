@@ -58,7 +58,7 @@ public class UserData {
         this.deathParticles = user.getDeathParticles();
         this.titles = user.getTitles();
 
-        this.userId = user.getUserId();
+        this.userId = user.getUniqueId();
 
         this.firstJoin = user.getFirstJoin();
         this.lastJoin = user.getLastJoin();

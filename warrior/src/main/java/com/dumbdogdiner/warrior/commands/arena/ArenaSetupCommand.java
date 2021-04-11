@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.commands.arena;
 
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.arena.ArenaBuilder;
 import com.dumbdogdiner.warrior.api.arena.ArenaBuilderSession;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
@@ -32,7 +32,7 @@ public class ArenaSetupCommand implements SubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        WarriorUser user = new WarriorUser((Player)sender);
+        User user = new User((Player)sender);
         ArenaBuilderSession session = ArenaBuilder.getSession(user);
 
         if(session == null) {

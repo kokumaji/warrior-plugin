@@ -3,7 +3,7 @@ package com.dumbdogdiner.warrior.gui;
 import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot;
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSound;
 import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSounds;
@@ -38,7 +38,7 @@ public class DeathSoundGUI extends GUI {
         int soundCount = DeathSound.values().length;
         int i = 0;
 
-        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = PlayerManager.get(e.getPlayer().getUniqueId());
 
         for(int y = 1; y < 4; y++) {
             for(int x = 1; x < 8; x++) {

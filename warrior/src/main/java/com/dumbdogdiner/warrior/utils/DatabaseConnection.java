@@ -2,7 +2,7 @@ package com.dumbdogdiner.warrior.utils;
 
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.user.cosmetics.DeathParticle;
 import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSound;
 import com.dumbdogdiner.warrior.api.user.cosmetics.WarriorTitle;
@@ -112,7 +112,7 @@ public class DatabaseConnection {
         }
     }
 
-    public void insertUser(WarriorUser user) {
+    public void insertUser(User user) {
         try {
             if(this.ds == null) {
                 String msg = String.format("Could not get user data for %s! Is the connection alive?", user.getUserId());

@@ -2,7 +2,7 @@ package com.dumbdogdiner.warrior.commands.arena;
 
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.translation.Constants;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.api.sessions.SessionType;
@@ -32,7 +32,7 @@ public class ArenaLeaveCommand implements SubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        WarriorUser user = PlayerManager.get(((Player)sender).getUniqueId());
+        User user = PlayerManager.get(((Player)sender).getUniqueId());
         if(user.getSession().getType() == SessionType.GAME) {
             String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_LEFT, new HashMap<>() {
                 {

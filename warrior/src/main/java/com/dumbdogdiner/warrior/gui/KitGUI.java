@@ -3,7 +3,7 @@ package com.dumbdogdiner.warrior.gui;
 import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot;
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.kit.BaseKit;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
@@ -86,7 +86,7 @@ public class KitGUI extends GUI {
             event.getWhoClicked().closeInventory();
         } else if(name.contains("Kit")) {
             String kitName = name.replace("§7Kit §3", "");
-            WarriorUser user = PlayerManager.get(event.getWhoClicked().getUniqueId());
+            User user = PlayerManager.get(event.getWhoClicked().getUniqueId());
 
             if(user == null) return;
             BaseKit kit = KitManager.get(kitName);

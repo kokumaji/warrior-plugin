@@ -7,7 +7,7 @@ import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.Session;
 import com.dumbdogdiner.warrior.api.sessions.SessionType;
 import com.dumbdogdiner.warrior.api.translation.Placeholders;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.util.JSONUtil;
 import com.dumbdogdiner.warrior.utils.DefaultMessages;
 import org.bukkit.entity.Player;
@@ -59,7 +59,7 @@ public class ArenaManager implements WithWarriorPlugin, WarriorArenaManager {
         getLogger().info(msg);
     }
 
-    public List<WarriorUser> getPlayers(Arena a) {
+    public List<User> getPlayers(Arena a) {
         return PlayerManager.getListOf(user -> {
             Session s = user.getSession();
             if(s.getType().equals(SessionType.GAME))
@@ -69,14 +69,14 @@ public class ArenaManager implements WithWarriorPlugin, WarriorArenaManager {
     }
 
     public boolean isPlaying(Player player) {
-        WarriorUser user = PlayerManager.get(player.getUniqueId());
+        User user = PlayerManager.get(player.getUniqueId());
         if(user.getSession() == null) return false;
         return user.getSession().getType() == SessionType.GAME;
     }
 
     public ArenaSession getSession(Player player) {
         if(isPlaying(player)) {
-            WarriorUser user = PlayerManager.get(player.getUniqueId());
+            User user = PlayerManager.get(player.getUniqueId());
             return (ArenaSession) user.getSession();
         }
 

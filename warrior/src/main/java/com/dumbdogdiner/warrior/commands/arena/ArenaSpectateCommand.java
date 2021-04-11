@@ -2,7 +2,7 @@ package com.dumbdogdiner.warrior.commands.arena;
 
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.translation.Constants;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
@@ -38,7 +38,7 @@ public class ArenaSpectateCommand implements SubCommand {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         Arena a = ArenaManager.get(args[1]);
-        WarriorUser u = PlayerManager.get(((Player)sender).getUniqueId());
+        User u = PlayerManager.get(((Player)sender).getUniqueId());
 
         if(a == null || u == null) return false;
 

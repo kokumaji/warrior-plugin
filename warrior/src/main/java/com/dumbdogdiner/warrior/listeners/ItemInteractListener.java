@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.listeners;
 
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.GameState;
@@ -32,7 +32,7 @@ public class ItemInteractListener implements Listener {
     public void onItemUse(PlayerInteractEvent e) {
         if(e.getItem() == null) return;
 
-        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = PlayerManager.get(e.getPlayer().getUniqueId());
         if(user == null) return;
 
         if(user.getSession() == null) return;
@@ -93,7 +93,7 @@ public class ItemInteractListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if(e.getInventory().getType() == InventoryType.CHEST) {
-            WarriorUser user = PlayerManager.get(e.getWhoClicked().getUniqueId());
+            User user = PlayerManager.get(e.getWhoClicked().getUniqueId());
             if(!(user.getSession() instanceof LobbySession)) return;
 
             e.setCancelled(true);

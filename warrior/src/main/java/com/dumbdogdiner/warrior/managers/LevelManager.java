@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.managers;
 
 import com.dumbdogdiner.warrior.api.managers.WarriorLevelManager;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.util.MathUtil;
 
 public class LevelManager implements WarriorLevelManager {
@@ -30,7 +30,7 @@ public class LevelManager implements WarriorLevelManager {
     }
 
 
-    public double getProgress(WarriorUser user) {
+    public double getProgress(User user) {
         double nextXp = levelToXp(user.getLevel());
         return MathUtil.round((user.getRelativeXp() / nextXp), 2);
     }

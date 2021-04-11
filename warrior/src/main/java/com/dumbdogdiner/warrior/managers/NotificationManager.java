@@ -5,7 +5,7 @@ import com.dumbdogdiner.warrior.api.managers.WarriorNotificationManager;
 import com.dumbdogdiner.warrior.api.sound.Melody;
 import com.dumbdogdiner.warrior.api.sound.Note;
 import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.util.MathUtil;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
@@ -40,7 +40,7 @@ public class NotificationManager implements WarriorNotificationManager {
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                for(WarriorUser user : PlayerManager.getList()) {
+                for(User user : PlayerManager.getList()) {
                     sendNotification(user);
                 }
             }
@@ -65,7 +65,7 @@ public class NotificationManager implements WarriorNotificationManager {
      * Send a notification to the target player. Used by the runnable to send notifications.
      * @param user The player to send a notification to
      */
-    public void sendNotification(WarriorUser user) {
+    public void sendNotification(User user) {
         GeneralSettings settings = user.getSettings();
         if(settings.receiveNotifications()) {
             String rndMsg = MathUtil.randomElement(msgPool);

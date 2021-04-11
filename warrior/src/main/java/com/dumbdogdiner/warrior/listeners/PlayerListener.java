@@ -3,7 +3,7 @@ package com.dumbdogdiner.warrior.listeners;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.events.WarriorLevelUpEvent;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 
@@ -31,7 +31,7 @@ public class PlayerListener implements Listener {
         }
 
         if (!PlayerManager.contains(uuid)) {
-            WarriorUser user = PlayerManager.addUser(uuid);
+            User user = PlayerManager.addUser(uuid);
             user.loadData();
             user.setSession(new LobbySession(user.getUserId()));
 

@@ -8,7 +8,7 @@ import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.translation.ConsoleColor;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.api.translation.Translator;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.dumbdogdiner.warrior.utils.DefaultMessages;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
@@ -42,7 +42,7 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
     @Override
     public void onPermissionError(CommandSender sender, String label, String[] args) {
         if(sender instanceof Player) {
-            WarriorUser user = PlayerManager.get(((Player) sender).getUniqueId());
+            User user = PlayerManager.get(((Player) sender).getUniqueId());
             String msg = Warrior.getTranslator().translate(Constants.Lang.ERROR_PERM, user);
 
             user.sendMessage(TranslationUtil.prettyMessage(msg));
@@ -60,7 +60,7 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
         if(args.length > 1) return;
         Translator t = Warrior.getTranslator();
 
-        WarriorUser user = null;
+        User user = null;
         if(sender instanceof Player) user = PlayerManager.get(((Player)sender).getUniqueId());
 
         String msg = t.translate(Constants.Lang.ERROR_SYNTAX, new HashMap<>() {

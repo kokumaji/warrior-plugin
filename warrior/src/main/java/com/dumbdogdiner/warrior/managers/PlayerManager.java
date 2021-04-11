@@ -3,7 +3,7 @@ package com.dumbdogdiner.warrior.managers;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.WithWarriorPlugin;
 import com.dumbdogdiner.warrior.api.managers.WarriorPlayerManager;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,17 +18,17 @@ import java.util.stream.Collectors;
 
 public class PlayerManager implements WithWarriorPlugin, WarriorPlayerManager {
 
-    private final TreeMap<UUID, WarriorUser> users = new TreeMap<>();
+    private final TreeMap<UUID, User> users = new TreeMap<>();
 
     public boolean contains(UUID uuid) {
         return users.containsKey(uuid);
     }
 
-    public WarriorUser addUser(@NotNull UUID userId) {
+    public User addUser(@NotNull UUID userId) {
         Player p = Preconditions.checkNotNull(Bukkit.getPlayer(userId), "Player cannot be null!");
 
         if(!users.containsKey(userId)) {
-            WarriorUser user = new WarriorUser(userId);
+            User user = new User(userId);
             Warrior.getConnection().insertUser(user);
             users.put(userId, user);
 
@@ -40,13 +40,13 @@ public class PlayerManager implements WithWarriorPlugin, WarriorPlayerManager {
         }
     }
 
-    public void remove(@NotNull WarriorUser user) {
+    public void remove(@NotNull User user) {
         remove(user.getUserId());
     }
 
     public void remove(@NotNull UUID userId) {
         if(users.containsKey(userId)) {
-            WarriorUser user = users.get(userId);
+            User user = users.get(userId);
             user.saveData();
 
             users.remove(userId);
@@ -56,15 +56,15 @@ public class PlayerManager implements WithWarriorPlugin, WarriorPlayerManager {
         }
     }
 
-    public WarriorUser get(UUID userId) {
+    public User get(UUID userId) {
         return Preconditions.checkNotNull(users.get(userId), "WarriorUser is null!");
     }
 
-    public List<WarriorUser> getList() {
+    public List<User> getList() {
         return new ArrayList<>(users.values());
     }
 
-    public List<WarriorUser> getListOf(Predicate<WarriorUser> predicate) {
+    public List<User> getListOf(Predicate<User> predicate) {
         return users.values().stream().filter(predicate).collect(Collectors.toList());
     }
 }

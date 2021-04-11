@@ -5,7 +5,7 @@ import com.dumbdogdiner.warrior.api.WarriorLogger;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.kit.SpecialAbilities;
 import com.dumbdogdiner.warrior.api.translation.Translator;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.commands.DebugCommand;
 import com.dumbdogdiner.warrior.commands.arena.ArenaCommand;
 import com.dumbdogdiner.warrior.commands.arena.ArenaCreateCommand;
@@ -158,7 +158,7 @@ public class Warrior extends JavaPlugin {
             specTeam.unregister();
         }
 
-        for(WarriorUser user : playerManager.getList()) user.saveData();
+        for(User user : playerManager.getList()) user.saveData();
         for(Arena a : arenaManager.getArenas()) a.save();
 
     }

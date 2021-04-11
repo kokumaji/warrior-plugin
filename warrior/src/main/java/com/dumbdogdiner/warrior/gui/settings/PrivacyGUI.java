@@ -5,7 +5,7 @@ import com.dumbdogdiner.stickyapi.bukkit.gui.GUI;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.translation.Placeholders;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.util.HeadTexture;
 import com.dumbdogdiner.warrior.managers.GUIManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
@@ -25,7 +25,7 @@ public class PrivacyGUI extends GUI {
 
     @Override
     public void onInventoryOpen(@NotNull InventoryOpenEvent e) {
-        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = PlayerManager.get(e.getPlayer().getUniqueId());
         ItemStack placeholder = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE)
                 .setName(" ").build();
 

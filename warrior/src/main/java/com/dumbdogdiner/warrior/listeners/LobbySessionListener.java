@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.listeners;
 
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 import org.bukkit.GameMode;
@@ -21,7 +21,7 @@ public class LobbySessionListener implements Listener {
     public void onDamage(EntityDamageEvent e) {
         if(!(e.getEntity() instanceof Player)) return;
         if(((Player)e.getEntity()).getGameMode().equals(GameMode.CREATIVE)) return;
-        WarriorUser user = PlayerManager.get(e.getEntity().getUniqueId());
+        User user = PlayerManager.get(e.getEntity().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof LobbySession)) return;
@@ -31,7 +31,7 @@ public class LobbySessionListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onItemDrop(PlayerDropItemEvent e) {
         if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
-        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = PlayerManager.get(e.getPlayer().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof LobbySession)) return;
@@ -41,7 +41,7 @@ public class LobbySessionListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onItemSwap(PlayerSwapHandItemsEvent e) {
         if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
-        WarriorUser user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = PlayerManager.get(e.getPlayer().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof LobbySession)) return;
@@ -52,7 +52,7 @@ public class LobbySessionListener implements Listener {
     public void onItemPickup(EntityPickupItemEvent e) {
         if(!(e.getEntity() instanceof Player)) return;
         if(((Player)e.getEntity()).getGameMode().equals(GameMode.CREATIVE)) return;
-        WarriorUser user = PlayerManager.get(e.getEntity().getUniqueId());
+        User user = PlayerManager.get(e.getEntity().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof LobbySession)) return;
@@ -62,7 +62,7 @@ public class LobbySessionListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
         if(e.getEntity().getGameMode().equals(GameMode.CREATIVE)) return;
-        WarriorUser user = PlayerManager.get(e.getEntity().getUniqueId());
+        User user = PlayerManager.get(e.getEntity().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof LobbySession)) return;
@@ -72,7 +72,7 @@ public class LobbySessionListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onItemClick(InventoryClickEvent e) {
         if(e.getWhoClicked().getGameMode().equals(GameMode.CREATIVE)) return;
-        WarriorUser user = PlayerManager.get(e.getWhoClicked().getUniqueId());
+        User user = PlayerManager.get(e.getWhoClicked().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof LobbySession)) return;
