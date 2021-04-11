@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.models.metadata;
+package com.dumbdogdiner.warrior.models.metadata;
 
 import com.dumbdogdiner.warrior.api.util.MathUtil;
 import lombok.Getter;

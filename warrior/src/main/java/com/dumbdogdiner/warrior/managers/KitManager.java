@@ -7,7 +7,7 @@ import com.dumbdogdiner.warrior.api.kit.kits.CustomKit;
 import com.dumbdogdiner.warrior.api.kit.kits.TankKit;
 import com.dumbdogdiner.warrior.api.kit.kits.WarriorKit;
 import com.dumbdogdiner.warrior.api.managers.WarriorKitManager;
-import com.dumbdogdiner.warrior.api.models.CustomKitModel;
+import com.dumbdogdiner.warrior.models.CustomKitModel;
 import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.util.JSONUtil;
 import com.dumbdogdiner.warrior.utils.DefaultMessages;

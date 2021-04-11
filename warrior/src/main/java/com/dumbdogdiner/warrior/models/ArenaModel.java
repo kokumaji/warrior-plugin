@@ -1,7 +1,7 @@
-package com.dumbdogdiner.warrior.api.models;
+package com.dumbdogdiner.warrior.models;
 
 import com.dumbdogdiner.warrior.api.arena.Arena;
-import com.dumbdogdiner.warrior.api.models.metadata.ArenaMetadata;
+import com.dumbdogdiner.warrior.models.metadata.ArenaMetadata;
 import lombok.Getter;
 import org.bukkit.Location;
 

@@ -2,8 +2,8 @@ package com.dumbdogdiner.warrior.managers;
 
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.managers.WarriorLobbyManager;
-import com.dumbdogdiner.warrior.api.models.LobbyDataModel;
-import com.dumbdogdiner.warrior.api.models.LocationModel;
+import com.dumbdogdiner.warrior.models.LobbyDataModel;
+import com.dumbdogdiner.warrior.models.LocationModel;
 import com.dumbdogdiner.warrior.api.util.JSONUtil;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;

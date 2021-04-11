@@ -4,8 +4,8 @@
  */
 package com.dumbdogdiner.warrior.api.arena;
 
-import com.dumbdogdiner.warrior.api.models.LocationModel;
-import com.dumbdogdiner.warrior.api.models.RegionModel;
+import com.dumbdogdiner.warrior.models.LocationModel;
+import com.dumbdogdiner.warrior.models.RegionModel;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

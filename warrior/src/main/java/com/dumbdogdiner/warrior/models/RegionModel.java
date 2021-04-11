@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.models;
+package com.dumbdogdiner.warrior.models;
 
 import lombok.Getter;
 import org.bukkit.util.Vector;

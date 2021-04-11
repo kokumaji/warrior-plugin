@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.models;
+package com.dumbdogdiner.warrior.models;
 
 import com.dumbdogdiner.warrior.api.kit.kits.CustomKit;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.models;
+package com.dumbdogdiner.warrior.models;
 
 import lombok.Data;
 import org.bukkit.inventory.ItemStack;

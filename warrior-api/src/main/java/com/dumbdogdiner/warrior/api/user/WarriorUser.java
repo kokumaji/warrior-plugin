@@ -1,7 +1,6 @@
 package com.dumbdogdiner.warrior.api.user;
 
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
-import com.dumbdogdiner.warrior.nms.networking.packets.Packet;
 import com.dumbdogdiner.warrior.api.sessions.Session;
 import com.dumbdogdiner.warrior.api.sound.Note;
 import com.dumbdogdiner.warrior.api.user.cosmetics.DeathParticle;
@@ -114,23 +113,6 @@ public interface WarriorUser extends Comparable<WarriorUser> {
 	 * @param title Their new title
 	 */
 	void setActiveTitle(WarriorTitle title);
-
-	// REFLECTION STUFF - cringe nae nae :3c
-
-	/**
-	 * Get the CraftPlayer instance of this player.
-	 */
-	Object getCraftPlayer();
-
-	/**
-	 * Get the NetworkManager instance of this player.
-	 */
-	Object getNetworkManager();
-
-	/**
-	 * Get the current active connection of this player.
-	 */
-	Object getPlayerConnection();
 
 	/**
 	 * @return The {@link Player} instance of this player.
@@ -375,15 +357,6 @@ public interface WarriorUser extends Comparable<WarriorUser> {
 	 * Displays the death particles of this player at their location.
 	 */
 	void showDeathParticles();
-
-	/**
-	 * Sends a Packet via reflection. This method is currently designed
-	 * to accept raw notchian packets. This may change in the future
-	 * with the implementation of an in-house packet layer.
-	 *
-	 * @param packet the packet.
-	 */
-	void sendPacket(Packet packet);
 
 	/**
 	 * Gets the {@link Channel} instance of the CraftBukkit player.
