@@ -358,22 +358,12 @@ public class User implements WarriorUser {
         this.bukkitPlayer.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
     }
 
-    @Override
-    public void spawnEffect(Consumer<WarriorUser> func) {
-
-    }
-
     public void spawnEffect(Consumer<WarriorUser> func) {
         this.executeAsync(func);
     }
 
     public void debugEffects() {
         userPool.submit(() -> WarriorEffects.CONFETTI.accept(this));
-    }
-
-    @Override
-    public void executeAsync(Consumer<WarriorUser> func) {
-
     }
 
     public void executeAsync(Consumer<WarriorUser> func) {
@@ -798,5 +788,4 @@ public class User implements WarriorUser {
         Warrior.getConnection().saveGameplaySettings(this.gameplaySettings);
         Warrior.getConnection().saveVisualSettings(this.visualSettings);
     }
-
 }
