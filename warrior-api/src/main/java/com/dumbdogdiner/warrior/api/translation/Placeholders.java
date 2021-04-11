@@ -1,11 +1,10 @@
 package com.dumbdogdiner.warrior.api.translation;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
-import com.dumbdogdiner.warrior.utils.TranslationUtil;
+import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -29,8 +28,8 @@ public class Placeholders {
     }
 
     public static String applyPlaceholders(String msg, LanguageCode lang) {
-        YamlConfiguration conf = lang == LanguageCode.DE_DE ? Warrior.getTranslator().getVariablesGerman()
-                : Warrior.getTranslator().getVariablesEnglish();
+        YamlConfiguration conf = lang == LanguageCode.DE_DE ? WarriorAPI.getService().getTranslator().getVariablesGerman()
+                : WarriorAPI.getService().getTranslator().getVariablesEnglish();
         return applyPlaceholders(msg, conf);
     }
 
@@ -75,8 +74,9 @@ public class Placeholders {
     }
 
     private static boolean parsePlayerCondition(String condition, Player player) {
-        WarriorUser user = PlayerManager.get(player.getUniqueId());
+        WarriorUser user = WarriorAPI.getService().getPlayerManager().get(player.getUniqueId());
         if(user == null) return false;
+        // might be able to replace this with sexy switch statement.
         switch (condition.toLowerCase()) {
             case "notifications":
                 return user.getSettings().receiveNotifications();
@@ -87,8 +87,6 @@ public class Placeholders {
             case "ingame":
                 return user.getSession() instanceof ArenaSession;
         }
-
         return false;
     }
-
 }

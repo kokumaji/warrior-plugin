@@ -1,14 +1,12 @@
 package com.dumbdogdiner.warrior.api.kit.kits;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.kit.Ability;
 import com.dumbdogdiner.warrior.api.kit.BaseKit;
 import com.dumbdogdiner.warrior.api.kit.SpecialAbilities;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
-import com.dumbdogdiner.warrior.managers.ArenaManager;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -67,12 +65,12 @@ public class ArcherKit extends BaseKit {
                     cancel();
                     return;
                 }
-                if(!ArenaManager.isPlaying(p)) {
+                if(!WarriorAPI.getService().getArenaManager().isPlaying(p)) {
                     cancel();
                     return;
                 }
 
-                WarriorUser user = PlayerManager.get(p.getUniqueId());
+                WarriorUser user = WarriorAPI.getService().getPlayerManager().get(p.getUniqueId());
                 double lastShotDelta = Math.min(System.currentTimeMillis() - ((ArenaSession)user.getSession()).getLastArrow(), 3000);
 
                 if(lastShotDelta < 3000) return;
@@ -92,7 +90,7 @@ public class ArcherKit extends BaseKit {
                     p.getInventory().setItem(7, item);
                 }
             }
-        }.runTaskTimer(Warrior.getInstance(), 0L, 20L);
+        }.runTaskTimer(WarriorAPI.getService().getInstance(), 0L, 20L);
 
         withAbility(p);
         return this;

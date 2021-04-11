@@ -1,8 +1,8 @@
 package com.dumbdogdiner.warrior.api.translation.chat;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.util.MathUtil;
-import com.dumbdogdiner.warrior.utils.TranslationUtil;
+import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -174,7 +174,7 @@ public class ChatMessage {
     }
 
     public ChatMessage setClickAction(Plugin owner, Player player, int expireAfter, ExecuteAction action) {
-        String id = Warrior.getInstance().getName() + "-ADP-" + MathUtil.generateId(ActionDataHandler.getActions().keySet(), 6);
+        String id = WarriorAPI.getService().getInstance().getName() + "-ADP-" + MathUtil.generateId(ActionDataHandler.getActions().keySet(), 6);
 
         if(actionDataHandler == null) {
             actionDataHandler = new ActionDataHandler(owner);

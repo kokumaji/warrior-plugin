@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.arena.gameflags.types;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.arena.gameflags.GameFlag;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +24,7 @@ public abstract class BooleanFlag<F extends GameFlag<Boolean, F>> extends GameFl
             return this.flagOf(false);
         } else {
             String msg = String.format("Invalid flag argument '%s' for boolean flag. Defaulting to 'false'", input);
-            Warrior.getPluginLogger().warn(msg);
+            WarriorAPI.getService().getLogger().warn(msg);
             return this.flagOf(false);
         }
     }

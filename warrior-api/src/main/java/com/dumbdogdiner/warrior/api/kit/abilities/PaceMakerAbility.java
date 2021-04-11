@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.kit.abilities;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.kit.Ability;
 import org.bukkit.Sound;
@@ -39,7 +39,7 @@ public class PaceMakerAbility extends Ability {
                     user.setAbilityActive(false);
                 }
 
-            }.runTaskLater(Warrior.getInstance(), duration);
+            }.runTaskLater(WarriorAPI.getService().getInstance(), duration);
 
             canExecute(user, false);
         };

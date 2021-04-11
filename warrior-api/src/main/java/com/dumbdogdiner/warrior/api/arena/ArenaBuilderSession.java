@@ -1,12 +1,11 @@
 package com.dumbdogdiner.warrior.api.arena;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.models.metadata.ArenaMetadata;
 import com.dumbdogdiner.warrior.api.models.metadata.RatingNode;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.translation.Constants;
-import com.dumbdogdiner.warrior.managers.ArenaManager;
-import com.dumbdogdiner.warrior.utils.TranslationUtil;
+import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -71,7 +70,7 @@ public class ArenaBuilderSession {
         if(type.equals(PositionType.LOC1)) setPos1(loc);
         if(type.equals(PositionType.LOC2)) setPos2(loc);
         if(type.equals(PositionType.SPAWN)) setSpawn(loc);
-        String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_BUILDER_LOCATION, new HashMap<>() {
+        String msg = WarriorAPI.getService().getTranslator().translate(Constants.Lang.ARENA_BUILDER_LOCATION, new HashMap<>() {
             {
                 put("location", TranslationUtil.readableLocation(loc, true, false));
                 put("type", type.getLang());
@@ -95,7 +94,7 @@ public class ArenaBuilderSession {
 
     public void startSession(WarriorUser user) {
         this.listener = makeListener(user.getBukkitPlayer());
-        Bukkit.getPluginManager().registerEvents(listener, Warrior.getInstance());
+        Bukkit.getPluginManager().registerEvents(listener, WarriorAPI.getService().getInstance());
         giveSessionItems(this.sessionUser.getBukkitPlayer());
     }
 
@@ -110,7 +109,7 @@ public class ArenaBuilderSession {
         if(result.equals(SessionResult.CANCEL)) {
             ArenaBuilder.getSessions().remove(world);
 
-            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_CREATE_CANCEL, new HashMap<>() {
+            String msg = WarriorAPI.getService().getTranslator().translate(Constants.Lang.ARENA_CREATE_CANCEL, new HashMap<>() {
                 {
                     put("arena", getArenaName());
                 }
@@ -123,8 +122,8 @@ public class ArenaBuilderSession {
             ArenaBuilder.getSessions().remove(world);
 
             Region region = new Region(getPos1(), getPos2());
-            Arena a = new Arena(getArenaName(), region, getSpawn(), true, ArenaManager.getArenas().size());
-            ArenaManager.registerArena(a);
+            Arena a = new Arena(getArenaName(), region, getSpawn(), true, WarriorAPI.getService().getArenaManager().getArenas().size());
+            WarriorAPI.getService().getArenaManager().registerArena(a);
 
             List<RatingNode> ratingModel = RatingNode.DEFAULT_RATING;
             String[] desc = {};
@@ -133,7 +132,7 @@ public class ArenaBuilderSession {
             a.setMetadata(meta);
             a.save();
 
-            String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_CREATE_SUCCESS, new HashMap<>() {
+            String msg = WarriorAPI.getService().getTranslator().translate(Constants.Lang.ARENA_CREATE_SUCCESS, new HashMap<>() {
                 {
                     put("arena", getArenaName());
                 }
@@ -223,7 +222,7 @@ public class ArenaBuilderSession {
                     player.playSound(player.getLocation(), Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, 0.5f, 1f);
                 } else if(item.getType() == Material.LIME_DYE) {
                     if(getSpawn() == null || (getPos1() == null || getPos2() == null)) {
-                        String msg = Warrior.getTranslator().translate(Constants.Lang.ARENA_SETUP_INCOMPLETE);
+                        String msg = WarriorAPI.getService().getTranslator().translate(Constants.Lang.ARENA_SETUP_INCOMPLETE);
 
                         player.sendMessage(TranslationUtil.getPrefix() + msg);
                         player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5f, 1f);

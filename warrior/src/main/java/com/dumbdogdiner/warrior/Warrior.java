@@ -1,5 +1,6 @@
 package com.dumbdogdiner.warrior;
 
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.WarriorLogger;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.kit.SpecialAbilities;
@@ -37,7 +38,9 @@ import com.dumbdogdiner.warrior.listeners.RegionExitListener;
 import com.dumbdogdiner.warrior.listeners.SessionChangeListener;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
 import com.dumbdogdiner.warrior.managers.GUIManager;
+import com.dumbdogdiner.warrior.managers.GameBarManager;
 import com.dumbdogdiner.warrior.managers.KitManager;
+import com.dumbdogdiner.warrior.managers.LevelManager;
 import com.dumbdogdiner.warrior.managers.LobbyManager;
 import com.dumbdogdiner.warrior.managers.NotificationManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
@@ -75,7 +78,9 @@ public class Warrior extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        logger = new WarriorLogger(this);
+        WarriorAPI.registerService(this, new ApiProvider());
+        // register logger.
+        logger = new WarriorLogger(WarriorAPI.getService());
         saveDefaultConfig();
         try {
             translator = new Translator(this, getConfig());
@@ -98,6 +103,10 @@ public class Warrior extends JavaPlugin {
     private final NotificationManager notificationManager = new NotificationManager();
     @Getter
     private final PlayerManager playerManager = new PlayerManager();
+    @Getter
+    private final GameBarManager gameBarManager = new GameBarManager();
+    @Getter
+    private final LevelManager levelManager = new LevelManager();
 
     @Override
     public void onEnable() {

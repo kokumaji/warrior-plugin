@@ -1,5 +1,6 @@
 package com.dumbdogdiner.warrior.api.sessions;
 
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
@@ -8,7 +9,6 @@ import com.dumbdogdiner.warrior.api.events.GameStateChangeEvent;
 import com.dumbdogdiner.warrior.api.events.KillStreakChangeEvent;
 import com.dumbdogdiner.warrior.api.events.KillStreakResetEvent;
 import com.dumbdogdiner.warrior.api.kit.BaseKit;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.google.common.base.Preconditions;
 import lombok.Getter;
 import lombok.Setter;
@@ -97,7 +97,7 @@ public class ArenaSession extends Session {
     }
 
     public void addKill() {
-        WarriorUser user = PlayerManager.get(getUserId());
+        WarriorUser user = WarriorAPI.getService().getPlayerManager().get(getUserId());
         user.addKill();
         killStreak++;
 

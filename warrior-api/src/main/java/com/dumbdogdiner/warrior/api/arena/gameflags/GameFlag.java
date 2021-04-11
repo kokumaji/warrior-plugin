@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.arena.gameflags;
 
-import com.dumbdogdiner.warrior.utils.TranslationUtil;
+import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import com.google.common.base.Preconditions;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;

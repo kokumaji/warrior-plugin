@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.sound;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import lombok.Getter;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
@@ -73,7 +73,7 @@ public class Melody {
                     }
                     Location loc = player.getLocation();
                     Sound sound = InstrumentSound.fromInstrument(instrument);
-                    if(!(notes[pointer] == null)) {
+                    if(notes[pointer] != null) {
                         player.playSound(loc, sound, volume, (float) notes[pointer].getPitch());
                         if(visualizeNote) {
                             Location vLoc = visualizeLoc;
@@ -85,9 +85,6 @@ public class Melody {
                     pointer++;
                 }
             }
-        }.runTaskTimer(Warrior.getInstance(), 2L, speed);
+        }.runTaskTimer(WarriorAPI.getService().getInstance(), 2L, speed);
     }
-
-
-
 }

@@ -1,6 +1,5 @@
 package com.dumbdogdiner.warrior.api;
 
-import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.translation.ConsoleColor;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;

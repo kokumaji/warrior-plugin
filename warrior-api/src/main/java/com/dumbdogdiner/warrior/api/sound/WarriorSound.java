@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.sound;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.util.MathUtil;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -92,7 +92,7 @@ public class WarriorSound {
                         }
                     }
 
-                }.runTaskTimer(Warrior.getInstance(), 2L, repeatDelay);
+                }.runTaskTimer(WarriorAPI.getService().getInstance(), 2L, repeatDelay);
             }
         }
     }

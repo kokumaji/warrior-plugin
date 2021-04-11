@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.api.sound;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -23,7 +23,7 @@ public class Sounds {
             public void run() {
                 playSound(sound, user, location, volume, pitch);
             }
-        }.runTaskLaterAsynchronously(Warrior.getInstance(), delay);
+        }.runTaskLaterAsynchronously(WarriorAPI.getService().getInstance(), delay);
     }
 
     public static void playSound(Sound sound, WarriorUser user) {

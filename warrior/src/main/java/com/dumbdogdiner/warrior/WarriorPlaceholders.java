@@ -1,12 +1,10 @@
 package com.dumbdogdiner.warrior;
 
 import com.dumbdogdiner.warrior.api.arena.Arena;
-import com.dumbdogdiner.warrior.api.translation.TimeUtil;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.Session;
-import com.dumbdogdiner.warrior.managers.ArenaManager;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.api.translation.TimeUtil;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +36,7 @@ public class WarriorPlaceholders extends PlaceholderExpansion {
         String[] args = identifier.split("_");
         if(args.length < 1) return identifier;
         if(args[0].equalsIgnoreCase("player")) {
-            WarriorUser user = PlayerManager.get(p.getUniqueId());
+            WarriorUser user = Warrior.getInstance().getPlayerManager().get(p.getUniqueId());
             if(user == null) return identifier;
             switch(args[1]) {
                 case "name":
@@ -75,12 +73,12 @@ public class WarriorPlaceholders extends PlaceholderExpansion {
             Arena arena = null;
             String argument = "";
 
-            WarriorUser user = PlayerManager.get(p.getUniqueId());
+            WarriorUser user = Warrior.getInstance().getPlayerManager().get(p.getUniqueId());
             if(user == null) return identifier;
 
             // if no argument provided, get the arena at the players location
             if(args.length == 2) {
-                for(Arena a : ArenaManager.getArenas()) {
+                for(Arena a : Warrior.getInstance().getArenaManager().getArenas()) {
                     if(a.getBounds().contains(user.getLocation())) {
                         arena = a;
                         break;
@@ -89,8 +87,8 @@ public class WarriorPlaceholders extends PlaceholderExpansion {
 
                 argument = args[1];
             } else if(args.length == 3) {
-                if(ArenaManager.get(args[1]) == null) return identifier;
-                arena = ArenaManager.get(args[1]);
+                if(Warrior.getInstance().getArenaManager().get(args[1]) == null) return identifier;
+                arena = Warrior.getInstance().getArenaManager().get(args[1]);
 
                 argument = args[2];
             }

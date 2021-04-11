@@ -1,9 +1,8 @@
 package com.dumbdogdiner.warrior.api.sessions;
 
-import com.dumbdogdiner.warrior.Warrior;
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -55,7 +54,7 @@ public class LobbySession extends Session {
         player.getInventory().setItem(7, SETTINGS_ITEM);
         player.getInventory().setItem(8, EXIT_ITEM);
 
-        WarriorUser user = PlayerManager.get(player.getUniqueId());
+        WarriorUser user = WarriorAPI.getService().getPlayerManager().get(player.getUniqueId());
         new BukkitRunnable() {
 
             @Override
@@ -63,7 +62,7 @@ public class LobbySession extends Session {
                 user.removeEffects();
             }
 
-        }.runTask(Warrior.getInstance());
+        }.runTask(WarriorAPI.getService().getInstance());
     }
 
     @Override
