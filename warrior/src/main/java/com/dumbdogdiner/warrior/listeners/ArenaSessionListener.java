@@ -3,7 +3,7 @@ package com.dumbdogdiner.warrior.listeners;
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.MaxHealthFlag;
-import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
+import com.dumbdogdiner.warrior.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.builders.GameBossBar;

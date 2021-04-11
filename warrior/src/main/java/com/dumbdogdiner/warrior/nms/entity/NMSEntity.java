@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.nms.entity;
 
 import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
-import com.dumbdogdiner.warrior.api.util.NMSUtil;
+import com.dumbdogdiner.warrior.util.NMSUtil;
 import lombok.Getter;
 import org.bukkit.Location;
 

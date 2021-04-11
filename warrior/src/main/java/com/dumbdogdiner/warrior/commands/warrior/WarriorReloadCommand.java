@@ -6,7 +6,7 @@ import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
-import com.dumbdogdiner.warrior.utils.DefaultMessages;
+import com.dumbdogdiner.warrior.util.DefaultMessages;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;

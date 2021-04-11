@@ -2,7 +2,7 @@ package com.dumbdogdiner.warrior.nms.networking.packets;
 
 import com.dumbdogdiner.warrior.nms.PacketType;
 import com.dumbdogdiner.warrior.api.reflection.ReflectionUtil;
-import com.dumbdogdiner.warrior.api.util.NMSUtil;
+import com.dumbdogdiner.warrior.util.NMSUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;

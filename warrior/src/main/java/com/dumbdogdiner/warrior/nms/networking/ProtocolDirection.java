@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.nms.networking;
 
 import com.dumbdogdiner.warrior.api.reflection.EnumUtil;
-import com.dumbdogdiner.warrior.api.util.NMSUtil;
+import com.dumbdogdiner.warrior.util.NMSUtil;
 
 public enum ProtocolDirection {
 

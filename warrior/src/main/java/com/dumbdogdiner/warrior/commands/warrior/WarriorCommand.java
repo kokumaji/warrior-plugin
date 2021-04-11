@@ -7,7 +7,7 @@ import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.translation.ConsoleColor;
 import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.api.translation.Translator;
-import com.dumbdogdiner.warrior.utils.DefaultMessages;
+import com.dumbdogdiner.warrior.util.DefaultMessages;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;

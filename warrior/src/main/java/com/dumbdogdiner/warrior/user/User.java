@@ -1,7 +1,7 @@
 package com.dumbdogdiner.warrior.user;
 
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
+import com.dumbdogdiner.warrior.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent;
 import com.dumbdogdiner.warrior.api.events.WarriorLevelUpEvent;
 import com.dumbdogdiner.warrior.nms.PacketType;
@@ -19,7 +19,7 @@ import com.dumbdogdiner.warrior.api.user.cosmetics.WarriorTitle;
 import com.dumbdogdiner.warrior.api.user.settings.GameplaySettings;
 import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.user.settings.VisualSettings;
-import com.dumbdogdiner.warrior.api.util.NMSUtil;
+import com.dumbdogdiner.warrior.util.NMSUtil;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import com.google.common.base.Preconditions;
 import io.netty.channel.Channel;

@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.effects;
+package com.dumbdogdiner.warrior.effects;
 
 import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;

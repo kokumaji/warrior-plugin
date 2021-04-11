@@ -2,7 +2,7 @@ package com.dumbdogdiner.warrior.nms.objects;
 
 import com.dumbdogdiner.warrior.nms.networking.packets.Packet;
 import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
-import com.dumbdogdiner.warrior.api.util.NMSUtil;
+import com.dumbdogdiner.warrior.util.NMSUtil;
 import org.bukkit.Sound;
 
 public class SoundEffect {

@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.nms.enums;
 
-import com.dumbdogdiner.warrior.api.util.NMSUtil;
+import com.dumbdogdiner.warrior.util.NMSUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;

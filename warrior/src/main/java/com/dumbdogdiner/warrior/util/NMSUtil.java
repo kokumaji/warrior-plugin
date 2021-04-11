@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.util;
+package com.dumbdogdiner.warrior.util;
 
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.nms.PacketListener;

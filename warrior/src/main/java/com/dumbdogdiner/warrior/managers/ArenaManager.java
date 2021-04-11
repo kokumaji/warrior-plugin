@@ -8,8 +8,8 @@ import com.dumbdogdiner.warrior.api.sessions.Session;
 import com.dumbdogdiner.warrior.api.sessions.SessionType;
 import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.user.User;
-import com.dumbdogdiner.warrior.api.util.JSONUtil;
-import com.dumbdogdiner.warrior.utils.DefaultMessages;
+import com.dumbdogdiner.warrior.util.JSONUtil;
+import com.dumbdogdiner.warrior.util.DefaultMessages;
 import org.bukkit.entity.Player;
 
 import java.io.File;

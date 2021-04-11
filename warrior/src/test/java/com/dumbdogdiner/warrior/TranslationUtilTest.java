@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior;
 
-import com.dumbdogdiner.warrior.utils.TranslationUtil;
+import com.dumbdogdiner.warrior.util.TranslationUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

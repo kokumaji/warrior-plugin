@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.utils;
+package com.dumbdogdiner.warrior.util;
 
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.translation.Constants;

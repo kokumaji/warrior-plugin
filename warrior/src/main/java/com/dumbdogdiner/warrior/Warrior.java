@@ -44,7 +44,7 @@ import com.dumbdogdiner.warrior.managers.LevelManager;
 import com.dumbdogdiner.warrior.managers.LobbyManager;
 import com.dumbdogdiner.warrior.managers.NotificationManager;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
-import com.dumbdogdiner.warrior.utils.DatabaseConnection;
+import com.dumbdogdiner.warrior.util.DatabaseConnection;
 import kr.entree.spigradle.annotations.PluginMain;
 import lombok.Getter;
 import org.bukkit.Bukkit;

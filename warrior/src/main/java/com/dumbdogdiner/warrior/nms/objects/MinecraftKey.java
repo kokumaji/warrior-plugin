@@ -1,6 +1,6 @@
 package com.dumbdogdiner.warrior.nms.objects;
 
-import com.dumbdogdiner.warrior.api.util.NMSUtil;
+import com.dumbdogdiner.warrior.util.NMSUtil;
 
 public class MinecraftKey {
     public static final Class<?> MINECRAFTKEY_CLASS = NMSUtil.getNMSClass("MinecraftKey");

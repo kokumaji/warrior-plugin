@@ -1,8 +1,9 @@
-package com.dumbdogdiner.warrior.api.util;
+package com.dumbdogdiner.warrior.util;
 
 import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.kit.kits.CustomKit;
+import com.dumbdogdiner.warrior.api.util.DataType;
 import com.dumbdogdiner.warrior.models.ArenaModel;
 import com.dumbdogdiner.warrior.models.CustomKitModel;
 import com.dumbdogdiner.warrior.models.LobbyDataModel;

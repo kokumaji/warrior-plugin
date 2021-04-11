@@ -1,13 +1,13 @@
 package com.dumbdogdiner.warrior.listeners;
 
 import com.dumbdogdiner.warrior.Warrior;
-import com.dumbdogdiner.warrior.api.effects.WarriorEffects;
+import com.dumbdogdiner.warrior.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.events.WarriorLevelUpEvent;
 import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
 import com.dumbdogdiner.warrior.managers.PlayerManager;
 
-import com.dumbdogdiner.warrior.utils.DefaultMessages;
+import com.dumbdogdiner.warrior.util.DefaultMessages;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
