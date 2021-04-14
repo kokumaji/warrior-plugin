@@ -36,7 +36,7 @@ public interface WarriorArenaManager {
      * @param arena The target arena
      * @return A {@link List} containing every player in the target arena.
      */
-    List<WarriorUser> getPlayers(Arena arena);
+    <T extends WarriorUser> List<T> getPlayers(Arena arena);
 
     /**
      * Test if the target player currently playing.

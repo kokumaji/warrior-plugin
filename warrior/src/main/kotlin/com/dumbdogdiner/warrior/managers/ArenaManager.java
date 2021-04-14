@@ -1,5 +1,6 @@
 package com.dumbdogdiner.warrior.managers;
 
+import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.WithWarriorPlugin;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.managers.WarriorArenaManager;
@@ -61,7 +62,7 @@ public class ArenaManager implements WithWarriorPlugin, WarriorArenaManager {
     }
 
     public List<User> getPlayers(Arena a) {
-        return UserCache.getListOf(user -> {
+        return Warrior.userCache.getListOf(user -> {
             Session s = user.getSession();
             if(s.getType().equals(SessionType.GAME))
                 return ((ArenaSession)s).getArena().equals(a);
@@ -70,14 +71,14 @@ public class ArenaManager implements WithWarriorPlugin, WarriorArenaManager {
     }
 
     public boolean isPlaying(Player player) {
-        User user = UserCache.get(player.getUniqueId());
+        User user = Warrior.userCache.get(player.getUniqueId());
         if(user.getSession() == null) return false;
         return user.getSession().getType() == SessionType.GAME;
     }
 
     public ArenaSession getSession(Player player) {
         if(isPlaying(player)) {
-            User user = UserCache.get(player.getUniqueId());
+            User user = Warrior.userCache.get(player.getUniqueId());
             return (ArenaSession) user.getSession();
         }
 

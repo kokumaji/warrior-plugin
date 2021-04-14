@@ -101,28 +101,30 @@ class Warrior : JavaPlugin() {
             }
             return connection.isRunning
         }
+
+        // Managers
+
+        val arenaManager = ArenaManager()
+
+        val lobbyManager = LobbyManager()
+
+        val guiManager = GUIManager()
+
+        val kitManager = KitManager()
+
+        val notificationManager = NotificationManager()
+
+        lateinit var userCache: UserCache
+
+        val gameBarManager = GameBarManager()
+
+        val levelManager = LevelManager()
+
+        val isDebugMode: Boolean = instance.config.getBoolean("general-settings.debug-mode")
+
     }
 
-    val isDebugMode: Boolean = config.getBoolean("general-settings.debug-mode")
     private var cMap: CommandMap? = null
-
-    // Managers
-
-    val arenaManager = ArenaManager()
-
-    val lobbyManager = LobbyManager()
-
-    val guiManager = GUIManager()
-
-    val kitManager = KitManager()
-
-    val notificationManager = NotificationManager()
-
-    val userCache = UserCache()
-
-    val gameBarManager = GameBarManager()
-
-    val levelManager = LevelManager()
 
     override fun onLoad() {
         instance = this
@@ -130,6 +132,8 @@ class Warrior : JavaPlugin() {
         // register logger.
         pluginLogger = WarriorLogger(WarriorAPI.getService())
         saveDefaultConfig()
+
+        userCache = UserCache()
 
         try {
             translator = Translator(this, config)
