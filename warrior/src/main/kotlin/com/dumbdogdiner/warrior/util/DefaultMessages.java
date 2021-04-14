@@ -12,7 +12,7 @@ public class DefaultMessages {
     public static String COMMAND_GENERAL_ERROR;
 
     // GENERAL PLUGIN LOG MESSAGES
-    public static String LOADED_OBJECT = "Loaded {AMOUNT} {TYPE}(s) from data folder!";
+    public static String LOADED_OBJECT = "Loaded {amount} {type}(s) from data folder!";
 
     // SQL RELATED MESSAGES
     public static final String SQL_ERROR_NOTICE = "&c&lWARNING! &7Warrior does not have an active SQL connection available. User Data won't be loaded/saved until a working SQL database is connected. Use &b/warrior reload database &7to reconnect to your SQL database.";

@@ -32,6 +32,6 @@ settings-gui:
 gameplay:
   ability-ready: "&7Deine Spezialfähigkeit ist nun bereit!"
 notifications:
-  message-format: "&3&l(!) &7{MESSAGE}"
+  message-format: "&3&l(!) &7{msg}"
   messages:
     - "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in ex dui."
