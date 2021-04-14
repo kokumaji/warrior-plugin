@@ -25,9 +25,9 @@ command-messages:
   symbols-command: "&7%#EM_DASH %#EM_DASH %#EM_DASH &3Symbol &b{arg1} &7%#EM_DASH %#EM_DASH %#EM_DASH\n    &7Unicode &8» &f{unicode}\n    &7Index &8» &f{index}\n    &7Identifier &8» &f{identifier}\n    "
 
 settings-gui:
-  language-changed: "&7Language has been set to &b{LANGUAGE}"
+  language-changed: "&7Language has been set to &b{language}"
   notifications-changed: "&7Notifications have been &b{notifications|\"enabled\"|\"disabled\"}"
-  privacy-changed: "&7Privacy Level has been set to &b{STATE}"
+  privacy-changed: "&7Privacy Level has been set to &b{state}"
 
 gameplay:
   ability-ready: "&7Your special ability is ready!"

@@ -114,7 +114,7 @@ class Warrior : JavaPlugin() {
 
         val notificationManager = NotificationManager()
 
-        lateinit var userCache: UserCache
+        val userCache: UserCache = UserCache()
 
         val gameBarManager = GameBarManager()
 
@@ -132,8 +132,6 @@ class Warrior : JavaPlugin() {
         // register logger.
         pluginLogger = WarriorLogger(WarriorAPI.getService())
         saveDefaultConfig()
-
-        userCache = UserCache()
 
         try {
             translator = Translator(this, config)

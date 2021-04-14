@@ -9,7 +9,6 @@ import java.util.function.BiConsumer;
 
 public enum ParticleTrail {
 
-
     /**
      * LGBT TRAILS
      */

@@ -6,6 +6,9 @@
  * User Manual available at https://docs.gradle.org/6.8.2/userguide/building_java_projects.html
  */
 
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     // Implement Gradle plugins
     java
@@ -63,7 +66,7 @@ subprojects {
         implementation("org.jetbrains:annotations:20.1.0")
 
         // runtime dependencies
-        compileOnly("com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT")
+        compileOnly("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
 
         // shaded dependencies
         implementation(platform("com.dumbdogdiner:stickyapi:3.0.1"))
@@ -101,6 +104,11 @@ dependencies {
 
 tasks {
 
+    register<ConfigureShadowRelocation>("relocateShadowJar") {
+        target = project.tasks.shadowJar.get()
+        prefix = "${group}.warrior.libs" // Default value is "shadow"
+    }
+
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "11"
     }
@@ -110,13 +118,19 @@ tasks {
     }
 
     shadowJar {
+        dependsOn("relocateShadowJar")
         archiveClassifier.set("")
         project.configurations.implementation.configure { isCanBeResolved = true }
         configurations = listOf(
             project.configurations.shadow.get()
         )
 
+        val pkg = "$group.warrior.libs."
+
         exclude("generated/mojangles_width_data.json")
+        relocate("com.zaxxer", "${pkg}com.zaxxer")
+        relocate("org.postgresql", "${pkg}org.postgresql")
+        relocate("org.postgresql", "${pkg}org.postgresql")
 
         minimize()
     }
