@@ -7,7 +7,8 @@ import com.dumbdogdiner.warrior.api.managers.WarriorKitManager;
 import com.dumbdogdiner.warrior.api.managers.WarriorLevelManager;
 import com.dumbdogdiner.warrior.api.managers.WarriorLobbyManager;
 import com.dumbdogdiner.warrior.api.managers.WarriorNotificationManager;
-import com.dumbdogdiner.warrior.api.managers.WarriorPlayerManager;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUserCache;
 import com.dumbdogdiner.warrior.api.translation.Translator;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import lombok.Getter;
@@ -90,6 +91,12 @@ public interface WarriorAPI {
 	Translator getTranslator();
 
 	/**
+	 * @return Whether Warrior should be in Debug Mode.
+	 * 		   Debug Mode provides verbose logging.
+	 */
+	boolean isDebugMode();
+
+	/**
 	 * @return The {@link WarriorArenaManager} associated with this API implementation.
 	 */
 	WarriorArenaManager getArenaManager();
@@ -125,7 +132,7 @@ public interface WarriorAPI {
 	WarriorNotificationManager getNotificationManager();
 
 	/**
-	 * @return The {@link WarriorPlayerManager} associated with this API implementation.
+	 * @return The {@link WarriorUserCache} associated with this API implementation.
 	 */
-	WarriorPlayerManager getPlayerManager();
+	WarriorUserCache<? extends WarriorUser> getUserCache();
 }

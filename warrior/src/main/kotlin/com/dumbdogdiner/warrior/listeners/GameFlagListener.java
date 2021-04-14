@@ -7,7 +7,7 @@ import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.BlockPlaceFla
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.user.UserCache;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,7 +23,7 @@ public class GameFlagListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        User user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = UserCache.get(e.getPlayer().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
@@ -39,7 +39,7 @@ public class GameFlagListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-        User user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = UserCache.get(e.getPlayer().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
@@ -91,7 +91,7 @@ public class GameFlagListener implements Listener {
 
     @EventHandler
     public void onDurability(PlayerItemDamageEvent e) {
-        User user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = UserCache.get(e.getPlayer().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;

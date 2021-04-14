@@ -8,7 +8,7 @@ import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.MaxHealthFlag
 import com.dumbdogdiner.warrior.models.ArenaModel;
 import com.dumbdogdiner.warrior.models.LocationModel;
 import com.dumbdogdiner.warrior.models.RegionModel;
-import com.dumbdogdiner.warrior.models.metadata.ArenaMetadata;
+import com.dumbdogdiner.warrior.api.arena.metadata.ArenaMetadata;
 import com.dumbdogdiner.warrior.api.util.DataType;
 import com.dumbdogdiner.warrior.api.util.JSONUtil;
 import com.google.gson.Gson;

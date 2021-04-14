@@ -10,7 +10,7 @@ import com.dumbdogdiner.warrior.api.user.cosmetics.WarriorTitle;
 import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.util.HeadTexture;
 import com.dumbdogdiner.warrior.managers.GUIManager;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.user.UserCache;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -34,7 +34,7 @@ public class SettingsGUI extends GUI {
             addSlot(i, 4, placeholder);
         }
 
-        User user = PlayerManager.get(event.getPlayer().getUniqueId());
+        User user = UserCache.get(event.getPlayer().getUniqueId());
         if(user == null || user.getSettings() == null) {
             ItemStack errorHead = HeadTexture.asItem(HeadTexture.MHF_QUESTION);
             addSlot(1, 4, errorHead);

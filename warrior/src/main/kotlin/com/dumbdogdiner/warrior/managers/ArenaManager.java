@@ -8,6 +8,7 @@ import com.dumbdogdiner.warrior.api.sessions.Session;
 import com.dumbdogdiner.warrior.api.sessions.SessionType;
 import com.dumbdogdiner.warrior.api.translation.Placeholders;
 import com.dumbdogdiner.warrior.user.User;
+import com.dumbdogdiner.warrior.user.UserCache;
 import com.dumbdogdiner.warrior.util.JSONUtil;
 import com.dumbdogdiner.warrior.util.DefaultMessages;
 import org.bukkit.entity.Player;
@@ -60,7 +61,7 @@ public class ArenaManager implements WithWarriorPlugin, WarriorArenaManager {
     }
 
     public List<User> getPlayers(Arena a) {
-        return PlayerManager.getListOf(user -> {
+        return UserCache.getListOf(user -> {
             Session s = user.getSession();
             if(s.getType().equals(SessionType.GAME))
                 return ((ArenaSession)s).getArena().equals(a);
@@ -69,14 +70,14 @@ public class ArenaManager implements WithWarriorPlugin, WarriorArenaManager {
     }
 
     public boolean isPlaying(Player player) {
-        User user = PlayerManager.get(player.getUniqueId());
+        User user = UserCache.get(player.getUniqueId());
         if(user.getSession() == null) return false;
         return user.getSession().getType() == SessionType.GAME;
     }
 
     public ArenaSession getSession(Player player) {
         if(isPlaying(player)) {
-            User user = PlayerManager.get(player.getUniqueId());
+            User user = UserCache.get(player.getUniqueId());
             return (ArenaSession) user.getSession();
         }
 

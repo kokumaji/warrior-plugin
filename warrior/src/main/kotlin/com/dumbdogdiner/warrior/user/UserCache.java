@@ -1,9 +1,9 @@
-package com.dumbdogdiner.warrior.managers;
+package com.dumbdogdiner.warrior.user;
 
 import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.WithWarriorPlugin;
-import com.dumbdogdiner.warrior.api.managers.WarriorPlayerManager;
-import com.dumbdogdiner.warrior.user.User;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.api.user.WarriorUserCache;
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class PlayerManager implements WithWarriorPlugin, WarriorPlayerManager {
+public class UserCache implements WithWarriorPlugin, WarriorUserCache<User> {
 
     private final TreeMap<UUID, User> users = new TreeMap<>();
 
@@ -29,13 +29,14 @@ public class PlayerManager implements WithWarriorPlugin, WarriorPlayerManager {
 
         if(!users.containsKey(userId)) {
             User user = new User(userId);
-            Warrior.getConnection().insertUser(user);
+
+            Warrior.connection.insertUser(user);
             users.put(userId, user);
 
             return user;
         } else {
             String msg = String.format("Attempted to register WarriorUser %s{%2s} twice!", p.getName(), p.getUniqueId());
-            Warrior.getPluginLogger().warn(msg);
+            Warrior.pluginLogger.warn(msg);
             return get(userId);
         }
     }
@@ -52,7 +53,7 @@ public class PlayerManager implements WithWarriorPlugin, WarriorPlayerManager {
             users.remove(userId);
         } else {
             String msg = String.format("Failed to remove WarriorUser %s from cache.", userId);
-            Warrior.getPluginLogger().warn(msg);
+            Warrior.pluginLogger.warn(msg);
         }
     }
 

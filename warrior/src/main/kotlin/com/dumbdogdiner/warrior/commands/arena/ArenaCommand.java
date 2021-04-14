@@ -9,7 +9,7 @@ import com.dumbdogdiner.warrior.api.translation.ConsoleColor;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.api.translation.Translator;
 import com.dumbdogdiner.warrior.user.User;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.user.UserCache;
 import com.dumbdogdiner.warrior.util.DefaultMessages;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import org.bukkit.Sound;
@@ -17,7 +17,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -27,8 +26,8 @@ import java.util.stream.Collectors;
 
 public class ArenaCommand extends AsyncCommand implements TabCompleter {
 
-    public ArenaCommand(String commmandName, Plugin plugin) {
-        super(commmandName, plugin, CommandType.PLAYER_ONLY);
+    public ArenaCommand() {
+        super("arena", Warrior.instance, CommandType.PLAYER_ONLY);
         setDescription("Manage/Join an Arena.");
         setTabCompleter(this);
         setPermission("warrior.command.arena");
@@ -42,7 +41,7 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
     @Override
     public void onPermissionError(CommandSender sender, String label, String[] args) {
         if(sender instanceof Player) {
-            User user = PlayerManager.get(((Player) sender).getUniqueId());
+            User user = UserCache.get(((Player) sender).getUniqueId());
             String msg = Warrior.getTranslator().translate(Constants.Lang.ERROR_PERM, user);
 
             user.sendMessage(TranslationUtil.prettyMessage(msg));
@@ -61,7 +60,7 @@ public class ArenaCommand extends AsyncCommand implements TabCompleter {
         Translator t = Warrior.getTranslator();
 
         User user = null;
-        if(sender instanceof Player) user = PlayerManager.get(((Player)sender).getUniqueId());
+        if(sender instanceof Player) user = UserCache.get(((Player)sender).getUniqueId());
 
         String msg = t.translate(Constants.Lang.ERROR_SYNTAX, new HashMap<>() {
             {

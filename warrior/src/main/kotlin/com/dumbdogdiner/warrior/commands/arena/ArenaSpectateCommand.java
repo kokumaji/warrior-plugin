@@ -8,7 +8,7 @@ import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.GameState;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.user.UserCache;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,7 +38,7 @@ public class ArenaSpectateCommand implements SubCommand {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         Arena a = ArenaManager.get(args[1]);
-        User u = PlayerManager.get(((Player)sender).getUniqueId());
+        User u = UserCache.get(((Player)sender).getUniqueId());
 
         if(a == null || u == null) return false;
 

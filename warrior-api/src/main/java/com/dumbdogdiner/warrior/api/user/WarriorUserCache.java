@@ -1,4 +1,4 @@
-package com.dumbdogdiner.warrior.api.managers;
+package com.dumbdogdiner.warrior.api.user;
 
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import org.jetbrains.annotations.NotNull;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public interface WarriorPlayerManager {
+public interface WarriorUserCache<T extends WarriorUser> {
 
     /**
      * Test whether the player manager contains the target player.
@@ -21,13 +21,13 @@ public interface WarriorPlayerManager {
      * @param userId The UUID of the player
      * @return
      */
-    WarriorUser addUser(@NotNull UUID userId);
+    T addUser(@NotNull UUID userId);
 
     /**
      * Remove the target player from the player manager.
      * @param user The target player
      */
-    void remove(@NotNull WarriorUser user);
+    void remove(@NotNull T user);
 
     /**
      * Remove the target player from the player manager.
@@ -40,18 +40,18 @@ public interface WarriorPlayerManager {
      * @param userId The UUID of the player
      * @return A {@link WarriorUser} for the target player, if one exists.
      */
-    WarriorUser get(UUID userId);
+    T get(UUID userId);
 
     /**
      * Get a list of players known to this manager.
      * @return A {@link List} of players.
      */
-    List<WarriorUser> getList();
+    List<T> getList();
 
     /**
      * Get a list of players known to this manager, filtered by the given predicate.
      * @param predicate The predicate to filter players by
      * @return A filtered {@link List} of players.
      */
-    List<WarriorUser> getListOf(Predicate<WarriorUser> predicate);
+    List<T> getListOf(Predicate<T> predicate);
 }

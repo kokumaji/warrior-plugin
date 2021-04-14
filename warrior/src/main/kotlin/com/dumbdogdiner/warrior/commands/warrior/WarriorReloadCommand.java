@@ -5,7 +5,7 @@ import com.dumbdogdiner.warrior.Warrior;
 import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.user.User;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.user.UserCache;
 import com.dumbdogdiner.warrior.util.DefaultMessages;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import org.bukkit.command.CommandSender;
@@ -49,7 +49,7 @@ public class WarriorReloadCommand implements SubCommand {
 
                 if(success) {
                     TranslationUtil.sendToMultiple(admins, TranslationUtil.translateColor(TranslationUtil.getPrefix() + DefaultMessages.SQL_CONNECT_SUCCESS), true);
-                    for(User user : PlayerManager.getList()) {
+                    for(User user : UserCache.getList()) {
                         user.loadData();
                     }
                 }

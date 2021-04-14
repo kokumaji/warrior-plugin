@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 
 public class WarriorCommand extends AsyncCommand implements TabCompleter {
 
-    public WarriorCommand(String commmandName, Plugin plugin) {
-        super(commmandName, plugin);
+    public WarriorCommand() {
+        super("warrior", Warrior.instance);
         setDescription("Plugin Main Command");
         setPermission("warrior.command.admin");
         setTabCompleter(this);

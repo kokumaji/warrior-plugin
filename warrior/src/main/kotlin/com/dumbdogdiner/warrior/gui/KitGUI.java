@@ -10,7 +10,7 @@ import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.GameState;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.managers.KitManager;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.user.UserCache;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -86,7 +86,7 @@ public class KitGUI extends GUI {
             event.getWhoClicked().closeInventory();
         } else if(name.contains("Kit")) {
             String kitName = name.replace("§7Kit §3", "");
-            User user = PlayerManager.get(event.getWhoClicked().getUniqueId());
+            User user = UserCache.get(event.getWhoClicked().getUniqueId());
 
             if(user == null) return;
             BaseKit kit = KitManager.get(kitName);

@@ -9,6 +9,7 @@ import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.util.MathUtil;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
+import com.dumbdogdiner.warrior.user.UserCache;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
@@ -40,7 +41,7 @@ public class NotificationManager implements WarriorNotificationManager {
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                for(User user : PlayerManager.getList()) {
+                for(User user : UserCache.getList()) {
                     sendNotification(user);
                 }
             }

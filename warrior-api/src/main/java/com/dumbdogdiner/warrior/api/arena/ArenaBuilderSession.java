@@ -1,8 +1,8 @@
 package com.dumbdogdiner.warrior.api.arena;
 
 import com.dumbdogdiner.warrior.api.WarriorAPI;
-import com.dumbdogdiner.warrior.models.metadata.ArenaMetadata;
-import com.dumbdogdiner.warrior.models.metadata.RatingNode;
+import com.dumbdogdiner.warrior.api.arena.metadata.ArenaMetadata;
+import com.dumbdogdiner.warrior.api.arena.metadata.RatingNode;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;

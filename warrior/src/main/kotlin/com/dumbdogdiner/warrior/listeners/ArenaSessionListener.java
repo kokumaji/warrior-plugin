@@ -23,7 +23,7 @@ import com.dumbdogdiner.warrior.api.util.MathUtil;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
 import com.dumbdogdiner.warrior.managers.GameBarManager;
 import com.dumbdogdiner.warrior.managers.LevelManager;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.user.UserCache;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import com.google.common.base.Preconditions;
 import org.bukkit.*;
@@ -62,7 +62,7 @@ public class ArenaSessionListener implements Listener {
         if(ArenaManager.isPlaying(p)) {
             if(e.getItem() == null) return;
 
-            User user = PlayerManager.get(p.getUniqueId());
+            User user = UserCache.get(p.getUniqueId());
             ItemStack item = e.getItem();
             ItemMeta meta = item.getItemMeta();
             Arena a = ((ArenaSession) user.getSession()).getArena();
@@ -100,7 +100,7 @@ public class ArenaSessionListener implements Listener {
 
             if(e.getItem() == null) return;
 
-            User user = PlayerManager.get(p.getUniqueId());
+            User user = UserCache.get(p.getUniqueId());
             ItemMeta meta = e.getItem().getItemMeta();
 
             // credit to spazzylemons for this solution uwu
@@ -130,7 +130,7 @@ public class ArenaSessionListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
-        User user = PlayerManager.get(e.getEntity().getUniqueId());
+        User user = UserCache.get(e.getEntity().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
@@ -214,7 +214,7 @@ public class ArenaSessionListener implements Listener {
 
         if(killer.equals(e.getEntity())) return;
 
-        User killerUser = PlayerManager.get(killer.getUniqueId());
+        User killerUser = UserCache.get(killer.getUniqueId());
         if(!(killerUser.getSession() instanceof ArenaSession)) return;
 
         ((ArenaSession)killerUser.getSession()).addKill();
@@ -259,7 +259,7 @@ public class ArenaSessionListener implements Listener {
         Projectile projectile = (Arrow) e.getDamager();
         if(!(projectile.getShooter() instanceof Player)) return;
 
-        User victim = PlayerManager.get(e.getEntity().getUniqueId());
+        User victim = UserCache.get(e.getEntity().getUniqueId());
 
         if(victim.getSession() == null) return;
 
@@ -276,8 +276,8 @@ public class ArenaSessionListener implements Listener {
         if(!(e.getEntity() instanceof Player)) return;
         if(!(e.getDamager() instanceof Player)) return;
 
-        User victim = PlayerManager.get(e.getEntity().getUniqueId());
-        User attacker = PlayerManager.get(e.getDamager().getUniqueId());
+        User victim = UserCache.get(e.getEntity().getUniqueId());
+        User attacker = UserCache.get(e.getDamager().getUniqueId());
 
         if(victim == null || attacker == null) return;
 
@@ -302,7 +302,7 @@ public class ArenaSessionListener implements Listener {
 
     @EventHandler
     public void onStreakReset(KillStreakResetEvent e) {
-        User user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = UserCache.get(e.getPlayer().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
@@ -312,7 +312,7 @@ public class ArenaSessionListener implements Listener {
 
     @EventHandler
     public void onKillStreak(KillStreakChangeEvent e) {
-        User user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = UserCache.get(e.getPlayer().getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
@@ -372,7 +372,7 @@ public class ArenaSessionListener implements Listener {
         if(!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
 
-        User user = PlayerManager.get(p.getUniqueId());
+        User user = UserCache.get(p.getUniqueId());
         if(user == null) return;
 
         if(!(user.getSession() instanceof ArenaSession)) return;
@@ -406,7 +406,7 @@ public class ArenaSessionListener implements Listener {
             if(target == shooter) return;
 
             if(shooter instanceof Player) {
-                User userShooter = PlayerManager.get(shooter.getUniqueId());
+                User userShooter = UserCache.get(shooter.getUniqueId());
                 int goreLevel = userShooter.getVisualSettings().getGoreLevel();
 
                 BiConsumer<User, Location> effect = WarriorEffects.getGoreEffect(goreLevel);
@@ -417,7 +417,7 @@ public class ArenaSessionListener implements Listener {
             }
 
             if(target instanceof Player) {
-                User userTarget = PlayerManager.get(target.getUniqueId());
+                User userTarget = UserCache.get(target.getUniqueId());
                 int goreLevel = userTarget.getVisualSettings().getGoreLevel();
 
                 BiConsumer<User, Location> effect = WarriorEffects.getGoreEffect(goreLevel);

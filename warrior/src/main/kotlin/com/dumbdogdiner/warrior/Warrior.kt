@@ -11,7 +11,7 @@ import com.dumbdogdiner.warrior.managers.LobbyManager
 import com.dumbdogdiner.warrior.managers.GUIManager
 import com.dumbdogdiner.warrior.managers.KitManager
 import com.dumbdogdiner.warrior.managers.NotificationManager
-import com.dumbdogdiner.warrior.managers.PlayerManager
+import com.dumbdogdiner.warrior.user.UserCache
 import com.dumbdogdiner.warrior.managers.GameBarManager
 import com.dumbdogdiner.warrior.managers.LevelManager
 import com.dumbdogdiner.warrior.commands.DebugCommand
@@ -46,7 +46,6 @@ import com.dumbdogdiner.warrior.listeners.RegionExitListener
 import com.dumbdogdiner.warrior.listeners.SessionChangeListener
 import com.dumbdogdiner.warrior.listeners.ItemInteractListener
 import com.dumbdogdiner.warrior.listeners.GameFlagListener
-import lombok.Getter
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandMap
@@ -61,7 +60,6 @@ import java.util.ArrayList
 
 @PluginMain
 class Warrior : JavaPlugin() {
-
 
     companion object {
 
@@ -94,6 +92,7 @@ class Warrior : JavaPlugin() {
 
         fun reconnectDatabase(): Boolean {
             try {
+                pluginLogger.info("Database reload was requested. Attempting to reconnect...")
                 if (connection.isRunning) connection.close()
                 connection = DatabaseConnection(instance, instance.config)
             } catch (throwables: SQLException) {
@@ -104,32 +103,26 @@ class Warrior : JavaPlugin() {
         }
     }
 
+    val isDebugMode: Boolean = config.getBoolean("general-settings.debug-mode")
     private var cMap: CommandMap? = null
 
-    // managers
-    @Getter
-    private val arenaManager = ArenaManager()
+    // Managers
 
-    @Getter
-    private val lobbyManager = LobbyManager()
+    val arenaManager = ArenaManager()
 
-    @Getter
-    private val guiManager = GUIManager()
+    val lobbyManager = LobbyManager()
 
-    @Getter
-    private val kitManager = KitManager()
+    val guiManager = GUIManager()
 
-    @Getter
-    private val notificationManager = NotificationManager()
+    val kitManager = KitManager()
 
-    @Getter
-    private val playerManager = PlayerManager()
+    val notificationManager = NotificationManager()
 
-    @Getter
-    private val gameBarManager = GameBarManager()
+    val userCache = UserCache()
 
-    @Getter
-    private val levelManager = LevelManager()
+    val gameBarManager = GameBarManager()
+
+    val levelManager = LevelManager()
 
     override fun onLoad() {
         instance = this
@@ -152,51 +145,37 @@ class Warrior : JavaPlugin() {
         getCommand("debug")!!.setExecutor(DebugCommand())
         WarriorAPI.registerService(this, ApiProvider())
 
-        commandMap
-        cmds.add(SettingsCommand())
-        cmds.add(StatisticsCommand("stats", this))
-        cmds.add(
-            WarriorCommand("warrior", this)
-                .addSubCommand(WarriorHelpCommand())
-                .addSubCommand(WarriorAboutCommand())
-                .addSubCommand(WarriorLobbyCommand())
-                .addSubCommand(WarriorReloadCommand())
-        )
-        cmds.add(
-            ArenaCommand("arena", this)
-                .addSubCommand(ArenaCreateCommand())
-                .addSubCommand(ArenaRemoveCommand())
-                .addSubCommand(ArenaJoinCommand())
-                .addSubCommand(ArenaSetupCommand())
-                .addSubCommand(ArenaRateCommand())
-                .addSubCommand(ArenaSpectateCommand())
-                .addSubCommand(ArenaLeaveCommand())
-                .addSubCommand(ArenaFlagsCommand())
-        )
-        cmds.add(SymbolCommand().addSubCommand(SymbolsSearchCommand()))
-        cmds.add(
-            KitCommand("kit")
-                .addSubCommand(KitCreateCommand())
-        )
-        cMap!!.registerAll(this.name.toLowerCase(), cmds)
-        arenaManager.loadArenas()
+        pluginLogger.info("Registering Plugin Commands")
+        registerCommands()
+
         registerTeams()
+
+        pluginLogger.info("Registering Plugin Events")
         registerEvents()
         SpecialAbilities.registerAbility()
+
+        pluginLogger.info("Initializing Managers")
+        arenaManager.loadArenas()
         lobbyManager.loadData()
         guiManager.registerGUIs()
         kitManager.registerKits()
         notificationManager.start()
+
         if (usePlaceholderAPI()) {
+            pluginLogger.info("Found PlaceholderAPI, registering Placeholders!")
             WarriorPlaceholders().register()
         }
     }
 
     override fun onDisable() {
-        if (Bukkit.getScoreboardManager().mainScoreboard.getTeam(specTeam!!.name) != null) {
-            specTeam!!.unregister()
+        if (Bukkit.getScoreboardManager().mainScoreboard.getTeam(specTeam.name) != null) {
+            specTeam.unregister()
         }
-        for (user in playerManager.list) user.saveData()
+
+        pluginLogger.info("Attempting to save user data...")
+        for (user in userCache.list) user.saveData()
+
+        pluginLogger.info("Attempting to save arenas...")
         for (a in arenaManager.arenas) a.save()
     }
 
@@ -210,6 +189,37 @@ class Warrior : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(SessionChangeListener(), this)
         Bukkit.getPluginManager().registerEvents(ItemInteractListener(), this)
         Bukkit.getPluginManager().registerEvents(GameFlagListener(), this)
+    }
+
+    private fun registerCommands() {
+        commandMap
+        cmds.add(SettingsCommand())
+        cmds.add(StatisticsCommand())
+        cmds.add(
+            WarriorCommand()
+                .addSubCommand(WarriorHelpCommand())
+                .addSubCommand(WarriorAboutCommand())
+                .addSubCommand(WarriorLobbyCommand())
+                .addSubCommand(WarriorReloadCommand())
+        )
+        cmds.add(
+            ArenaCommand()
+                .addSubCommand(ArenaCreateCommand())
+                .addSubCommand(ArenaRemoveCommand())
+                .addSubCommand(ArenaJoinCommand())
+                .addSubCommand(ArenaSetupCommand())
+                .addSubCommand(ArenaRateCommand())
+                .addSubCommand(ArenaSpectateCommand())
+                .addSubCommand(ArenaLeaveCommand())
+                .addSubCommand(ArenaFlagsCommand())
+        )
+        cmds.add(SymbolCommand().addSubCommand(SymbolsSearchCommand()))
+        cmds.add(
+            KitCommand()
+                .addSubCommand(KitCreateCommand())
+        )
+
+        cMap!!.registerAll(this.name.toLowerCase(), cmds)
     }
 
     private val commandMap: Unit

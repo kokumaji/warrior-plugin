@@ -10,7 +10,7 @@ import com.dumbdogdiner.warrior.gui.DeathSoundGUI;
 import com.dumbdogdiner.warrior.gui.KitGUI;
 import com.dumbdogdiner.warrior.gui.settings.SettingsGUI;
 import com.dumbdogdiner.warrior.managers.GUIManager;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.user.UserCache;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -32,7 +32,7 @@ public class ItemInteractListener implements Listener {
     public void onItemUse(PlayerInteractEvent e) {
         if(e.getItem() == null) return;
 
-        User user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = UserCache.get(e.getPlayer().getUniqueId());
         if(user == null) return;
 
         if(user.getSession() == null) return;
@@ -93,7 +93,7 @@ public class ItemInteractListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if(e.getInventory().getType() == InventoryType.CHEST) {
-            User user = PlayerManager.get(e.getWhoClicked().getUniqueId());
+            User user = UserCache.get(e.getWhoClicked().getUniqueId());
             if(!(user.getSession() instanceof LobbySession)) return;
 
             e.setCancelled(true);

@@ -7,7 +7,7 @@ import com.dumbdogdiner.warrior.api.command.SubCommand;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.user.UserCache;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -41,7 +41,7 @@ public class ArenaJoinCommand implements SubCommand {
             return false;
         }
 
-        User user = PlayerManager.get(((Player)sender).getUniqueId());
+        User user = UserCache.get(((Player)sender).getUniqueId());
         Arena a = ArenaManager.get(args[1]);
 
         if(a == null) {

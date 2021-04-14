@@ -5,7 +5,7 @@ import com.dumbdogdiner.warrior.effects.WarriorEffects;
 import com.dumbdogdiner.warrior.api.events.WarriorLevelUpEvent;
 import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.sessions.LobbySession;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.user.UserCache;
 
 import com.dumbdogdiner.warrior.util.DefaultMessages;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
@@ -30,8 +30,8 @@ public class PlayerListener implements Listener {
             p.sendMessage(" \n" + msg + "\n ");
         }
 
-        if (!PlayerManager.contains(uuid)) {
-            User user = PlayerManager.addUser(uuid);
+        if (!UserCache.contains(uuid)) {
+            User user = UserCache.addUser(uuid);
             user.loadData();
             user.setSession(new LobbySession(user.getUserId()));
 
@@ -96,7 +96,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent e) {
-        PlayerManager.remove(e.getPlayer().getUniqueId());
+        UserCache.remove(e.getPlayer().getUniqueId());
     }
 
     @EventHandler

@@ -9,7 +9,7 @@ import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode;
 import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.util.HeadTexture;
 import com.dumbdogdiner.warrior.managers.GUIManager;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.user.UserCache;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -26,7 +26,7 @@ public class LanguageGUI extends GUI {
 
     @Override
     public void onInventoryOpen(@NotNull InventoryOpenEvent e) {
-        User user = PlayerManager.get(e.getPlayer().getUniqueId());
+        User user = UserCache.get(e.getPlayer().getUniqueId());
         ItemStack placeholder = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE)
                 .setName(" ").build();
 

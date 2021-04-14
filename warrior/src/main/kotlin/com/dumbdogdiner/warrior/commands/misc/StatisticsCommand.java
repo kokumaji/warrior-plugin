@@ -11,7 +11,7 @@ import com.dumbdogdiner.warrior.user.User;
 import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings;
 import com.dumbdogdiner.warrior.api.translation.Symbols;
 import com.dumbdogdiner.warrior.api.util.MathUtil;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.user.UserCache;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -20,7 +20,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -30,8 +29,8 @@ import java.util.stream.Collectors;
 @SuppressWarnings("deprecation")
 public class StatisticsCommand extends AsyncCommandLegacy implements TabCompleter {
 
-    public StatisticsCommand(String commmandName, Plugin plugin) {
-        super(commmandName, plugin);
+    public StatisticsCommand() {
+        super("stats", Warrior.instance);
         setTabCompleter(this);
         setPermission("warrior.command.statistics");
     }
@@ -52,13 +51,13 @@ public class StatisticsCommand extends AsyncCommandLegacy implements TabComplete
             return ExitStatus.ERROR_GENERAL;
         }
 
-        User user = PlayerManager.get(((Player) sender).getUniqueId());
-        UserData data = player.isOnline() ? new UserData(PlayerManager.get(player.getUniqueId()))
+        User user = UserCache.get(((Player) sender).getUniqueId());
+        UserData data = player.isOnline() ? new UserData(UserCache.get(player.getUniqueId()))
                                                 : Warrior.getConnection().getData(player.getUniqueId());
 
         if(data == null) return ExitStatus.ERROR_GENERAL;
 
-        GeneralSettings playerSettings = player.isOnline() ? PlayerManager.get(player.getUniqueId()).getSettings()
+        GeneralSettings playerSettings = player.isOnline() ? UserCache.get(player.getUniqueId()).getSettings()
                 : Warrior.getConnection().getUserSettings(player.getUniqueId());
 
         if(playerSettings.getPrivacyLevel() == 3) {

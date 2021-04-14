@@ -10,7 +10,7 @@ import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.translation.Constants;
 import com.dumbdogdiner.warrior.managers.ArenaManager;
-import com.dumbdogdiner.warrior.managers.PlayerManager;
+import com.dumbdogdiner.warrior.user.UserCache;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -98,7 +98,7 @@ public class ArenaGUI extends GUI {
             event.getWhoClicked().closeInventory();
         } else if(name.contains("Arena")) {
             String arenaName = name.replace("§7Arena §3", "");
-            User user = PlayerManager.get(event.getWhoClicked().getUniqueId());
+            User user = UserCache.get(event.getWhoClicked().getUniqueId());
 
             if(user == null) return;
             Arena a = ArenaManager.get(arenaName);
