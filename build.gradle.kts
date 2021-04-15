@@ -23,6 +23,9 @@ plugins {
 group = "com.dumbdogdiner"
 version = "1.2-beta"
 
+val kotlinVersion = "1.4.32"
+val gradleVersion = "6.8+"
+
 configure<JavaPluginExtension> {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
@@ -113,6 +116,10 @@ tasks {
         kotlinOptions.jvmTarget = "11"
     }
 
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+
     build {
         dependsOn("shadowJar")
     }
@@ -145,6 +152,8 @@ tasks {
         description = "A fully customizable, class-based competitive FFA plugin."
         authors = mutableListOf("kokumaji")
         apiVersion = "1.13"
+
+        main = "${group}.warrior.Warrior"
 
         softDepends = mutableListOf("Multiverse", "PlaceholderAPI")
 
