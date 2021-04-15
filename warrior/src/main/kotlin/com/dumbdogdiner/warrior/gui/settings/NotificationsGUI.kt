@@ -1,10 +1,10 @@
 package com.dumbdogdiner.warrior.gui.settings
 
+import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI
 import com.dumbdogdiner.warrior.Warrior
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder
 import com.dumbdogdiner.warrior.api.util.HeadTexture
-import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot
 import com.dumbdogdiner.warrior.api.util.TranslationUtil
 import com.dumbdogdiner.warrior.user.User
 import org.bukkit.Material

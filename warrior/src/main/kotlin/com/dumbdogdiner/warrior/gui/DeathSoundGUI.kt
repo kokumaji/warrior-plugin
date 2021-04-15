@@ -1,11 +1,10 @@
 package com.dumbdogdiner.warrior.gui
 
+import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI
 import com.dumbdogdiner.warrior.Warrior
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder
-import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot
 import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSound
-import com.dumbdogdiner.warrior.user.UserCache
 import com.dumbdogdiner.warrior.api.user.cosmetics.DeathSounds
 import com.dumbdogdiner.warrior.user.User
 import org.bukkit.Material

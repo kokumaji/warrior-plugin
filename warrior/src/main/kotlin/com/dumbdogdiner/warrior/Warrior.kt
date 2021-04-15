@@ -14,7 +14,6 @@ import com.dumbdogdiner.warrior.managers.NotificationManager
 import com.dumbdogdiner.warrior.user.UserCache
 import com.dumbdogdiner.warrior.managers.GameBarManager
 import com.dumbdogdiner.warrior.managers.LevelManager
-import com.dumbdogdiner.warrior.commands.DebugCommand
 import com.dumbdogdiner.warrior.commands.misc.SettingsCommand
 import com.dumbdogdiner.warrior.commands.misc.StatisticsCommand
 import com.dumbdogdiner.warrior.commands.warrior.WarriorCommand
@@ -64,7 +63,7 @@ class Warrior : JavaPlugin() {
     companion object {
 
         private val cmds: MutableList<Command> = ArrayList()
-        private lateinit var specTeam: Team
+        lateinit var specTeam: Team
 
         lateinit var translator: Translator
         lateinit var connection: DatabaseConnection
@@ -123,7 +122,6 @@ class Warrior : JavaPlugin() {
         val isDebugMode: Boolean = instance.config.getBoolean("general-settings.debug-mode")
 
     }
-
     private var cMap: CommandMap? = null
 
     override fun onLoad() {
@@ -144,7 +142,6 @@ class Warrior : JavaPlugin() {
     }
 
     override fun onEnable() {
-        getCommand("debug")!!.setExecutor(DebugCommand())
         WarriorAPI.registerService(this, ApiProvider())
 
         pluginLogger.info("Registering Plugin Commands")

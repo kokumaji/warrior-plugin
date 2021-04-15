@@ -16,9 +16,9 @@ import java.util.*
 
 class LobbyManager : WarriorLobbyManager {
 
-    private var lobbySpawn: Location? = null
+    private lateinit var lobbySpawn: Location
 
-    override fun getLobbySpawn(): Location? {
+    override fun getLobbySpawn(): Location {
         return lobbySpawn
     }
 

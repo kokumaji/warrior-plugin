@@ -1,21 +1,20 @@
 package com.dumbdogdiner.warrior.gui
 
-import com.dumbdogdiner.stickyapi.bukkit.gui.GUI
-import com.dumbdogdiner.warrior.api.builders.ItemBuilder
 import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot
-import com.dumbdogdiner.warrior.api.arena.Arena
-import java.util.Arrays
-import com.dumbdogdiner.warrior.api.translation.Symbols
-import com.dumbdogdiner.warrior.api.sessions.ArenaSession
+import com.dumbdogdiner.stickyapi.bukkit.gui.GUI
 import com.dumbdogdiner.warrior.Warrior
+import com.dumbdogdiner.warrior.api.arena.Arena
+import com.dumbdogdiner.warrior.api.builders.ItemBuilder
+import com.dumbdogdiner.warrior.api.sessions.ArenaSession
 import com.dumbdogdiner.warrior.api.translation.Constants
-import java.util.HashMap
+import com.dumbdogdiner.warrior.api.translation.Symbols
 import com.dumbdogdiner.warrior.api.util.TranslationUtil
 import com.dumbdogdiner.warrior.user.User
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
+import java.util.*
 
 class ArenaGUI : GUI(5, "Select Arena", Warrior.instance) {
 

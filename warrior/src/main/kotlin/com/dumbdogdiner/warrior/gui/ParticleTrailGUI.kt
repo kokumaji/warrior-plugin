@@ -1,13 +1,12 @@
 package com.dumbdogdiner.warrior.gui
 
-import com.dumbdogdiner.stickyapi.bukkit.gui.GUI
-import com.dumbdogdiner.warrior.api.builders.ItemBuilder
 import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot
+import com.dumbdogdiner.stickyapi.bukkit.gui.GUI
 import com.dumbdogdiner.warrior.Warrior
+import com.dumbdogdiner.warrior.api.builders.ItemBuilder
 import com.dumbdogdiner.warrior.api.user.cosmetics.ParticleTrail
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryOpenEvent
-import java.util.Arrays
 
 class ParticleTrailGUI() : GUI(5, "Particle Trails", Warrior.instance) {
 

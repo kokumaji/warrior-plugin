@@ -1,18 +1,18 @@
 package com.dumbdogdiner.warrior.gui.settings
 
+import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI
 import com.dumbdogdiner.warrior.Warrior
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder
+import com.dumbdogdiner.warrior.api.translation.Placeholders
 import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode
 import com.dumbdogdiner.warrior.api.util.HeadTexture
-import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot
 import com.dumbdogdiner.warrior.api.util.TranslationUtil
-import com.dumbdogdiner.warrior.api.translation.Placeholders
-import java.util.HashMap
 import com.dumbdogdiner.warrior.user.User
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
+import java.util.*
 
 class LanguageGUI : GUI(3, "Select Language", Warrior.instance) {
 

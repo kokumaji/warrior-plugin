@@ -1,16 +1,13 @@
 package com.dumbdogdiner.warrior.gui
 
-import com.dumbdogdiner.stickyapi.bukkit.gui.GUI
-import com.dumbdogdiner.warrior.api.builders.ItemBuilder
 import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot
-import com.dumbdogdiner.warrior.managers.KitManager
+import com.dumbdogdiner.stickyapi.bukkit.gui.GUI
+import com.dumbdogdiner.warrior.Warrior
+import com.dumbdogdiner.warrior.api.builders.ItemBuilder
 import com.dumbdogdiner.warrior.api.kit.BaseKit
-import com.dumbdogdiner.warrior.user.UserCache
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession
 import com.dumbdogdiner.warrior.api.sessions.GameState
-import com.dumbdogdiner.warrior.Warrior
 import com.dumbdogdiner.warrior.api.translation.Constants
-import java.util.HashMap
 import com.dumbdogdiner.warrior.api.util.TranslationUtil
 import com.dumbdogdiner.warrior.user.User
 import org.bukkit.Material
@@ -18,7 +15,7 @@ import org.bukkit.Sound
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.inventory.ItemFlag
-import org.bukkit.plugin.Plugin
+import java.util.*
 
 class KitGUI() : GUI(5, "Select a Kit", Warrior.instance) {
 

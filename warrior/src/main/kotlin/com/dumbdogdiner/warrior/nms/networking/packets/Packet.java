@@ -1,10 +1,10 @@
 package com.dumbdogdiner.warrior.nms.networking.packets;
 
+import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
 import com.dumbdogdiner.warrior.nms.PacketType;
 import com.dumbdogdiner.warrior.nms.networking.Protocol;
 import com.dumbdogdiner.warrior.nms.networking.ProtocolDirection;
 import com.dumbdogdiner.warrior.nms.objects.SoundEffect;
-import com.dumbdogdiner.warrior.api.reflection.FieldUtil;
 import com.dumbdogdiner.warrior.util.NMSUtil;
 import lombok.Getter;
 import org.bukkit.Sound;

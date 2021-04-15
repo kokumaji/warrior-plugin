@@ -30,7 +30,7 @@ import java.util.function.Consumer;
  * plugin specific functionalities.
  */
 
-public interface WarriorUser extends Comparable<WarriorUser> {
+public interface WarriorUser<T extends WarriorUser<T>> extends Comparable<T> {
 	/**
 	 * @return The number of kills this player has obtained.
 	 */
@@ -233,21 +233,10 @@ public interface WarriorUser extends Comparable<WarriorUser> {
 	void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut);
 
 	/**
-	 * TODO: I don't know what this does.
-	 * @param func
-	 */
-	void spawnEffect(Consumer<WarriorUser> func);
-
-	/**
-	 * TODO: I don't know what this does.
-	 */
-	void debugEffects();
-
-	/**
 	 * Execute the given consumer on this user's thread pool.
 	 * @param func The consumer to execute
 	 */
-	void executeAsync(Consumer<WarriorUser> func);
+	void executeAsync(Consumer<T> func);
 
 	/**
 	 * Reset this user to their default state.
@@ -437,7 +426,7 @@ public interface WarriorUser extends Comparable<WarriorUser> {
 	 *         user, or 0 if Entity ID is identical.
 	 */
 	@Override
-	default int compareTo(@NotNull WarriorUser user) {
+	default int compareTo(@NotNull T user) {
 		return Integer.compare(getEntityId(), user.getEntityId());
 	}
 }

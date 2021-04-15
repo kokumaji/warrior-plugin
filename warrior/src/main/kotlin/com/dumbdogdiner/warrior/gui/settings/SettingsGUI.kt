@@ -1,20 +1,12 @@
 package com.dumbdogdiner.warrior.gui.settings
 
+import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot
 import com.dumbdogdiner.stickyapi.bukkit.gui.GUI
 import com.dumbdogdiner.warrior.Warrior
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder
-import com.dumbdogdiner.warrior.user.UserCache
-import com.dumbdogdiner.warrior.api.util.HeadTexture
-import com.dumbdogdiner.warrior.api.user.settings.GeneralSettings
-import com.dumbdogdiner.warrior.api.util.TranslationUtil
 import com.dumbdogdiner.warrior.api.user.cosmetics.WarriorTitle
-import com.dumbdogdiner.warrior.api.translation.enums.LanguageCode
-import com.dumbdogdiner.stickyapi.bukkit.gui.ClickableSlot
-import java.util.function.BiConsumer
-import com.dumbdogdiner.warrior.gui.settings.LanguageGUI
-import com.dumbdogdiner.warrior.managers.GUIManager
-import com.dumbdogdiner.warrior.gui.settings.NotificationsGUI
-import com.dumbdogdiner.warrior.gui.settings.PrivacyGUI
+import com.dumbdogdiner.warrior.api.util.HeadTexture
+import com.dumbdogdiner.warrior.api.util.TranslationUtil
 import com.dumbdogdiner.warrior.user.User
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryClickEvent

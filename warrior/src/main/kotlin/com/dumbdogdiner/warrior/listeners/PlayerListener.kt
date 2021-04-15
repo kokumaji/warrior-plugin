@@ -6,6 +6,8 @@ import com.dumbdogdiner.warrior.util.DefaultMessages
 import com.dumbdogdiner.warrior.api.sessions.LobbySession
 import com.dumbdogdiner.warrior.api.events.WarriorLevelUpEvent
 import com.dumbdogdiner.warrior.effects.WarriorEffects
+import org.bukkit.Location
+import org.bukkit.attribute.Attribute
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -26,6 +28,9 @@ class PlayerListener : Listener {
             val user = Warrior.userCache.addUser(uuid)
             user.loadData()
             user.session = LobbySession(user.userId)
+
+            p.teleport(Warrior.lobbyManager.lobbySpawn)
+            p.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.baseValue = 20.0
         }
     }
 
