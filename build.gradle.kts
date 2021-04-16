@@ -6,17 +6,11 @@
  * User Manual available at https://docs.gradle.org/6.8.2/userguide/building_java_projects.html
  */
 
-import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     // Implement Gradle plugins
     java
-    kotlin("jvm") version "1.4.32"
-
-    id("com.github.johnrengelman.shadow") version "6.0.0"
     id("kr.entree.spigradle") version "2.2.3"
-
 }
 
 // Setting some variables for our plugin!
@@ -34,7 +28,6 @@ configure<JavaPluginExtension> {
 subprojects {
 
     apply(plugin = "java")
-    apply(plugin = "kotlin")
     apply(plugin = "kr.entree.spigradle")
 
     repositories {
@@ -87,81 +80,10 @@ subprojects {
     }
 }
 
-dependencies {
-//    shadow group: 'com.zaxxer', name: 'HikariCP', version: '4.0.3'
-//    compileOnly 'me.clip:placeholderapi:2.10.9'
-//    compileOnly 'org.apache.logging.log4j:log4j-core:2.3'
-//
-//    compileOnly 'io.netty:netty-all:4.1.24.Final'
-//
-//    compileOnly 'com.mojang:authlib:1.5.21'
-
-    // used for debugging!
-    //compileOnly files('libs/server.jar')
-    //shadow files('libs/stickyapi-2.1.0.jar')
-
-
-}
-
 // vv Configuring the Gradle plugins below vv
 
 tasks {
-
-    register<ConfigureShadowRelocation>("relocateShadowJar") {
-        target = project.tasks.shadowJar.get()
-        prefix = "${group}.warrior.libs" // Default value is "shadow"
-    }
-
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
-    }
-
-    withType<JavaCompile> {
+    compileJava{
         options.encoding = "UTF-8"
     }
-
-    build {
-        dependsOn("shadowJar")
-    }
-
-    shadowJar {
-        dependsOn("relocateShadowJar")
-        archiveClassifier.set("")
-        project.configurations.implementation.configure { isCanBeResolved = true }
-        configurations = listOf(
-            project.configurations.shadow.get()
-        )
-
-        val pkg = "$group.warrior.libs."
-
-        exclude("generated/mojangles_width_data.json")
-        relocate("com.zaxxer", "${pkg}com.zaxxer")
-        relocate("org.postgresql", "${pkg}org.postgresql")
-        relocate("org.postgresql", "${pkg}org.postgresql")
-
-        minimize()
-    }
-
-    test {
-        useJUnitPlatform()
-    }
-
-
-    spigot {
-        name = "Warrior"
-        description = "A fully customizable, class-based competitive FFA plugin."
-        authors = mutableListOf("kokumaji")
-        apiVersion = "1.13"
-
-        main = "${group}.warrior.Warrior"
-
-        softDepends = mutableListOf("Multiverse", "PlaceholderAPI")
-
-        commands {
-            create("debug") {
-                usage = "/debug"
-            }
-        }
-    }
-
 }
