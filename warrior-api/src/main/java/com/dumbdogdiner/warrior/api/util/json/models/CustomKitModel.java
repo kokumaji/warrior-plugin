@@ -1,11 +1,13 @@
-package com.dumbdogdiner.warrior.models;
+package com.dumbdogdiner.warrior.api.util.json.models;
+
 
 import com.dumbdogdiner.warrior.api.kit.kits.CustomKit;
+import com.dumbdogdiner.warrior.api.util.json.JsonModel;
 import lombok.Data;
 import org.bukkit.Material;
 
 @Data
-public class CustomKitModel {
+public class CustomKitModel implements JsonModel {
 
     private String kitName;
 

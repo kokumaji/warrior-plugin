@@ -4,10 +4,9 @@ import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.kit.kits.CustomKit;
 import com.dumbdogdiner.warrior.api.util.DataType;
-import com.dumbdogdiner.warrior.models.ArenaModel;
-import com.dumbdogdiner.warrior.models.CustomKitModel;
-import com.dumbdogdiner.warrior.models.LobbyDataModel;
-import com.dumbdogdiner.warrior.models.LocationModel;
+import com.dumbdogdiner.warrior.api.util.json.models.CustomKitModel;
+import com.dumbdogdiner.warrior.api.util.json.models.LobbyDataModel;
+import com.dumbdogdiner.warrior.api.util.json.models.LocationModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -15,6 +14,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+// TODO: Remove references to JSONUtil
+@Deprecated
 public class JSONUtil {
 
     private static final String[] subFolderNames = {"/arenas", "/holograms", "/npcData", "/kits"};

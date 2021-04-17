@@ -3,7 +3,7 @@ package com.dumbdogdiner.warrior.managers
 import com.dumbdogdiner.warrior.api.managers.WarriorLobbyManager
 import com.dumbdogdiner.warrior.Warrior
 import java.io.FileReader
-import com.dumbdogdiner.warrior.models.LobbyDataModel
+import com.dumbdogdiner.warrior.api.util.json.models.LobbyDataModel
 import com.dumbdogdiner.warrior.util.JSONUtil
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader

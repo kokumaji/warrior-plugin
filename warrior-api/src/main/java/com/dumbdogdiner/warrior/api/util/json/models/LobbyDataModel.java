@@ -1,5 +1,6 @@
-package com.dumbdogdiner.warrior.models;
+package com.dumbdogdiner.warrior.api.util.json.models;
 
+import com.dumbdogdiner.warrior.api.util.json.models.LocationModel;
 import lombok.Getter;
 
 public class LobbyDataModel {

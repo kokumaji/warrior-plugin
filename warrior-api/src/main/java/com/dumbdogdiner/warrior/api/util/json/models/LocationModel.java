@@ -1,17 +1,18 @@
-package com.dumbdogdiner.warrior.models;
+package com.dumbdogdiner.warrior.api.util.json.models;
 
+import com.dumbdogdiner.warrior.api.util.json.JsonModel;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-public class LocationModel {
+public class LocationModel implements JsonModel {
 
     @Getter
-    private int x;
+    private final int x;
     @Getter
-    private int y;
+    private final int y;
     @Getter
-    private int z;
+    private final int z;
     @Getter
     private float yaw;
     @Getter

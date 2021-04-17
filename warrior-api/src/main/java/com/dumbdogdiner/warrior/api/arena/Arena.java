@@ -5,14 +5,13 @@ import com.dumbdogdiner.warrior.api.arena.gameflags.FlagContainer;
 import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.BlockBreakFlag;
 import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.BlockPlaceFlag;
 import com.dumbdogdiner.warrior.api.arena.gameflags.implementation.MaxHealthFlag;
-import com.dumbdogdiner.warrior.api.util.DataType;
-import com.dumbdogdiner.warrior.api.util.JSONUtil;
-import com.dumbdogdiner.warrior.models.ArenaModel;
-import com.dumbdogdiner.warrior.models.LocationModel;
-import com.dumbdogdiner.warrior.models.RegionModel;
+import com.dumbdogdiner.warrior.api.util.json.JSONHelper;
+import com.dumbdogdiner.warrior.api.util.json.JsonModel;
+import com.dumbdogdiner.warrior.api.util.json.JsonSerializable;
+import com.dumbdogdiner.warrior.api.util.json.models.ArenaModel;
 import com.dumbdogdiner.warrior.api.arena.metadata.ArenaMetadata;
-import com.dumbdogdiner.warrior.api.util.DataType;
-import com.dumbdogdiner.warrior.api.util.JSONUtil;
+import com.dumbdogdiner.warrior.api.util.json.models.LocationModel;
+import com.dumbdogdiner.warrior.api.util.json.models.RegionModel;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import lombok.Getter;
@@ -26,7 +25,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Arena {
+public class Arena implements JsonSerializable {
 
     @Getter
     private String name;
@@ -51,7 +50,7 @@ public class Arena {
 
     public Arena(String arenaName, Region region, Location spawn, boolean enabled, int id) {
         if(WarriorAPI.getService().getArenaManager().get(arenaName) != null) throw new IllegalStateException("Duplicate Arena in ArenaManager");
-        else if(JSONUtil.fileExists(DataType.ARENA, arenaName)) throw new IllegalStateException("Can't create Arena, JSON data already exists");
+        else if(JSONHelper.fileExists(getFilePath())) throw new IllegalStateException("Can't create Arena, JSON data already exists");
         this.name = arenaName;
         this.spawn = spawn;
         this.bounds = region;
@@ -97,7 +96,16 @@ public class Arena {
     }
 
     public void save() {
-        JSONUtil.saveArena(this);
+        JSONHelper.save(this);
     }
 
+    @Override
+    public JsonModel toJson() {
+        return new ArenaModel(this);
+    }
+
+    @Override
+    public String getFilePath() {
+        return "arena/" + getName() + ".json";
+    }
 }

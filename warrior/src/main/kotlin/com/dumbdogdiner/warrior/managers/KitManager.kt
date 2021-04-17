@@ -11,7 +11,7 @@ import java.util.HashMap
 import com.dumbdogdiner.warrior.Warrior
 import java.io.FileReader
 import com.dumbdogdiner.warrior.api.kit.kits.CustomKit
-import com.dumbdogdiner.warrior.models.CustomKitModel
+import com.dumbdogdiner.warrior.api.util.json.models.CustomKitModel
 import com.dumbdogdiner.warrior.util.JSONUtil
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader

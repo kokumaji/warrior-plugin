@@ -2,6 +2,9 @@ package com.dumbdogdiner.warrior.api.kit;
 
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
+import com.dumbdogdiner.warrior.api.util.json.JSONHelper;
+import com.dumbdogdiner.warrior.api.util.json.JsonModel;
+import com.dumbdogdiner.warrior.api.util.json.JsonSerializable;
 import lombok.Data;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

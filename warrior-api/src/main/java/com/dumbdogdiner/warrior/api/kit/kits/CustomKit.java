@@ -4,9 +4,11 @@ import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.kit.Ability;
 import com.dumbdogdiner.warrior.api.kit.BaseKit;
 import com.dumbdogdiner.warrior.api.kit.SpecialAbilities;
-import com.dumbdogdiner.warrior.models.CustomKitModel;
-import com.dumbdogdiner.warrior.models.ItemStackModel;
-import com.dumbdogdiner.warrior.api.util.JSONUtil;
+import com.dumbdogdiner.warrior.api.util.json.JSONHelper;
+import com.dumbdogdiner.warrior.api.util.json.JsonModel;
+import com.dumbdogdiner.warrior.api.util.json.JsonSerializable;
+import com.dumbdogdiner.warrior.api.util.json.models.CustomKitModel;
+import com.dumbdogdiner.warrior.api.util.json.models.ItemStackModel;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CustomKit extends BaseKit {
+public class CustomKit extends BaseKit implements JsonSerializable {
 
     @Getter
     private final ItemStackModel[] items;
@@ -37,11 +39,6 @@ public class CustomKit extends BaseKit {
         }
 
         this.items = tmp.toArray(ItemStackModel[]::new);
-    }
-
-
-    public void save() {
-        JSONUtil.saveKit(this);
     }
 
     @Override
@@ -72,4 +69,17 @@ public class CustomKit extends BaseKit {
 
     }
 
+    public void saveKit() {
+        JSONHelper.save(this);
+    }
+
+    @Override
+    public JsonModel toJson() {
+        return new CustomKitModel(this);
+    }
+
+    @Override
+    public String getFilePath() {
+        return "kit/" + getName() + ".json";
+    }
 }
