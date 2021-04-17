@@ -2,8 +2,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocatio
 
 plugins {
     kotlin("jvm") version "1.4.32"
-    id("kr.entree.spigradle")
     id("com.github.johnrengelman.shadow") version "6.1.0"
+    id("kr.entree.spigradle") version "2.2.3"
 }
 
 val kotlinVersion = "1.4.32"

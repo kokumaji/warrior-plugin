@@ -10,7 +10,6 @@
 plugins {
     // Implement Gradle plugins
     java
-    id("kr.entree.spigradle") version "2.2.3"
 }
 
 // Setting some variables for our plugin!
@@ -28,7 +27,6 @@ configure<JavaPluginExtension> {
 subprojects {
 
     apply(plugin = "java")
-    apply(plugin = "kr.entree.spigradle")
 
     repositories {
         // Default Gradle repositories
