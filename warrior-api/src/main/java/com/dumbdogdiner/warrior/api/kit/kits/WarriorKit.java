@@ -10,17 +10,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class WarriorKit extends BaseKit {
 
-
-    private static final String[] desc = {
-            "&8Default Kit",
-            " ",
-            "&7&oBattle your way through the battle field",
-            "&7&owith this trusty old sword. Perfect for",
-            "&7&oa newcomer like you!",
-            " ",
-            "&7Main Weapon: &fIron Sword"
-    };
-
     public WarriorKit(String name, int cost, String permission, Material icon) {
         super(name, cost, permission, icon, SpecialAbilities.MEDIC, desc);
     }

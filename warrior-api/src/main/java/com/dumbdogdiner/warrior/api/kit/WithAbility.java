@@ -1,11 +1,20 @@
 package com.dumbdogdiner.warrior.api.kit;
 
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
+
 /**
  * Interface for Kit Abilities
  */
 public interface WithAbility {
 
-    default execute(WarriorUser user) {
+    /**
+     * Runs the Ability specific code.
+     * TODO: how do we want to handle this exactly???
+     *
+     * @param user WarriorUser instance that this
+     *             ability should be applied to.
+     */
+    default void execute(WarriorUser<?> user) {
 
     }
 
@@ -17,6 +26,12 @@ public interface WithAbility {
         return 15;
     }
 
-    boolean abilityReady();
+    /**
+     * Check whether the given User can use this Ability
+     *
+     * @param user WarriorUser instance to test
+     * @return Should return true if the ability can be used.
+     */
+    boolean abilityReady(WarriorUser<?> user);
 
 }
