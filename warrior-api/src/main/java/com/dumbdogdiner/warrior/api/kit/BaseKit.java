@@ -1,86 +1,39 @@
 package com.dumbdogdiner.warrior.api.kit;
 
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
-import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
-import com.dumbdogdiner.warrior.api.util.json.JSONHelper;
-import com.dumbdogdiner.warrior.api.util.json.JsonModel;
-import com.dumbdogdiner.warrior.api.util.json.JsonSerializable;
-import lombok.Data;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-@Data
-public abstract class BaseKit {
+public interface BaseKit {
 
-    private String name;
-    private int cost;
-    private String permission;
-    private Material icon;
-    private Ability ability;
-    private String[] description;
+    Integer getPrice();
 
-    public BaseKit(String name, int cost, String permission, Material icon, Ability ability, String... description) {
-        this.name = name;
-        this.cost = cost;
-        this.permission = permission;
-        this.icon = icon;
-        this.ability = ability;
-        this.description = description;
+    String getName();
+
+    default String[] getDescription() {
+        return {
+            "&7Default Kit", " "
+        };
     }
 
-    public BaseKit(String name, int cost, String permission, String... description) {
-        this.name = name;
-        this.cost = cost;
-        this.permission = permission;
-        this.icon = Material.PAPER;
-        this.ability = null;
-        this.description = description;
+    default Material getIcon() {
+        return Material.LEATHER_CHESTPLATE;
     }
 
-    public boolean hasAbility() {
-        return ability != null;
+    /**
+     * Gets the Permission required for this Kit.
+     * @return Permission as String
+     */
+    default String getPermission() {
+        return "warrior.kit.defaults";
     }
 
-    public void activateAbility(WarriorUser user) {
-        if (hasAbility()) {
-            // could add some error handling here??
-            ability.run(user).run();
+    default boolean hasAbility() {
+        try {
+            return this.getClass().isAssignableFrom(WithAbility.class);
+        } catch(Exception e) {
+            return false;
         }
     }
 
-    public BaseKit giveKit(Player p) {
-        withAbility(p);
-        return this;
-    }
-
-    public BaseKit withAbility(Player p) {
-        Material m = Material.FIREWORK_STAR;
-        String decorator = Ability.DEACTIVATED_ABILITY_STRING;
-        if(getAbility().availableOnStart()) {
-            m = Material.MAGMA_CREAM;
-            decorator = Ability.ACTIVE_ABILITY_STRING;
-        }
-
-        ItemStack special = new ItemBuilder(m)
-                .setName(decorator)
-                .setLore("&7Activate your Special Ability")
-                .build();
-
-        p.getInventory().setItem(8, special);
-
-        return this;
-    }
-
-    public BaseKit giveHealItems(Player p, int slot) {
-        ItemStack healItem = new ItemBuilder(Material.BREAD)
-                                .setName("&8» &3&lFood &8«")
-                                .setAmount(32)
-                                .build();
-
-        p.getInventory().setItem(slot, healItem);
-
-        return this;
-    }
+    void setupInventory(WarriorUser user);
 
 }
