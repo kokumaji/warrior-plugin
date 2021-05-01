@@ -1,26 +1,24 @@
 package com.dumbdogdiner.warrior.api.events;
 
-import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
-import com.dumbdogdiner.warrior.api.sessions.Session;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class KillStreakResetEvent extends Event {
+public class UserLevelupEvent extends Event {
+
     private static final HandlerList handlers = new HandlerList();
 
     @Getter
-    private final Player player;
+    private final WarriorUser user;
 
     @Getter
-    private final Session context;
+    private final int level;
 
-    public KillStreakResetEvent(ArenaSession arenaSession) {
-        this.player = Bukkit.getPlayer(arenaSession.getUserId());
-        this.context = arenaSession;
+    public UserLevelupEvent(WarriorUser user) {
+        this.user = user;
+        this.level = user.getLevel();
     }
 
     @NotNull

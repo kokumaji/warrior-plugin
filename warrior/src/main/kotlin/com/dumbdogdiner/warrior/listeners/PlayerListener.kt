@@ -4,9 +4,8 @@ import com.dumbdogdiner.warrior.Warrior
 import com.dumbdogdiner.warrior.api.util.TranslationUtil
 import com.dumbdogdiner.warrior.util.DefaultMessages
 import com.dumbdogdiner.warrior.api.sessions.LobbySession
-import com.dumbdogdiner.warrior.api.events.WarriorLevelUpEvent
+import com.dumbdogdiner.warrior.api.events.UserLevelupEvent
 import com.dumbdogdiner.warrior.effects.WarriorEffects
-import org.bukkit.Location
 import org.bukkit.attribute.Attribute
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -40,7 +39,7 @@ class PlayerListener : Listener {
     }
 
     @EventHandler
-    fun onLevelUp(e: WarriorLevelUpEvent) {
+    fun onLevelUp(e: UserLevelupEvent) {
         if (e.level % 5 == 0) e.user.spawnEffect(WarriorEffects.LEVELUP)
     }
 }

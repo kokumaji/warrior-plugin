@@ -2,17 +2,20 @@ package com.dumbdogdiner.warrior.api.events;
 
 import com.dumbdogdiner.warrior.api.arena.Arena;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import lombok.Getter;
-import org.bukkit.entity.Player;
+import lombok.Setter;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class ArenaJoinEvent extends Event {
+public class ArenaJoinEvent extends Event implements Cancellable {
+
     private static final HandlerList handlers = new HandlerList();
 
     @Getter
-    private final Player player;
+    private final WarriorUser<?> player;
 
     @Getter
     private final ArenaSession session;
@@ -20,7 +23,10 @@ public class ArenaJoinEvent extends Event {
     @Getter
     private final Arena arena;
 
-    public ArenaJoinEvent(ArenaSession arenaSession, Player player) {
+    @Getter @Setter
+    private boolean cancelled;
+
+    public ArenaJoinEvent(ArenaSession arenaSession, WarriorUser<?> player) {
         this.player = player;
         this.session = arenaSession;
         this.arena = arenaSession.getArena();
@@ -35,4 +41,5 @@ public class ArenaJoinEvent extends Event {
     public static HandlerList getHandlerList() {
         return handlers;
     }
+
 }

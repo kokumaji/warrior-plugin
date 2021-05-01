@@ -7,7 +7,7 @@ import com.dumbdogdiner.warrior.api.builders.ItemBuilder;
 import com.dumbdogdiner.warrior.api.events.ArenaJoinEvent;
 import com.dumbdogdiner.warrior.api.events.GameStateChangeEvent;
 import com.dumbdogdiner.warrior.api.events.KillStreakChangeEvent;
-import com.dumbdogdiner.warrior.api.events.KillStreakResetEvent;
+import com.dumbdogdiner.warrior.api.events.KillstreakResetEvent;
 import com.dumbdogdiner.warrior.api.kit.BaseKit;
 import com.google.common.base.Preconditions;
 import lombok.Getter;
@@ -108,7 +108,7 @@ public class ArenaSession extends Session {
     public void resetStreak() {
         killStreak = 0;
 
-        KillStreakResetEvent e = new KillStreakResetEvent(this);
+        KillstreakResetEvent e = new KillstreakResetEvent(this);
         Bukkit.getPluginManager().callEvent(e);
     }
 

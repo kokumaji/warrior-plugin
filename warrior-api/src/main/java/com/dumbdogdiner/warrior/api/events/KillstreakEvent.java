@@ -1,19 +1,20 @@
 package com.dumbdogdiner.warrior.api.events;
 
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession;
 import com.dumbdogdiner.warrior.api.sessions.Session;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class KillStreakChangeEvent extends Event {
+public class KillstreakEvent extends Event {
+
     private static final HandlerList handlers = new HandlerList();
 
     @Getter
-    private final Player player;
+    private final WarriorUser<?> player;
 
     @Getter
     private final Session context;
@@ -21,8 +22,8 @@ public class KillStreakChangeEvent extends Event {
     @Getter
     private final int streak;
 
-    public KillStreakChangeEvent(int killStreak, ArenaSession arenaSession) {
-        this.player = Bukkit.getPlayer(arenaSession.getUserId());
+    public KillstreakEvent(int killStreak, ArenaSession arenaSession) {
+        this.player = WarriorAPI.getService().getUserCache().get(arenaSession.getUserId());
         this.context = arenaSession;
         this.streak = killStreak;
     }

@@ -11,7 +11,7 @@ import com.dumbdogdiner.warrior.api.translation.Placeholders
 import com.dumbdogdiner.warrior.managers.LevelManager
 import com.dumbdogdiner.warrior.api.builders.ItemBuilder
 import com.dumbdogdiner.warrior.api.builders.HologramBuilder
-import com.dumbdogdiner.warrior.api.events.KillStreakResetEvent
+import com.dumbdogdiner.warrior.api.events.KillstreakResetEvent
 import com.dumbdogdiner.warrior.api.events.KillStreakChangeEvent
 import com.dumbdogdiner.warrior.api.builders.GameBossBar
 import com.dumbdogdiner.warrior.api.sound.Melody
@@ -261,7 +261,7 @@ class ArenaSessionListener : Listener {
     }
 
     @EventHandler
-    fun onStreakReset(e: KillStreakResetEvent) {
+    fun onStreakReset(e: KillstreakResetEvent) {
         val user: User = Warrior.userCache[e.player.uniqueId]
 
         if (user.session !is ArenaSession) return

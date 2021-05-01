@@ -8,7 +8,6 @@ import com.dumbdogdiner.warrior.api.user.settings.GameplaySettings
 import com.dumbdogdiner.warrior.api.user.settings.VisualSettings
 import com.dumbdogdiner.warrior.nms.PacketType
 import com.dumbdogdiner.warrior.api.util.TranslationUtil
-import java.lang.Runnable
 import com.dumbdogdiner.warrior.effects.WarriorEffects
 import com.dumbdogdiner.warrior.api.events.SessionChangeEvent
 import com.dumbdogdiner.warrior.Warrior
@@ -20,7 +19,7 @@ import java.lang.NoSuchMethodException
 import java.lang.reflect.InvocationTargetException
 import java.lang.IllegalAccessException
 import java.lang.NoSuchFieldException
-import com.dumbdogdiner.warrior.api.events.WarriorLevelUpEvent
+import com.dumbdogdiner.warrior.api.events.UserLevelupEvent
 import com.dumbdogdiner.warrior.api.sessions.Session
 import com.dumbdogdiner.warrior.api.sound.Note
 import com.dumbdogdiner.warrior.api.user.UserData
@@ -39,7 +38,6 @@ import org.bukkit.potion.PotionEffectType
 import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.util.Vector
 import java.util.*
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.function.Consumer
 
@@ -624,7 +622,7 @@ class User(player: Player) : WarriorUser<User> {
         if (relativeXp >= nextXp && level <= 100) {
             relativeXp -= nextXp
             level++
-            val e = WarriorLevelUpEvent(this)
+            val e = UserLevelupEvent(this)
             Bukkit.getPluginManager().callEvent(e)
         }
         updateExperienceBar()
