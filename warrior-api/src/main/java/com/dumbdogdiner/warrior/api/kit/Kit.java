@@ -1,9 +1,14 @@
 package com.dumbdogdiner.warrior.api.kit;
 
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.api.util.json.JSONHelper;
+import com.dumbdogdiner.warrior.api.util.json.JsonModel;
+import com.dumbdogdiner.warrior.api.util.json.JsonSerializable;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
-public interface BaseKit {
+public interface Kit extends JsonSerializable {
 
     /**
      * Gets the Kit Price - TODO: Add Vault Support
@@ -70,6 +75,34 @@ public interface BaseKit {
      * @param user WarriorUser instance that should
      *             receive this kit.
      */
-    void setupInventory(WarriorUser<?> user);
+    void setInventory(WarriorUser<?> user);
+
+    ItemStack[] getItems();
+
+    @Override
+    default String getFilePath() {
+        return "kits/" + getName().toLowerCase() + ".json";
+    }
+
+    @Override
+    default JsonModel toJson() {
+        return new KitModel(this);
+    }
+
+    default void save() {
+        JSONHelper.save(this);
+    }
+
+    default void load() {
+        if(!JSONHelper.fileExists(this.getFilePath())) {
+            WarriorAPI.getService().getLogger().warn("Could not load File for Kit " + getName());
+
+            // attempting to recover the file from memory
+            JSONHelper.save(this);
+        }
+
+        // TODO: handle JSON file here & apply json values to this kit ("KitModel"??)
+
+    }
 
 }

@@ -1,6 +1,6 @@
-package com.dumbdogdiner.warrior.api.kit.impl;
+package com.dumbdogdiner.warrior.kits;
 
-import com.dumbdogdiner.warrior.api.kit.BaseKit;
+import com.dumbdogdiner.warrior.api.kit.Kit;
 import com.dumbdogdiner.warrior.api.kit.WithAbility;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import org.bukkit.Material;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class WarriorKit implements BaseKit, WithAbility {
+public class WarriorKit implements Kit, WithAbility {
 
     @Override
     public String getName() {
