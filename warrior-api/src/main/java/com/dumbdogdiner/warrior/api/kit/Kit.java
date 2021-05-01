@@ -7,6 +7,7 @@ import com.dumbdogdiner.warrior.api.util.json.JsonModel;
 import com.dumbdogdiner.warrior.api.util.json.JsonSerializable;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public interface Kit extends JsonSerializable {
 
@@ -14,7 +15,7 @@ public interface Kit extends JsonSerializable {
      * Gets the Kit Price - TODO: Add Vault Support
      * @return Price of this Kit
      */
-    default Integer getPrice() {
+    @NotNull default Integer getPrice() {
         return 0;
     }
 
@@ -22,13 +23,13 @@ public interface Kit extends JsonSerializable {
      * Gets the Kit Name
      * @return Name of this Kit
      */
-    String getName();
+    @NotNull String getName();
 
     /**
      * Gets the Kit Description
      * @return Description of this Kit
      */
-    default String[] getDescription() {
+    @NotNull default String[] getDescription() {
         return new String[]{
             "&7Default Kit", " "
         };
@@ -40,7 +41,7 @@ public interface Kit extends JsonSerializable {
      *
      * @return Material for GUIs
      */
-    default Material getIcon() {
+    @NotNull default Material getIcon() {
         return Material.LEATHER_CHESTPLATE;
     }
 
@@ -48,7 +49,7 @@ public interface Kit extends JsonSerializable {
      * Gets the Permission required for this Kit.
      * @return Permission as String
      */
-    default String getPermission() {
+    @NotNull default String getPermission() {
         return "warrior.kit.defaults";
     }
 
@@ -77,14 +78,14 @@ public interface Kit extends JsonSerializable {
      */
     void setInventory(WarriorUser<?> user);
 
-    ItemStack[] getItems();
+    @NotNull ItemStack[] getItems();
 
-    @Override
+    @Override @NotNull
     default String getFilePath() {
         return "kits/" + getName().toLowerCase() + ".json";
     }
 
-    @Override
+    @Override @NotNull
     default JsonModel toJson() {
         return new KitModel(this);
     }
