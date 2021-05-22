@@ -2,7 +2,7 @@ package com.dumbdogdiner.warrior.user
 
 import com.dumbdogdiner.warrior.WarriorPlugin
 import com.dumbdogdiner.warrior.WithWarriorPlugin
-import com.dumbdogdiner.warrior.api.user.WarriorUserCache
+import com.dumbdogdiner.warrior.api.user.IUserCache
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
@@ -12,7 +12,7 @@ import java.util.stream.Collectors
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class UserCache: WarriorUserCache<User>, WithWarriorPlugin {
+class UserCache: IUserCache<User>, WithWarriorPlugin {
 
     init {
         registerHandlers()

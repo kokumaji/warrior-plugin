@@ -1,7 +1,12 @@
 package com.dumbdogdiner.warrior.user
 
 import com.dumbdogdiner.warrior.api.user.WarriorUser
-import org.bukkit.entity.Player
+import java.util.*
 
-class User(player: Player): WarriorUser<User> {
+class User(val uuid: UUID) : WarriorUser<User> {
+
+    override fun getUniqueId(): UUID {
+        return uuid
+    }
+
 }

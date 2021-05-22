@@ -1,16 +1,7 @@
 package com.dumbdogdiner.warrior.api;
 
-import com.dumbdogdiner.warrior.api.managers.WarriorArenaManager;
-import com.dumbdogdiner.warrior.api.managers.WarriorGUIManager;
-import com.dumbdogdiner.warrior.api.managers.WarriorGameBarManager;
-import com.dumbdogdiner.warrior.api.managers.WarriorKitManager;
-import com.dumbdogdiner.warrior.api.managers.WarriorLevelManager;
-import com.dumbdogdiner.warrior.api.managers.WarriorLobbyManager;
-import com.dumbdogdiner.warrior.api.managers.WarriorNotificationManager;
+import com.dumbdogdiner.warrior.api.user.IUserCache;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
-import com.dumbdogdiner.warrior.api.user.WarriorUserCache;
-import com.dumbdogdiner.warrior.api.translation.Translator;
-import com.dumbdogdiner.warrior.api.util.TranslationUtil;
 
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -80,60 +71,13 @@ public interface WarriorAPI {
 	WarriorLogger getLogger();
 
 	/**
-	 * @return A {@link String} containing the header for Warrior commands.
-	 */
-	default String getCommandHeader() {
-		return "&8" + TranslationUtil.HL(15) + " &8[ &3&l" + this.getInstance().getName() + " &8] " + TranslationUtil.HL(15);
-	}
-
-	/**
-	 * @return The {@link Translator} associated with this API implementation.
-	 */
-	Translator getTranslator();
-
-	/**
 	 * @return Whether Warrior should be in Debug Mode.
 	 * 		   Debug Mode provides verbose logging.
 	 */
-	boolean isDebugMode();
+	default boolean isDebugMode() { return true; }
 
 	/**
-	 * @return The {@link WarriorArenaManager} associated with this API implementation.
+	 * @return The {@link IUserCache} associated with this API implementation.
 	 */
-	WarriorArenaManager getArenaManager();
-
-	/**
-	 * @return The {@link WarriorGameBarManager} associated with this API implementation.
-	 */
-	WarriorGameBarManager getGameBarManager();
-
-	/**
-	 * @return The {@link WarriorGUIManager} associated with this API implementation.
-	 */
-	WarriorGUIManager getGUIManager();
-
-	/**
-	 * @return The {@link WarriorKitManager} associated with this API implementation.
-	 */
-	WarriorKitManager getKitManager();
-
-	/**
-	 * @return The {@link WarriorLevelManager} associated with this API implementation.
-	 */
-	WarriorLevelManager getLevelManager();
-
-	/**
-	 * @return The {@link WarriorLobbyManager} associated with this API implementation.
-	 */
-	WarriorLobbyManager getLobbyManager();
-
-	/**
-	 * @return The {@link WarriorNotificationManager} associated with this API implementation.
-	 */
-	WarriorNotificationManager getNotificationManager();
-
-	/**
-	 * @return The {@link WarriorUserCache} associated with this API implementation.
-	 */
-	WarriorUserCache<? extends WarriorUser> getUserCache();
+	IUserCache<? extends WarriorUser> getUsers();
 }
