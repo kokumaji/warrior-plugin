@@ -11,6 +11,7 @@ import com.dumbdogdiner.warrior.api.user.WarriorUser;
 import com.dumbdogdiner.warrior.api.user.WarriorUserCache;
 import com.dumbdogdiner.warrior.api.translation.Translator;
 import com.dumbdogdiner.warrior.api.util.TranslationUtil;
+
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;

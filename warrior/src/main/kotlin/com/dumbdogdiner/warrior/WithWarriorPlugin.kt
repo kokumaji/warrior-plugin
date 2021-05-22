@@ -1,7 +1,5 @@
 package com.dumbdogdiner.warrior
 
-import com.dumbdogdiner.warrior.Warrior
-import com.dumbdogdiner.warrior.api.WarriorAPI
 import com.dumbdogdiner.warrior.api.WarriorLogger
 import java.util.logging.Logger
 
@@ -10,16 +8,16 @@ import java.util.logging.Logger
  */
 interface WithWarriorPlugin {
     /**
-     * @return The [Warrior] plugin instance.
+     * @return The [WarriorPlugin] plugin instance.
      */
-    fun getPlugin(): Warrior {
-        return Warrior.instance
+    fun getPlugin(): WarriorPlugin {
+        return WarriorPlugin.instance
     }
 
     /**
      * @return The plugin [Logger] provided by Bukkit.
      */
     fun getLogger(): WarriorLogger {
-        return Warrior.pluginLogger
+        return WarriorPlugin.pluginLogger
     }
 }

@@ -1,7 +1,6 @@
 package com.dumbdogdiner.warrior
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion
-import com.dumbdogdiner.warrior.Warrior
 import com.dumbdogdiner.warrior.api.sessions.ArenaSession
 import com.dumbdogdiner.warrior.api.arena.Arena
 import com.dumbdogdiner.warrior.api.translation.TimeUtil
@@ -21,11 +20,11 @@ class WarriorPlaceholders : PlaceholderExpansion() {
     }
 
     override fun getAuthor(): String {
-        return Warrior.instance.description.authors[0]
+        return WarriorPlugin.instance.description.authors[0]
     }
 
     override fun getVersion(): String {
-        return Warrior.instance.description.version
+        return WarriorPlugin.instance.description.version
     }
 
     override fun onPlaceholderRequest(p: Player, identifier: String): String {
@@ -33,7 +32,7 @@ class WarriorPlaceholders : PlaceholderExpansion() {
 
         if (args.isEmpty()) return identifier
         if (args[0].equals("player", ignoreCase = true)) {
-            val user: User = Warrior.instance.userCache[p.uniqueId] ?: return identifier
+            val user: User = WarriorPlugin.instance.userCache[p.uniqueId] ?: return identifier
             when (args[1]) {
                 "name" -> return user.name
                 "timeplayed" -> {
@@ -57,12 +56,12 @@ class WarriorPlaceholders : PlaceholderExpansion() {
         } else if (args[0].equals("arena", ignoreCase = true)) {
             var arena: Arena? = null
             var argument = ""
-            val user: User = Warrior.instance.userCache[p.uniqueId]
+            val user: User = WarriorPlugin.instance.userCache[p.uniqueId]
                 ?: return identifier
 
             // if no argument provided, get the arena at the players location
             if (args.size == 2) {
-                for (arenaIt in Warrior.instance.arenaManager.arenas) {
+                for (arenaIt in WarriorPlugin.instance.arenaManager.arenas) {
                     if (arenaIt.bounds.contains(user.location)) {
                         arena = arenaIt
                         break
@@ -70,7 +69,7 @@ class WarriorPlaceholders : PlaceholderExpansion() {
                 }
                 argument = args[1]
             } else if (args.size == 3) {
-                arena = Warrior.instance.arenaManager[args[1]] ?: return identifier
+                arena = WarriorPlugin.instance.arenaManager[args[1]] ?: return identifier
                 argument = args[2]
             }
             if (arena == null) return identifier

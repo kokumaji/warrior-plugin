@@ -14,53 +14,53 @@ import com.dumbdogdiner.warrior.api.translation.Translator
 import com.dumbdogdiner.warrior.user.User
 import org.bukkit.plugin.java.JavaPlugin
 
-class ApiProvider : WarriorAPI {
+class WarriorProvider : WarriorAPI {
 
     override fun getInstance(): JavaPlugin {
-        return Warrior.instance
+        return WarriorPlugin.instance
     }
 
     override fun getLogger(): WarriorLogger {
-        return Warrior.pluginLogger
+        return WarriorPlugin.pluginLogger
     }
 
     override fun getTranslator(): Translator {
-        return Warrior.translator
+        return WarriorPlugin.translator
     }
 
     override fun isDebugMode(): Boolean {
-        return Warrior.instance.isDebugMode
+        return WarriorPlugin.instance.isDebugMode
     }
 
     override fun getArenaManager(): WarriorArenaManager {
-        return Warrior.instance.arenaManager
+        return WarriorPlugin.instance.arenaManager
     }
 
     override fun getGameBarManager(): WarriorGameBarManager {
-        return Warrior.instance.gameBarManager
+        return WarriorPlugin.instance.gameBarManager
     }
 
     override fun getGUIManager(): WarriorGUIManager {
-        return Warrior.instance.guiManager
+        return WarriorPlugin.instance.guiManager
     }
 
     override fun getKitManager(): WarriorKitManager {
-        return Warrior.instance.kitManager
+        return WarriorPlugin.instance.kitManager
     }
 
     override fun getLevelManager(): WarriorLevelManager {
-        return Warrior.instance.levelManager
+        return WarriorPlugin.instance.levelManager
     }
 
     override fun getLobbyManager(): WarriorLobbyManager {
-        return Warrior.instance.lobbyManager
+        return WarriorPlugin.instance.lobbyManager
     }
 
     override fun getNotificationManager(): WarriorNotificationManager {
-        return Warrior.instance.notificationManager
+        return WarriorPlugin.instance.notificationManager
     }
 
     override fun getUserCache(): WarriorUserCache<User> {
-        return Warrior.instance.userCache
+        return WarriorPlugin.instance.userCache
     }
 }

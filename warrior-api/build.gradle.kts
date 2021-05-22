@@ -1,3 +1,7 @@
+plugins {
+    java
+}
+
 dependencies {
     compileOnly("org.apache.logging.log4j:log4j-core:2.3")
     compileOnly("io.netty:netty-all:4.1.24.Final")

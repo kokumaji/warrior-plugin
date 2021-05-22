@@ -1,68 +1,80 @@
 package com.dumbdogdiner.warrior.user
 
+import com.dumbdogdiner.warrior.WarriorPlugin
 import com.dumbdogdiner.warrior.WithWarriorPlugin
 import com.dumbdogdiner.warrior.api.user.WarriorUserCache
-import java.util.TreeMap
-import java.util.UUID
-import com.dumbdogdiner.warrior.Warrior
-import com.google.common.base.Preconditions
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
-import java.util.ArrayList
+import org.bukkit.event.Listener
+import java.util.*
 import java.util.function.Predicate
 import java.util.stream.Collectors
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
-class UserCache : WithWarriorPlugin, WarriorUserCache<User> {
+class UserCache: WarriorUserCache<User>, WithWarriorPlugin {
 
-    private val users = TreeMap<UUID, User>()
-
-    override fun contains(uuid: UUID): Boolean {
-        return users.containsKey(uuid)
+    init {
+        registerHandlers()
     }
 
-    override fun addUser(userId: UUID): User {
+    private lateinit var userListener: Listener
+    var userMap: HashMap<UUID, User> = HashMap()
+
+    override fun getListener(): Listener {
+        return userListener
+    }
+
+    override fun setListener(listener: Listener) {
+        this.userListener = listener
+
+        this.unregister()
+        Bukkit.getPluginManager().registerEvents(this.userListener, WarriorPlugin.instance)
+    }
+
+    override fun contains(uuid: UUID): Boolean {
+        return userMap[uuid] != null
+    }
+
+    override fun addUser(userId: UUID): User? {
         val p: Player = Bukkit.getPlayer(userId)!!
 
-        return if (!users.containsKey(userId)) {
+        if(!p.isOnline) {
+            getLogger().warn("User ${p.name}(${p.uniqueId}) is not online!")
+            return null
+        }
+
+        return if(!this.contains(userId)) {
             val user = User(userId)
-            Warrior.connection.insertUser(user)
-            users[userId] = user
-
+            // Need to add SQL stuff here later
+            userMap[userId] = user
             user
-
         } else {
-            getLogger().warn("Attempted to register WarriorUser ${p.name} (${p.uniqueId}) twice!")
-
+            getLogger().warn("Attempted to register WarriorUser ${p.name}(${p.uniqueId}) twice!")
             get(userId)
-
         }
     }
 
     override fun remove(user: User) {
-        remove(user.userId)
+        this.remove(user.uniqueId)
     }
 
     override fun remove(userId: UUID) {
-        if (users.containsKey(userId)) {
-            val user = users[userId]!!
-            user.saveData()
-
-            users.remove(userId)
-
-        } else {
-            getLogger().warn("Failed to remove WarriorUser $userId from cache.")
+        if(this.contains(userId)) {
+            userMap.remove(userId)
         }
     }
 
-    override fun get(userId: UUID): User {
-        return users[userId]!!
+    override fun get(userId: UUID): User? {
+        return userMap[userId]
     }
 
-    override fun getList(): List<User> {
-        return ArrayList(users.values)
+    override fun getList(): MutableList<User> {
+        return ArrayList(userMap.values)
     }
 
-    override fun getListOf(predicate: Predicate<User>): List<User> {
-        return users.values.stream().filter(predicate).collect(Collectors.toList())
+    override fun getListOf(predicate: Predicate<User>?): MutableList<User> {
+        return this.list.stream().filter(predicate).collect(Collectors.toList())
     }
+
 }

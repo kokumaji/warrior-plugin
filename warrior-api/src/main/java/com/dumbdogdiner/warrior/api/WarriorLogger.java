@@ -3,8 +3,10 @@ package com.dumbdogdiner.warrior.api;
 import com.dumbdogdiner.warrior.api.translation.ConsoleColor;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
+import org.apache.commons.lang.text.StrSubstitutor;
 import org.bukkit.Bukkit;
 
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,6 +63,16 @@ public class WarriorLogger {
     public void info(String msg) {
         String formatted = String.format("%s%s %s» %s",
                 INFO_COLOR, PREFIX, TEXT_COLOR, msg);
+
+        logger.log(Level.INFO, formatted);
+    }
+
+    public void info(String msg, Map<String, String> vars) {
+        String formatted = String.format("%s%s %s» %s",
+                INFO_COLOR, PREFIX, TEXT_COLOR, msg);
+
+        StrSubstitutor sub = new StrSubstitutor(vars, "{", "}");
+        formatted = sub.replace(formatted);
 
         logger.log(Level.INFO, formatted);
     }

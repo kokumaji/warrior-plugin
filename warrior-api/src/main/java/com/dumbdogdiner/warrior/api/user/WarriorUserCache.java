@@ -1,6 +1,12 @@
 package com.dumbdogdiner.warrior.api.user;
 
+import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -54,4 +60,62 @@ public interface WarriorUserCache<T extends WarriorUser> {
      * @return A filtered {@link List} of players.
      */
     List<T> getListOf(Predicate<T> predicate);
+
+    Listener getListener();
+
+    void setListener(@NotNull Listener listener);
+
+    default void unregister() {
+        if(this.getListener() != null) {
+            PlayerJoinEvent.getHandlerList().unregister(WarriorAPI.getService().getInstance());
+            PlayerQuitEvent.getHandlerList().unregister(WarriorAPI.getService().getInstance());
+        }
+    }
+
+    /**
+     * Registers Join/Leave listeners to automate adding Players to cache
+     */
+    default void registerHandlers() {
+        if(this.getListener() != null) {
+            this.setListener(new Listener() {
+
+                @EventHandler
+                public void onJoin(PlayerJoinEvent e) {
+                    var player = e.getPlayer();
+
+                    if(WarriorAPI.getService().isDebugMode()) {
+                        String msg = String.format("Adding User %s(%2s) to Cache.", player.getName(), player.getUniqueId());
+                        WarriorAPI.getService().getLogger().debug(msg);
+                    }
+
+                    if(!contains(player.getUniqueId())) {
+                        addUser(player.getUniqueId());
+                    } else {
+                        String msg = String.format("User %s(%2s) is already cached!", player.getName(), player.getUniqueId());
+                        WarriorAPI.getService().getLogger().warn(msg);
+                    }
+                }
+
+                @EventHandler
+                public void onQuit(PlayerQuitEvent e) {
+                    var player = e.getPlayer();
+
+                    if(WarriorAPI.getService().isDebugMode()) {
+                        String msg = String.format("Removing User %s(%2s) from Cache.", player.getName(), player.getUniqueId());
+                        WarriorAPI.getService().getLogger().debug(msg);
+                    }
+
+                    if(!contains(player.getUniqueId())) {
+                        remove(player.getUniqueId());
+                    } else {
+                        String msg = String.format("User %s(%2s) is not cached!", player.getName(), player.getUniqueId());
+                        WarriorAPI.getService().getLogger().warn(msg);
+                    }
+                }
+
+            });
+        } else {
+            WarriorAPI.getService().getLogger().warn("Attempted to register UserCache twice!");
+        }
+    }
 }
