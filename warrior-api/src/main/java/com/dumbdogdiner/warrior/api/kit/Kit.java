@@ -1,16 +1,20 @@
 package com.dumbdogdiner.warrior.api.kit;
 
 import com.dumbdogdiner.warrior.api.WarriorAPI;
+import com.dumbdogdiner.warrior.api.events.WarriorKitEquipEvent;
 import com.dumbdogdiner.warrior.api.util.json.JSONHelper;
 import com.dumbdogdiner.warrior.api.util.json.JSONModel;
 import com.dumbdogdiner.warrior.api.util.json.JsonSerializable;
 import com.dumbdogdiner.warrior.api.util.json.models.KitModel;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.Map;
 
 public interface Kit extends JsonSerializable {
 
@@ -65,9 +69,23 @@ public interface Kit extends JsonSerializable {
      * @param user WarriorUser instance that should
      *             receive this kit.
      */
-    void setInventory(WarriorUser<?> user);
+    default void setup(WarriorUser<?> user) {
+        WarriorKitEquipEvent e = new WarriorKitEquipEvent(user, this);
+        Bukkit.getPluginManager().callEvent(e);
 
-    @NotNull ItemStack[] getItems();
+        if(e.isCancelled()) return;
+
+        for(SlotEnum slot : getItems().keySet()) {
+            SlotEnum.setSlot(user.toBukkit(), getItems().get(slot), slot);
+        }
+    }
+
+    default boolean register(Plugin plugin) {
+        KitContainer kits = WarriorAPI.getService().getKitContainer();
+        return kits.registerKit(this);
+    }
+
+    @NotNull Map<SlotEnum, ItemStack> getItems();
 
     // UNTESTED JSON CODE
 

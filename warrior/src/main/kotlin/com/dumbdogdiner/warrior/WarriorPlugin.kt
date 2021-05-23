@@ -4,13 +4,15 @@ import com.dumbdogdiner.stickyapi.bukkit.util.StartupUtil
 import kr.entree.spigradle.annotations.PluginMain
 import com.dumbdogdiner.warrior.api.WarriorAPI
 import com.dumbdogdiner.warrior.api.WarriorLogger
+import com.dumbdogdiner.warrior.debug.DebugCommand
+import com.dumbdogdiner.warrior.kits.KitContainer
 import com.dumbdogdiner.warrior.user.UserCache
 
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
 @PluginMain
-class WarriorPlugin : JavaPlugin(), WarriorLogger.KotlinLogger {
+class WarriorPlugin : JavaPlugin() {
 
     companion object {
 
@@ -19,6 +21,7 @@ class WarriorPlugin : JavaPlugin(), WarriorLogger.KotlinLogger {
 
     }
 
+    val kitContainer: KitContainer = KitContainer()
     val userCache = UserCache()
 
     override fun onLoad() {
@@ -30,18 +33,22 @@ class WarriorPlugin : JavaPlugin(), WarriorLogger.KotlinLogger {
     }
 
     override fun onEnable() {
-        info(WarriorDefaults.LogMessages.REGISTER_API)
+        pluginLogger.info(WarriorDefaults.LogMessages.REGISTER_API)
         WarriorAPI.registerService(this, WarriorProvider())
 
         if(isInstalled("PlaceholderAPI")) {
-            info(WarriorDefaults.LogMessages.FOUND_PLUGIN, mapOf("Plugin" to "PlaceholderAPI"))
-            info(WarriorDefaults.LogMessages.REGISTER_PAPI)
-            WarriorPlaceholders().register()
+            pluginLogger.info(WarriorDefaults.LogMessages.FOUND_PLUGIN, mapOf("Plugin" to "PlaceholderAPI"))
+            pluginLogger.info(WarriorDefaults.LogMessages.REGISTER_PAPI)
+            // WarriorPlaceholders().register()
         }
 
         if(isInstalled("Vault")) {
             TODO("Need to add VaultAPI integration")
         }
+
+        kitContainer.registerDefaults()
+        getCommand("debug")?.setExecutor(DebugCommand())
+
     }
 
     override fun onDisable() {

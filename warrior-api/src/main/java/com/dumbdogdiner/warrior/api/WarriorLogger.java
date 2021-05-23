@@ -12,30 +12,6 @@ import java.util.logging.Logger;
 
 public class WarriorLogger {
 
-    public interface KotlinLogger {
-
-        default void info(String message) {
-            WarriorAPI.getService().getLogger().info(message);
-        }
-
-        default void info(String message, Map<String, String> values) {
-            WarriorAPI.getService().getLogger().info(message, values);
-        }
-
-        default void warn(String message) {
-            WarriorAPI.getService().getLogger().warn(message);
-        }
-
-        default void error(String message) {
-            WarriorAPI.getService().getLogger().error(message);
-        }
-
-        default void debug(String message) {
-            WarriorAPI.getService().getLogger().debug(message);
-        }
-
-    }
-
     private static final String PREFIX = String.format("%sWARRIOR %2s", ConsoleColor.CYAN, ConsoleColor.RESET);
 
     private String DEBUG_COLOR = ConsoleColor.PURPLE;

@@ -1,5 +1,6 @@
 package com.dumbdogdiner.warrior.api;
 
+import com.dumbdogdiner.warrior.api.kit.KitContainer;
 import com.dumbdogdiner.warrior.api.user.IUserCache;
 import com.dumbdogdiner.warrior.api.user.WarriorUser;
 
@@ -80,4 +81,7 @@ public interface WarriorAPI {
 	 * @return The {@link IUserCache} associated with this API implementation.
 	 */
 	IUserCache<? extends WarriorUser> getUsers();
+
+	KitContainer getKitContainer();
+
 }
