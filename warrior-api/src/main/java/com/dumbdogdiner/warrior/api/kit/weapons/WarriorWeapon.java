@@ -48,7 +48,6 @@ public class WarriorWeapon {
     public WarriorWeapon description(String... strings) {
         itemLore = new ArrayList<>();
 
-        itemLore.add(" ");
         for(String s : strings) {
             // cutting strings at 32nd char to avoid ugly tooltips
             itemLore.add(Color.translateColor("&7" + s.substring(0, 32)));
@@ -66,6 +65,8 @@ public class WarriorWeapon {
     public ItemStack build() {
         if(itemLore.isEmpty()) itemLore.add(" ");
         String formattedDamage = String.format("&a+%f Damage", this.weaponDamage);
+
+        itemLore.add(" ");
         itemLore.add(Color.translateColor(formattedDamage));
 
         applyLore(itemLore.toArray(String[]::new));

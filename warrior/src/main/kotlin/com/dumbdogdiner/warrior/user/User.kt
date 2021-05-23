@@ -7,6 +7,8 @@ import java.util.*
 
 class User(val uuid: UUID) : WarriorUser<User> {
 
+    var activeKit: String = "none"
+
     val player: Player = Bukkit.getPlayer(uuid)!!
 
     override fun getUniqueId(): UUID {
@@ -15,6 +17,14 @@ class User(val uuid: UUID) : WarriorUser<User> {
 
     override fun toBukkit(): Player {
         return player
+    }
+
+    override fun getKit(): String {
+        return activeKit
+    }
+
+    override fun setKit(name: String) {
+        this.activeKit = name
     }
 
 }

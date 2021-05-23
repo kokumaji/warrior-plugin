@@ -2,6 +2,7 @@ package com.dumbdogdiner.warrior.kits
 
 import com.dumbdogdiner.warrior.api.kit.Kit
 import com.dumbdogdiner.warrior.api.kit.SlotEnum
+import com.dumbdogdiner.warrior.api.kit.weapons.ItemRarity
 import com.dumbdogdiner.warrior.api.kit.weapons.WarriorWeapon
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -9,9 +10,9 @@ import org.bukkit.inventory.ItemStack
 class WarriorKit : Kit {
 
     private val primaryWeapon = WarriorWeapon(Material.IRON_SWORD)
-                                .itemName("THE SWORD")
+                                .itemName("&8··· &7THE SWORD &8···")
                                 // :eyes: .sweepAttack(SweepAttack.SHARP_STING)
-                                .description("Line 1", "Line 2")
+                                .description("&7Rarity ${ItemRarity.COMMON.formatted}", "&7&oDescription goes here...")
                                 .damageOverride(4.0)
 
     override fun getName(): String {

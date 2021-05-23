@@ -4,7 +4,7 @@ import com.dumbdogdiner.stickyapi.bukkit.util.StartupUtil
 import kr.entree.spigradle.annotations.PluginMain
 import com.dumbdogdiner.warrior.api.WarriorAPI
 import com.dumbdogdiner.warrior.api.WarriorLogger
-import com.dumbdogdiner.warrior.debug.DebugCommand
+import com.dumbdogdiner.warrior.commands.DebugCommand
 import com.dumbdogdiner.warrior.kits.KitContainer
 import com.dumbdogdiner.warrior.user.UserCache
 

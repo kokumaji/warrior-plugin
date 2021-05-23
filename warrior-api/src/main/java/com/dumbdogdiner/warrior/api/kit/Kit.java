@@ -78,6 +78,8 @@ public interface Kit extends JsonSerializable {
         for(SlotEnum slot : getItems().keySet()) {
             SlotEnum.setSlot(user.toBukkit(), getItems().get(slot), slot);
         }
+
+        user.setKit(this.getName());
     }
 
     default boolean register(Plugin plugin) {
