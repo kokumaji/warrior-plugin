@@ -87,6 +87,12 @@ public interface Kit extends JsonSerializable {
 
     @NotNull Map<SlotEnum, ItemStack> getItems();
 
+    @NotNull ItemStack getPrimary();
+
+    default ItemStack getSecondary() {
+        return null;
+    }
+
     // UNTESTED JSON CODE
 
     @Override @NotNull
