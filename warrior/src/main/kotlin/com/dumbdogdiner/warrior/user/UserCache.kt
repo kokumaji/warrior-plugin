@@ -12,10 +12,11 @@ import java.util.stream.Collectors
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class UserCache: IUserCache<User>, WithWarriorPlugin {
+class UserCache(warriorPlugin: WarriorPlugin) : IUserCache<User>, WithWarriorPlugin {
 
     private var userListener: Listener? = null
     var userMap: HashMap<UUID, User> = HashMap()
+    private val owner: WarriorPlugin = warriorPlugin
 
     override fun getListener(): Listener? {
         return userListener
@@ -26,7 +27,7 @@ class UserCache: IUserCache<User>, WithWarriorPlugin {
             this.userListener = listener
 
             this.unregister()
-            Bukkit.getPluginManager().registerEvents(this.userListener!!, WarriorPlugin.instance)
+            Bukkit.getPluginManager().registerEvents(this.userListener!!, owner)
         } else {
             getLogger().warn("Player Listener already registered... Skipping")
         }

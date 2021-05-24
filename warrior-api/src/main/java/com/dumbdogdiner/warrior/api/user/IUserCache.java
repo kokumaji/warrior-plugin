@@ -73,10 +73,9 @@ public interface IUserCache<T extends WarriorUser> {
 
     /**
      * Registers Join/Leave listeners to automate adding Players to cache
-     * FIXME: Why does this not register the handlers wtf
      */
     default void registerHandlers() {
-        if(this.getListener() != null) {
+        if(this.getListener() == null) { // dumbass me did != before...
             this.setListener(new Listener() {
 
                 @EventHandler

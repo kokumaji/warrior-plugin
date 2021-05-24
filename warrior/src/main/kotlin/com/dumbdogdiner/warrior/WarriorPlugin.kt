@@ -7,7 +7,6 @@ import com.dumbdogdiner.warrior.api.WarriorLogger
 import com.dumbdogdiner.warrior.commands.DebugCommand
 import com.dumbdogdiner.warrior.kits.KitContainer
 import com.dumbdogdiner.warrior.listeners.AbilityListener
-import com.dumbdogdiner.warrior.listeners.UserCacheListener
 import com.dumbdogdiner.warrior.user.UserCache
 
 import org.bukkit.Bukkit
@@ -43,9 +42,9 @@ class WarriorPlugin : JavaPlugin() {
     override fun onEnable() {
 
         kitContainer = KitContainer()
-        userCache = UserCache()
+        userCache = UserCache(this)
 
-        Bukkit.getPluginManager().registerEvents(UserCacheListener(), this)
+        // Bukkit.getPluginManager().registerEvents(UserCacheListener(), this)
         Bukkit.getPluginManager().registerEvents(AbilityListener(), this)
 
         if(isInstalled("PlaceholderAPI")) {
@@ -59,7 +58,8 @@ class WarriorPlugin : JavaPlugin() {
         }
 
         kitContainer.registerDefaults()
-        // userCache.registerHandlers() FIXME: why is this not running wtf
+        userCache.registerHandlers()
+
         getCommand("debug")?.setExecutor(DebugCommand())
 
     }
