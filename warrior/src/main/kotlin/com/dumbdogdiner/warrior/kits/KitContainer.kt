@@ -22,4 +22,12 @@ class KitContainer: KitContainer {
     override fun <T : Kit> get(kitClass: Class<T>): T {
         return kitClass.cast(kitCache[kitClass]!!)
     }
+
+    override fun get(kitName: String): Kit? {
+        for(kit in kitCache.values) {
+            if (kit.name.equals(kitName, ignoreCase = true)) return kit
+        }
+
+        return null
+    }
 }

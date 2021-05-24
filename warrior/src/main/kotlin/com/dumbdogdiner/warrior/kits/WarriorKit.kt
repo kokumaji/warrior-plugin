@@ -2,8 +2,10 @@ package com.dumbdogdiner.warrior.kits
 
 import com.dumbdogdiner.warrior.api.kit.Kit
 import com.dumbdogdiner.warrior.api.kit.SlotEnum
+import com.dumbdogdiner.warrior.api.kit.WarriorAbility
 import com.dumbdogdiner.warrior.api.kit.weapons.ItemRarity
 import com.dumbdogdiner.warrior.api.kit.weapons.WarriorWeapon
+import com.dumbdogdiner.warrior.kits.abilities.MedicAbility
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -12,8 +14,10 @@ class WarriorKit : Kit {
     private val primaryWeapon = WarriorWeapon(Material.IRON_SWORD)
                                 .itemName("&8··· &7THE SWORD &8···")
                                 // :eyes: .sweepAttack(SweepAttack.SHARP_STING)
-                                .description("&7Rarity ${ItemRarity.COMMON.formatted}", "&7&oDescription goes here...")
-                                .damageOverride(4.0)
+                                .description("&7Rarity ${ItemRarity.COMMON.formatted}", " ", "&7&oDescription goes here...")
+                                .damageOverride(6.0)
+                                .hideFlags()
+                                .build()
 
     override fun getName(): String {
         return "Warrior"
@@ -30,8 +34,12 @@ class WarriorKit : Kit {
         return Material.IRON_SWORD
     }
 
+    override fun getAbility(): WarriorAbility {
+        return MedicAbility()
+    }
+
     override fun getPrimary(): ItemStack {
-        return this.primaryWeapon.build()
+        return this.primaryWeapon
     }
 
     override fun getItems(): Map<SlotEnum, ItemStack> {

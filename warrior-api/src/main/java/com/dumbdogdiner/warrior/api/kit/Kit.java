@@ -2,6 +2,7 @@ package com.dumbdogdiner.warrior.api.kit;
 
 import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.dumbdogdiner.warrior.api.events.WarriorKitEquipEvent;
+import com.dumbdogdiner.warrior.api.kit.weapons.WarriorWeapon;
 import com.dumbdogdiner.warrior.api.util.json.JSONHelper;
 import com.dumbdogdiner.warrior.api.util.json.JSONModel;
 import com.dumbdogdiner.warrior.api.util.json.JsonSerializable;
@@ -79,6 +80,10 @@ public interface Kit extends JsonSerializable {
             SlotEnum.setSlot(user.toBukkit(), getItems().get(slot), slot);
         }
 
+        if(getAbility() != null) {
+            SlotEnum.setSlot(user.toBukkit(), this.getAbilityItem(), SlotEnum.ABILITY);
+        }
+
         user.setKit(this.getName());
     }
 
@@ -93,6 +98,15 @@ public interface Kit extends JsonSerializable {
 
     default ItemStack getSecondary() {
         return null;
+    }
+
+    default WarriorAbility getAbility() {
+        return null;
+    }
+
+    default ItemStack getAbilityItem() {
+        if(this.getAbility() == null) return null;
+        else return DefaultItems.getAbilityItem(getAbility());
     }
 
     // UNTESTED JSON CODE

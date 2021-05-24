@@ -14,22 +14,22 @@ import kotlin.collections.HashMap
 
 class UserCache: IUserCache<User>, WithWarriorPlugin {
 
-    init {
-        registerHandlers()
-    }
-
-    private lateinit var userListener: Listener
+    private var userListener: Listener? = null
     var userMap: HashMap<UUID, User> = HashMap()
 
-    override fun getListener(): Listener {
+    override fun getListener(): Listener? {
         return userListener
     }
 
     override fun setListener(listener: Listener) {
-        this.userListener = listener
+        if(userListener == null) {
+            this.userListener = listener
 
-        this.unregister()
-        Bukkit.getPluginManager().registerEvents(this.userListener, WarriorPlugin.instance)
+            this.unregister()
+            Bukkit.getPluginManager().registerEvents(this.userListener!!, WarriorPlugin.instance)
+        } else {
+            getLogger().warn("Player Listener already registered... Skipping")
+        }
     }
 
     override fun contains(uuid: UUID): Boolean {

@@ -8,4 +8,6 @@ public interface KitContainer {
 
     <T extends Kit> T get(Class<T> kitClass);
 
+    Kit get(String kitName);
+
 }

@@ -54,6 +54,9 @@ tasks {
         archiveClassifier.set("")
         // exclude generated
         exclude("generated/mojangles_width_data.json")
+
+        val pkg = "com.dumbdogdiner.warrior.libs."
+        relocate("org.intellij", "${pkg}org.intellij")
         // minimize()
     }
 }

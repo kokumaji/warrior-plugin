@@ -6,6 +6,8 @@ import com.dumbdogdiner.warrior.api.WarriorAPI
 import com.dumbdogdiner.warrior.api.WarriorLogger
 import com.dumbdogdiner.warrior.commands.DebugCommand
 import com.dumbdogdiner.warrior.kits.KitContainer
+import com.dumbdogdiner.warrior.listeners.AbilityListener
+import com.dumbdogdiner.warrior.listeners.UserCacheListener
 import com.dumbdogdiner.warrior.user.UserCache
 
 import org.bukkit.Bukkit
@@ -21,20 +23,30 @@ class WarriorPlugin : JavaPlugin() {
 
     }
 
-    val kitContainer: KitContainer = KitContainer()
-    val userCache = UserCache()
+    lateinit var kitContainer: KitContainer
+    lateinit var userCache: UserCache
 
     override fun onLoad() {
+
+        WarriorAPI.registerService(this, WarriorProvider())
+
         instance = this
         pluginLogger = WarriorLogger(WarriorProvider())
+
+        pluginLogger.info(WarriorDefaults.LogMessages.REGISTER_API)
+
         if(!StartupUtil.setupConfig(this)) {
-            error(WarriorDefaults.LogMessages.DEFAULT_CONF_ERR)
+            pluginLogger.error(WarriorDefaults.LogMessages.DEFAULT_CONF_ERR)
         }
     }
 
     override fun onEnable() {
-        pluginLogger.info(WarriorDefaults.LogMessages.REGISTER_API)
-        WarriorAPI.registerService(this, WarriorProvider())
+
+        kitContainer = KitContainer()
+        userCache = UserCache()
+
+        Bukkit.getPluginManager().registerEvents(UserCacheListener(), this)
+        Bukkit.getPluginManager().registerEvents(AbilityListener(), this)
 
         if(isInstalled("PlaceholderAPI")) {
             pluginLogger.info(WarriorDefaults.LogMessages.FOUND_PLUGIN, mapOf("Plugin" to "PlaceholderAPI"))
@@ -47,6 +59,7 @@ class WarriorPlugin : JavaPlugin() {
         }
 
         kitContainer.registerDefaults()
+        // userCache.registerHandlers() FIXME: why is this not running wtf
         getCommand("debug")?.setExecutor(DebugCommand())
 
     }

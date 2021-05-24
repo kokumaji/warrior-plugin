@@ -73,6 +73,7 @@ public interface IUserCache<T extends WarriorUser> {
 
     /**
      * Registers Join/Leave listeners to automate adding Players to cache
+     * FIXME: Why does this not register the handlers wtf
      */
     default void registerHandlers() {
         if(this.getListener() != null) {
@@ -113,8 +114,6 @@ public interface IUserCache<T extends WarriorUser> {
                 }
 
             });
-        } else {
-            WarriorAPI.getService().getLogger().warn("Attempted to register UserCache twice!");
         }
     }
 }
