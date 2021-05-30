@@ -3,11 +3,10 @@ package com.dumbdogdiner.warrior.api.util.json;
 import com.dumbdogdiner.warrior.api.WarriorAPI;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import org.bukkit.plugin.Plugin;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class JSONHelper {
 
@@ -81,6 +80,16 @@ public class JSONHelper {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static <T extends JSONModel> T readFile(File f, Class<T> jsonModel) {
+        try(JsonReader reader = new JsonReader(new FileReader(f))) {
+            return new Gson().fromJson(reader, jsonModel);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }

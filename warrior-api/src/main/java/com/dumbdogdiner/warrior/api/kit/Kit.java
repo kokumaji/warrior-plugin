@@ -1,37 +1,47 @@
 package com.dumbdogdiner.warrior.api.kit;
 
 import com.dumbdogdiner.warrior.api.WarriorAPI;
-import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import com.dumbdogdiner.warrior.api.events.WarriorKitEquipEvent;
+import com.dumbdogdiner.warrior.api.kit.weapons.WarriorWeapon;
 import com.dumbdogdiner.warrior.api.util.json.JSONHelper;
-import com.dumbdogdiner.warrior.api.util.json.JsonModel;
+import com.dumbdogdiner.warrior.api.util.json.JSONModel;
 import com.dumbdogdiner.warrior.api.util.json.JsonSerializable;
+import com.dumbdogdiner.warrior.api.util.json.models.KitModel;
+import com.dumbdogdiner.warrior.api.user.WarriorUser;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+import java.util.Map;
 
 public interface Kit extends JsonSerializable {
 
     /**
-     * Gets the Kit Price - TODO: Add Vault Support
-     * @return Price of this Kit
+     * Gets the price of this kit. Setting this to 0
+     * may indicate that this is a default kit.
+     *
+     * @return price of this kit
      */
     @NotNull default Integer getPrice() {
         return 0;
     }
 
     /**
-     * Gets the Kit Name
-     * @return Name of this Kit
+     * Gets the name of this kit.
+     * @return name of this kit
      */
     @NotNull String getName();
 
     /**
-     * Gets the Kit Description
-     * @return Description of this Kit
+     * Gets the Kit description. Lines shouldn't be longer than 24 characters!
+     * @return description of this kit
      */
     @NotNull default String[] getDescription() {
-        return new String[]{
-            "&7Default Kit", " "
+        return new String[] {
+                "&7Default Kit", " "
         };
     }
 
@@ -54,31 +64,52 @@ public interface Kit extends JsonSerializable {
     }
 
     /**
-     * (UNTESTED) Gets whether the implementing Class
-     * also implements {@link WithAbility}, which is used
-     * for handling Special Abilities.
-     *
-     * @return `True` if the implementing class also
-     *         implements {@link WithAbility}, otherwise `False`
-     */
-    default boolean hasAbility() {
-        try {
-            return this.getClass().isAssignableFrom(WithAbility.class);
-        } catch(Exception e) {
-            return false;
-        }
-    }
-
-    /**
      * This method is used to set up the
      * Inventory for a User.
      *
      * @param user WarriorUser instance that should
      *             receive this kit.
      */
-    void setInventory(WarriorUser<?> user);
+    default void setup(WarriorUser<?> user) {
+        WarriorKitEquipEvent e = new WarriorKitEquipEvent(user, this);
+        Bukkit.getPluginManager().callEvent(e);
 
-    @NotNull ItemStack[] getItems();
+        if(e.isCancelled()) return;
+
+        for(SlotEnum slot : getItems().keySet()) {
+            SlotEnum.setSlot(user.toBukkit(), getItems().get(slot), slot);
+        }
+
+        if(getAbility() != null) {
+            SlotEnum.setSlot(user.toBukkit(), this.getAbilityItem(), SlotEnum.ABILITY);
+        }
+
+        user.setKit(this.getName());
+    }
+
+    default boolean register(Plugin plugin) {
+        KitContainer kits = WarriorAPI.getService().getKitContainer();
+        return kits.registerKit(this);
+    }
+
+    @NotNull Map<SlotEnum, ItemStack> getItems();
+
+    @NotNull ItemStack getPrimary();
+
+    default ItemStack getSecondary() {
+        return null;
+    }
+
+    default WarriorAbility getAbility() {
+        return null;
+    }
+
+    default ItemStack getAbilityItem() {
+        if(this.getAbility() == null) return null;
+        else return DefaultItems.getAbilityItem(getAbility());
+    }
+
+    // UNTESTED JSON CODE
 
     @Override @NotNull
     default String getFilePath() {
@@ -86,7 +117,7 @@ public interface Kit extends JsonSerializable {
     }
 
     @Override @NotNull
-    default JsonModel toJson() {
+    default JSONModel toJson() {
         return new KitModel(this);
     }
 
@@ -94,7 +125,7 @@ public interface Kit extends JsonSerializable {
         JSONHelper.save(this);
     }
 
-    default void load() {
+    default KitModel load() {
         if(!JSONHelper.fileExists(this.getFilePath())) {
             WarriorAPI.getService().getLogger().warn("Could not load File for Kit " + getName());
 
@@ -102,7 +133,7 @@ public interface Kit extends JsonSerializable {
             JSONHelper.save(this);
         }
 
-        // TODO: handle JSON file here & apply json values to this kit ("KitModel"??)
+        return JSONHelper.readFile(new File(this.getFilePath()), KitModel.class);
 
     }
 

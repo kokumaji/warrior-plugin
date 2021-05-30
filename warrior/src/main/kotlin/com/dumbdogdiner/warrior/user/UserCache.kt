@@ -2,7 +2,7 @@ package com.dumbdogdiner.warrior.user
 
 import com.dumbdogdiner.warrior.WarriorPlugin
 import com.dumbdogdiner.warrior.WithWarriorPlugin
-import com.dumbdogdiner.warrior.api.user.WarriorUserCache
+import com.dumbdogdiner.warrior.api.user.IUserCache
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
@@ -12,24 +12,25 @@ import java.util.stream.Collectors
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class UserCache: WarriorUserCache<User>, WithWarriorPlugin {
+class UserCache(warriorPlugin: WarriorPlugin) : IUserCache<User>, WithWarriorPlugin {
 
-    init {
-        registerHandlers()
-    }
-
-    private lateinit var userListener: Listener
+    private var userListener: Listener? = null
     var userMap: HashMap<UUID, User> = HashMap()
+    private val owner: WarriorPlugin = warriorPlugin
 
-    override fun getListener(): Listener {
+    override fun getListener(): Listener? {
         return userListener
     }
 
     override fun setListener(listener: Listener) {
-        this.userListener = listener
+        if(userListener == null) {
+            this.userListener = listener
 
-        this.unregister()
-        Bukkit.getPluginManager().registerEvents(this.userListener, WarriorPlugin.instance)
+            this.unregister()
+            Bukkit.getPluginManager().registerEvents(this.userListener!!, owner)
+        } else {
+            getLogger().warn("Player Listener already registered... Skipping")
+        }
     }
 
     override fun contains(uuid: UUID): Boolean {

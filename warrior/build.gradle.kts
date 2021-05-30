@@ -46,26 +46,17 @@ tasks {
 
     register<ConfigureShadowRelocation>("relocateShadowJar") {
         target = project.tasks.shadowJar.get()
-        prefix = "${group}.warrior.libs" // Default value is "shadow"
+        prefix = "com.dumbdogdiner.warrior.libs" // Default value is "shadow"
     }
 
     shadowJar {
         dependsOn("relocateShadowJar")
         archiveClassifier.set("")
-        project.configurations.implementation.configure { isCanBeResolved = true }
-        configurations = listOf(
-            project.configurations.shadow.get()
-        )
-
-        val pkg = "$group.warrior.libs."
-
+        // exclude generated
         exclude("generated/mojangles_width_data.json")
-        relocate("com.zaxxer", "${pkg}com.zaxxer")
-        relocate("org.postgresql", "${pkg}org.postgresql")
-        relocate("org.postgresql", "${pkg}org.postgresql")
 
-        minimize()
+        val pkg = "com.dumbdogdiner.warrior.libs."
+        relocate("org.intellij", "${pkg}org.intellij")
+        // minimize()
     }
-
-
 }
