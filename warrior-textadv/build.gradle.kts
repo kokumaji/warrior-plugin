@@ -1,11 +1,12 @@
 plugins {
-    java
+    kotlin("jvm") version "1.4.32"
 }
 
+val kotlinVersion = "1.4.32"
+val gradleVersion = "6.8+"
+
 dependencies {
-    compileOnly("org.apache.logging.log4j:log4j-core:2.3")
-    compileOnly("io.netty:netty-all:4.1.24.Final")
-    compileOnly("com.mojang:authlib:1.5.21")
+    implementation(project(":warrior-api"))
 }
 
 tasks {

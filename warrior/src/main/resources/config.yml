@@ -1,8 +1,27 @@
+
+
 general-settings:
-  plugin-prefix: "&3&lWarrior &8»"
+
+  # Enable this Feature to have this plugin start in developer mode
+  # this is useful for more detailed error reports and perfomance profiling.
+  # May also be used to help developers to understand this Plugin.
   debug-mode: true
+
+  # Ignore all Plugin related Warnings. Do not set this to true
+  # unless you know what you're doing. NOTE: Ignoring warnings will
+  # invalidate all support requests.
+  ignore-warns: false
+
+  # Allow this Plugin to use Reflection to possibly increase Performance
+  # and complexity of certain features. Disabling this feature will increase
+  # compatibility with newer Java version, but disables some features.
+  allow-reflection: true
+
+  # Toggle Support for PlaceholderAPI. This will register a Placeholder Expansion
+  # and allows for the use of PlaceholderAPI placeholders within the translation files.
   use-placeholderapi: true
-  notification-interval: 60
+
+  # TODO: Move notification-interval: 600
 arena-settings:
   prevent-region-exit: true
   min-coins: 5

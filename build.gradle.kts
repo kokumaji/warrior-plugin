@@ -10,10 +10,11 @@
 plugins {
     // Implement Gradle plugins
     java
+    id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 
 // Setting some variables for our plugin!
-group = "com.dumbdogdiner"
+group = "me.kokumaji"
 version = "1.2-beta"
 
 val kotlinVersion = "1.4.32"
@@ -27,18 +28,12 @@ configure<JavaPluginExtension> {
 subprojects {
 
     apply(plugin = "java")
+    apply(plugin = "com.github.johnrengelman.shadow")
 
     repositories {
         // Default Gradle repositories
         jcenter()
         mavenCentral()
-
-        maven (url = "https://maven.pkg.github.com/DumbDogDiner/stickyapi") {
-            credentials {
-                username = property("ghUser") as String
-                password = property("ghPass") as String
-            }
-        }
 
         maven(url = "https://papermc.io/repo/repository/maven-public/")
 
@@ -62,9 +57,6 @@ subprojects {
         // runtime dependencies
         compileOnly("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
 
-        // shaded dependencies
-        implementation(platform("com.dumbdogdiner:stickyapi:3.0.1"))
-
         // Tests - JUnit 5
         testImplementation("junit:junit:4.12")
 
@@ -78,10 +70,41 @@ subprojects {
     }
 }
 
+dependencies {
+
+    implementation(project(":warrior"))
+    implementation(project(":warrior-api"))
+    implementation(project(":warrior-textadv"))
+
+}
+
 // vv Configuring the Gradle plugins below vv
 
 tasks {
-    compileJava{
+
+    build {
+        dependsOn("shadowJar")
+    }
+
+    compileJava {
         options.encoding = "UTF-8"
     }
+
+    shadowJar {
+        archiveClassifier.set("")
+
+        val pkg = "me.kokumaji.warrior.libs."
+        relocate("kotlin", "${pkg}kotlin")
+        relocate("org.intellij", "${pkg}org.intellij")
+        relocate("org.jetbrains", "${pkg}org.jetbrains")
+        relocate("me.kokumaji.HibiscusAPI", "${pkg}hibiscusapi")
+
+    }
+
+    withType<Jar> {
+        manifest {
+            attributes["Main-Class"] = "me.kokumaji.warrior.textadv.TextAdventure"
+        }
+    }
+
 }
